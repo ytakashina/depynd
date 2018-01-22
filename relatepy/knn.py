@@ -16,3 +16,10 @@ def mi_knn(X, Y, k=3):
     n_y = np.sum(distances_y <= epsilons, axis=0) - 1
     mi = np.log(n) + np.mean(digamma(ks) - np.log(n_x * n_y))
     return mi
+
+
+def cmi_knn(X, Y, Z, method=None, is_discrete=None, k=3):
+    if Z.size == 0:
+        return mi_knn(X, Y, k)
+    XZ = np.hstack([X, Z])
+    return mi_knn(XZ, Y, k) - mi_knn(Z, Y, k)

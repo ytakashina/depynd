@@ -2,6 +2,7 @@ import numpy as np
 from . import knn
 from . import dr
 
+
 def mimat(X, method=None, is_discrete=None, k=3):
     n, d = X.shape
     mis = np.eye(d)
@@ -18,3 +19,16 @@ def mimat(X, method=None, is_discrete=None, k=3):
     return mis
 
 
+def cmimat(X, method=None, is_discrete=None, k=3):
+    n, d = X.shape
+    cmis = np.eye(d)
+    for i, j in [(i, j) for i in range(d) for j in range(d) if i != j]:
+        x = X[:, [i]]
+        y = X[:, [j]]
+        idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
+        z = X[:, idx_rest]
+        cmis[i, j] = knn.cmi_knn(x, y, z, k=3)
+
+    cmis[cmis < 0] = 0
+    cmis[np.eye(d, dtype=bool)] = np.nan
+    return cmis
