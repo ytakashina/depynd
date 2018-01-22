@@ -14,7 +14,7 @@ def normal(X, mean, sigma):
 def mi_dr(X, Y, sigma=1, b=200, maxiter=1000):
     n_x, d_x = X.shape
     n_y, d_y = Y.shape
-    b = min(self._b, n_x)
+    b = min(b, n_x)
 
     XY = np.hstack([X, Y])
     UV = KMeans(b).fit(XY).cluster_centers_
