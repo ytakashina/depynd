@@ -1,20 +1,22 @@
 import numpy as np
-from . import knn
+from .mi import MIEstimator, CMIEstimator
 
 
-def mrmr(X, y, k=3, verbose=True):
+def _mrmr(X, y, alpha=0.0, method=None, options=None):
+    n, d = X.shape
     return list(range(d))
 
 
-def mifs(X, y, k=3, alpha=0.0, verbose=True):
+def _mifs(X, y, alpha=0.0, method=None, options=None):
     n, d = X.shape
     selected = []
     while True:
         max_cmi = -np.inf
         not_selected = set(range(d)) - set(selected)
+        z = X[:, selected]
         for i in not_selected:
-            y = X[:, [i]]
-            cmi = cmi_knn(x, y, X[:, selected], k=k)
+            x = X[:, [i]]
+            cmi = CMIEstimator(method=method, options=options).fit(x, y, z).cmi
             if max_cmi < cmi:
                 max_cmi = cmi
                 max_idx = i
