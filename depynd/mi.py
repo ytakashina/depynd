@@ -70,6 +70,10 @@ class MIEstimator(object):
         self._options = {} if options is None else options
 
     def fit(self, X, Y):
+        if np.ndim(X) == 1:
+            X = np.reshape(X, [-1, 1])
+        if np.ndim(Y) == 1:
+            Y = np.reshape(Y, [-1, 1])
         if self._method == 'dr':
             sigma = self._options.get('sigma', 1)
             n_bases = self._options.get('n_bases', 200)
@@ -88,10 +92,16 @@ class CMIEstimator(object):
         self._options = options
 
     def fit(self, X, Y, Z):
-        XZ = np.hstack([X, Z])
         if Z.size == 0:
             self.cmi = MIEstimator(method=self._method, options=self._options).fit(X, Y).mi
         else:
+            if np.ndim(X) == 1:
+                X = np.reshape(X, [-1, 1])
+            if np.ndim(Y) == 1:
+                Y = np.reshape(Y, [-1, 1])
+            if np.ndim(Z) == 1:
+                Z = np.reshape(Z, [-1, 1])
+            XZ = np.hstack([X, Z])
             mi_xz_y = MIEstimator(method=self._method, options=self._options).fit(XZ, Y).mi
             mi_y_z = MIEstimator(method=self._method, options=self._options).fit(Y, Z).mi
             self.cmi = mi_xz_y - mi_y_z

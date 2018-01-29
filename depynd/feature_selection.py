@@ -10,7 +10,6 @@ def mrmr(X, y, lamb=0.0, method=None, options=None):
 def mifs(X, y, lamb=0.0, method=None, options=None):
     n, d = X.shape
     selected = []
-    y = y.reshape([-1, 1])
     while True:
         max_cmi = -np.inf
         not_selected = set(range(d)) - set(selected)
