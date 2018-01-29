@@ -24,7 +24,7 @@ def cmimat(X, method='knn', options=None):
         y = X[:, [j]]
         idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
         z = X[:, idx_rest]
-        cmis[i, j] = CMIEstimator(method, options).fit(x, y, z).mi
+        cmis[i, j] = CMIEstimator(method, options).fit(x, y, z).cmi
 
     cmis[cmis < 0] = 0
     cmis = cmis + cmis.T
