@@ -65,7 +65,7 @@ def _mi_dr(X, Y, sigma, n_bases, maxiter):
     return mi
 
 
-def mi(X, Y, method='knn', options=None):
+def mutual_information(X, Y, method='knn', options=None):
     options = {} if options is None else options
     if X.size == 0 or Y.size == 0:
         return 0
@@ -83,9 +83,9 @@ def mi(X, Y, method='knn', options=None):
         return _mi_knn(X, Y, k)
 
 
-def cmi(X, Y, Z, method='knn', options=None):
+def conditional_mutual_information(X, Y, Z, method='knn', options=None):
     if Z.size == 0:
-        return mi(X, Y, method, options)
+        return mutual_information(X, Y, method, options)
     if np.ndim(X) == 1:
         X = np.reshape(X, [-1, 1])
     if np.ndim(Y) == 1:
@@ -93,8 +93,8 @@ def cmi(X, Y, Z, method='knn', options=None):
     if np.ndim(Z) == 1:
         Z = np.reshape(Z, [-1, 1])
     XZ = np.hstack([X, Z])
-    mi_xz_y = mi(XZ, Y, method, options)
-    mi_y_z = mi(Y, Z, method, options)
+    mi_xz_y = mutual_information(XZ, Y, method, options)
+    mi_y_z = mutual_information(Y, Z, method, options)
     return mi_xz_y - mi_y_z
 
 
@@ -104,7 +104,7 @@ def mimat(X, method='knn', options=None):
     for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
         x = X[:, [i]]
         y = X[:, [j]]
-        mis[i, j] = mi.mi(x, y, method, options)
+        mis[i, j] = mutual_information(x, y, method, options)
 
     mis[mis < 0] = 0
     mis = mis + mis.T
@@ -120,7 +120,7 @@ def cmimat(X, method='knn', options=None):
         y = X[:, [j]]
         idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
         z = X[:, idx_rest]
-        cmis[i, j] = mi.cmi(x, y, z, method, options)
+        cmis[i, j] = conditional_mutual_information(x, y, z, method, options)
 
     cmis[cmis < 0] = 0
     cmis = cmis + cmis.T
