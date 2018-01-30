@@ -76,7 +76,7 @@ def mutual_information(X, Y, method='knn', options=None):
     method: str, default 'knn'
         Method used for MI estimation.
     options : dict, default None
-        Options for MI estimation.
+        Optional parameters for MI estimation.
     Returns
     -------
     mi : float
@@ -112,7 +112,7 @@ def conditional_mutual_information(X, Y, Z, method='knn', options=None):
     method: str, default 'knn'
         Method used for MI estimation.
     options : dict, default None
-        Options for MI estimation.
+        Optional parameters for MI estimation.
     Returns
     -------
     cmi : float
@@ -141,7 +141,7 @@ def mimat(X, method='knn', options=None):
     method: str, default 'knn'
         Method used for MI estimation.
     options : dict, default None
-        Options for MI estimation.
+        Optional parameters for MI estimation.
     Returns
     -------
     mis : array, shape (d, d)
@@ -169,7 +169,7 @@ def cmimat(X, method='knn', options=None):
     method: str, default 'knn'
         Method used for MI estimation.
     options : dict, default None
-        Options for MI estimation.
+        Optional parameters for MI estimation.
     Returns
     -------
     cmis : array, shape (d, d)
