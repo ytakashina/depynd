@@ -15,7 +15,8 @@ def _mi_knn(X, Y, k):
     epsilons = np.sort(distances, axis=1)[:, k]
     idx_discrete = np.isclose(epsilons, 0)
     ks = np.repeat(k, n)
-    ks[idx_discrete] = np.sum(np.isclose(distances[idx_discrete], 0), axis=1) - 1
+    ks[idx_discrete] = np.sum(np.isclose(
+        distances[idx_discrete], 0), axis=1) - 1
     n_x = np.sum(distances_x <= epsilons, axis=0) - 1
     n_y = np.sum(distances_y <= epsilons, axis=0) - 1
     mi = np.log(n) + np.mean(digamma(ks) - np.log(n_x * n_y))
@@ -95,3 +96,33 @@ def cmi(X, Y, Z, method='knn', options=None):
     mi_xz_y = mi(XZ, Y, method, options)
     mi_y_z = mi(Y, Z, method, options)
     return mi_xz_y - mi_y_z
+
+
+def mimat(X, method='knn', options=None):
+    n, d = X.shape
+    mis = np.eye(d)
+    for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
+        x = X[:, [i]]
+        y = X[:, [j]]
+        mis[i, j] = mi.mi(x, y, method, options)
+
+    mis[mis < 0] = 0
+    mis = mis + mis.T
+    mis[np.eye(d, dtype=bool)] = np.nan
+    return mis
+
+
+def cmimat(X, method='knn', options=None):
+    n, d = X.shape
+    cmis = np.eye(d)
+    for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
+        x = X[:, [i]]
+        y = X[:, [j]]
+        idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
+        z = X[:, idx_rest]
+        cmis[i, j] = mi.cmi(x, y, z, method, options)
+
+    cmis[cmis < 0] = 0
+    cmis = cmis + cmis.T
+    cmis[np.eye(d, dtype=bool)] = np.nan
+    return cmis
