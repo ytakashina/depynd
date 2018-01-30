@@ -5,8 +5,7 @@ from . import mi
 def markov_blanket(adj, i):
     mb = list(adj[i])
     mb += [j for j, children in enumerate(adj) if i in children]
-    mb += [j for j, children in enumerate(adj)
-           for k in adj[i] if k in children]
+    mb += [j for j, children in enumerate(adj) for k in adj[i] if k in children]
     return list(set(mb) - set([i]))
 
 
@@ -26,8 +25,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
             z = X[:, adj[i]]
             for j in non_mb:
                 y = X[:, [j]]
-                cmi = mi.conditional_mutual_information(
-                    x, y, z, method, options)
+                cmi = mi.conditional_mutual_information(x, y, z, method, options)
                 if max_cmi < cmi:
                     max_cmi = cmi
                     max_pair = i, j
