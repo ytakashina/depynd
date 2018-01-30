@@ -1,5 +1,5 @@
 import numpy as np
-from . import mi
+from .mutual_information import conditional_mutual_information
 
 
 def mrmr(X, y, lamb=0.0, method=None, options=None):
@@ -16,7 +16,7 @@ def mifs(X, y, lamb=0.0, method=None, options=None):
         z = X[:, selected]
         for i in not_selected:
             x = X[:, [i]]
-            cmi = mi.conditional_mutual_information(x, y, z, method, options)
+            cmi = conditional_mutual_information(x, y, z, method, options)
             if max_cmi < cmi:
                 max_cmi = cmi
                 max_idx = i
@@ -31,7 +31,7 @@ def mifs(X, y, lamb=0.0, method=None, options=None):
         for i in selected:
             x = X[:, [i]]
             z = X[:, list(set(selected) - set([i]))]
-            cmi = mi.conditional_mutual_information(x, y, z, method, options)
+            cmi = conditional_mutual_information(x, y, z, method, options)
             if min_cmi > cmi:
                 min_cmi = cmi
                 min_idx = i

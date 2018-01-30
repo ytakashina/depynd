@@ -1,5 +1,5 @@
 import numpy as np
-from . import mi
+from .mutual_information import conditional_mutual_information
 
 
 def markov_blanket(adj, i):
@@ -25,7 +25,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
             z = X[:, adj[i]]
             for j in non_mb:
                 y = X[:, [j]]
-                cmi = mi.conditional_mutual_information(x, y, z, method, options)
+                cmi = conditional_mutual_information(x, y, z, method, options)
                 if max_cmi < cmi:
                     max_cmi = cmi
                     max_pair = i, j
@@ -41,7 +41,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
             other_mb = list(set(adj[i]) - set([j]))
             y = X[:, [j]]
             z = X[:, other_mb]
-            cmi = mi.conditional_mutual_information(x, y, z, method, options)
+            cmi = conditional_mutual_information(x, y, z, method, options)
             if cmi <= lamb:
                 adj[i].remove(j)
 
