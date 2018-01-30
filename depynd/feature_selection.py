@@ -1,5 +1,5 @@
 import numpy as np
-from .mi import MIEstimator, CMIEstimator
+from . import mi
 
 
 def mrmr(X, y, lamb=0.0, method=None, options=None):
@@ -16,7 +16,7 @@ def mifs(X, y, lamb=0.0, method=None, options=None):
         z = X[:, selected]
         for i in not_selected:
             x = X[:, [i]]
-            cmi = CMIEstimator(method=method, options=options).fit(x, y, z).cmi
+            cmi = mi.cmi(x, y, z, method, options)
             if max_cmi < cmi:
                 max_cmi = cmi
                 max_idx = i
@@ -31,7 +31,7 @@ def mifs(X, y, lamb=0.0, method=None, options=None):
         for i in selected:
             x = X[:, [i]]
             z = X[:, list(set(selected) - set([i]))]
-            cmi = CMIEstimator(method=method, options=options).fit(x, y, z).cmi
+            cmi = mi.cmi(x, y, z, method, options)
             if min_cmi > cmi:
                 min_cmi = cmi
                 min_idx = i
@@ -39,4 +39,4 @@ def mifs(X, y, lamb=0.0, method=None, options=None):
         if min_cmi >= lamb or len(selected) == 0:
             return selected
 
-        selected = list(set(selected) - set([min_idx]))
+        selected.remove(min_idx)

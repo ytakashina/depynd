@@ -1,5 +1,5 @@
 import numpy as np
-from .mi import MIEstimator, CMIEstimator
+from . import mi
 
 
 def mimat(X, method='knn', options=None):
@@ -8,7 +8,7 @@ def mimat(X, method='knn', options=None):
     for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
         x = X[:, [i]]
         y = X[:, [j]]
-        mis[i, j] = MIEstimator(method, options).fit(x, y).mi
+        mis[i, j] = mi.mi(x, y, method, options)
 
     mis[mis < 0] = 0
     mis = mis + mis.T
@@ -24,7 +24,7 @@ def cmimat(X, method='knn', options=None):
         y = X[:, [j]]
         idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
         z = X[:, idx_rest]
-        cmis[i, j] = CMIEstimator(method, options).fit(x, y, z).cmi
+        cmis[i, j] = mi.cmi(x, y, z, method, options)
 
     cmis[cmis < 0] = 0
     cmis = cmis + cmis.T

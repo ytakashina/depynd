@@ -64,46 +64,34 @@ def _mi_dr(X, Y, sigma, n_bases, maxiter):
     return mi
 
 
-class MIEstimator(object):
-    def __init__(self, method='knn', options=None):
-        self._method = method
-        self._options = {} if options is None else options
-
-    def fit(self, X, Y):
-        if np.ndim(X) == 1:
-            X = np.reshape(X, [-1, 1])
-        if np.ndim(Y) == 1:
-            Y = np.reshape(Y, [-1, 1])
-        if self._method == 'dr':
-            sigma = self._options.get('sigma', 1)
-            n_bases = self._options.get('n_bases', 200)
-            maxiter = self._options.get('maxiter', 1000)
-            self.mi = _mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
-        else:
-            k = self._options.get('k', 3)
-            self.mi = _mi_knn(X, Y, k)
-
-        return self
+def mi(X, Y, method='knn', options=None):
+    options = {} if options is None else options
+    if X.size == 0 or Y.size == 0:
+        return 0
+    if np.ndim(X) == 1:
+        X = np.reshape(X, [-1, 1])
+    if np.ndim(Y) == 1:
+        Y = np.reshape(Y, [-1, 1])
+    if method == 'dr':
+        sigma = options.get('sigma', 1)
+        n_bases = options.get('n_bases', 200)
+        maxiter = options.get('maxiter', 1000)
+        return _mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
+    else:
+        k = options.get('k', 3)
+        return _mi_knn(X, Y, k)
 
 
-class CMIEstimator(object):
-    def __init__(self, method='knn', options=None):
-        self._method = method
-        self._options = options
-
-    def fit(self, X, Y, Z):
-        if Z.size == 0:
-            self.cmi = MIEstimator(method=self._method, options=self._options).fit(X, Y).mi
-        else:
-            if np.ndim(X) == 1:
-                X = np.reshape(X, [-1, 1])
-            if np.ndim(Y) == 1:
-                Y = np.reshape(Y, [-1, 1])
-            if np.ndim(Z) == 1:
-                Z = np.reshape(Z, [-1, 1])
-            XZ = np.hstack([X, Z])
-            mi_xz_y = MIEstimator(method=self._method, options=self._options).fit(XZ, Y).mi
-            mi_y_z = MIEstimator(method=self._method, options=self._options).fit(Y, Z).mi
-            self.cmi = mi_xz_y - mi_y_z
-
-        return self
+def cmi(X, Y, Z, method='knn', options=None):
+    if Z.size == 0:
+        return mi(X, Y, method, options)
+    if np.ndim(X) == 1:
+        X = np.reshape(X, [-1, 1])
+    if np.ndim(Y) == 1:
+        Y = np.reshape(Y, [-1, 1])
+    if np.ndim(Z) == 1:
+        Z = np.reshape(Z, [-1, 1])
+    XZ = np.hstack([X, Z])
+    mi_xz_y = mi(XZ, Y, method, options)
+    mi_y_z = mi(Y, Z, method, options)
+    return mi_xz_y - mi_y_z
