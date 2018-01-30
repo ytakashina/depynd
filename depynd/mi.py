@@ -66,6 +66,22 @@ def _mi_dr(X, Y, sigma, n_bases, maxiter):
 
 
 def mutual_information(X, Y, method='knn', options=None):
+    """Estimate mutual information for discrete-continuous mixutres.
+    Parameters
+    ----------
+    X : array_like, shape (n_samples, d_x)
+        Variable.
+    Y : array_like, shape (n_samples, d_y)
+        The other variable.
+    method: str, default 'knn'
+        Method used for MI estimation.
+    options : dict, default None
+        Options for MI estimation.
+    Returns
+    -------
+    mi : float
+        Estimated mutual information between each X and Y.
+    """
     options = {} if options is None else options
     if X.size == 0 or Y.size == 0:
         return 0
@@ -84,6 +100,24 @@ def mutual_information(X, Y, method='knn', options=None):
 
 
 def conditional_mutual_information(X, Y, Z, method='knn', options=None):
+    """Estimate conditional mutual information for discrete-continuous mixutres.
+    Parameters
+    ----------
+    X : array_like, shape (n_samples, d_x)
+        Conditioned variable.
+    Y : array_like, shape (n_samples, d_y)
+        The other conditioned variable.
+    Z : array_like, shape (n_samples, d_z)
+        Conditioning variable.
+    method: str, default 'knn'
+        Method used for MI estimation.
+    options : dict, default None
+        Options for MI estimation.
+    Returns
+    -------
+    cmi : float
+        Estimated conditional mutual information between each X and Y, given Z.
+    """
     if Z.size == 0:
         return mutual_information(X, Y, method, options)
     if np.ndim(X) == 1:
@@ -99,6 +133,20 @@ def conditional_mutual_information(X, Y, Z, method='knn', options=None):
 
 
 def mimat(X, method='knn', options=None):
+    """Dimension-wise mutual information.
+    Parameters
+    ----------
+    X : array_like, shape (n_samples, d)
+        Variable.
+    method: str, default 'knn'
+        Method used for MI estimation.
+    options : dict, default None
+        Options for MI estimation.
+    Returns
+    -------
+    mis : array, shape (d, d)
+        Estimated pairwise MIs between dimensions.
+    """
     n, d = X.shape
     mis = np.eye(d)
     for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
@@ -113,6 +161,20 @@ def mimat(X, method='knn', options=None):
 
 
 def cmimat(X, method='knn', options=None):
+    """Dimension-wise conditional mutual information.
+    Parameters
+    ----------
+    X : array_like, shape (n_samples, d)
+        Variable.
+    method: str, default 'knn'
+        Method used for MI estimation.
+    options : dict, default None
+        Options for MI estimation.
+    Returns
+    -------
+    cmis : array, shape (d, d)
+        Estimated pairwise CMIs between dimensions, given the other dimensions.
+    """
     n, d = X.shape
     cmis = np.eye(d)
     for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
