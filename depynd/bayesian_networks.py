@@ -54,7 +54,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
                     max_cmi = cmi
                     max_pair = i, j
 
-        if max_cmi <= lamb or is_complete(mb):
+        if max_cmi <= lamb:
             break
 
         mb[max_pair[0]] += [max_pair[1]]
