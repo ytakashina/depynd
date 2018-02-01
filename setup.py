@@ -6,4 +6,5 @@ setup(name='depynd',
       author='Yuya Takashina',
       author_email='takashina2051@gmail.com',
       packages=['depynd'],
+      url='https://github.com/y-takashina/depynd',
       )
