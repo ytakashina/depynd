@@ -11,7 +11,7 @@ def gsmn(X, lamb=0.0, method=None, options=None):
         for j in non_adj:
             y = X[:, [j]]
             z = X[:, adj[i]]
-            cmi = conditional_mutual_information(x, y, z, method=None, options=None)
+            cmi = conditional_mutual_information(x, y, z, method=method, options=options)
             if cmi > lamb:
                 adj[i] += [j]
 
@@ -19,7 +19,7 @@ def gsmn(X, lamb=0.0, method=None, options=None):
             other_adj = list(set(adj[i]) - set([j]))
             y = X[:, [j]]
             z = X[:, other_adj]
-            cmi = conditional_mutual_information(x, y, z, method=None, options=None)
+            cmi = conditional_mutual_information(x, y, z, method=method, options=options)
             if cmi < lamb:
                 adj[i].remove(j)
 
