@@ -74,7 +74,7 @@ def mutual_information(X, Y, method='knn', options=None):
     Y : array_like, shape (n_samples, d_y)
         The other variable.
     method: str, default 'knn'
-        Method used for MI estimation.
+        Method for MI estimation.
     options : dict, default None
         Optional parameters for MI estimation.
     Returns
@@ -110,7 +110,7 @@ def conditional_mutual_information(X, Y, Z, method='knn', options=None):
     Z : array_like, shape (n_samples, d_z)
         Conditioning variable.
     method: str, default 'knn'
-        Method used for MI estimation.
+        Method for MI estimation.
     options : dict, default None
         Optional parameters for MI estimation.
     Returns
@@ -139,7 +139,7 @@ def mimat(X, method='knn', options=None):
     X : array_like, shape (n_samples, d)
         Variable.
     method: str, default 'knn'
-        Method used for MI estimation.
+        Method for MI estimation.
     options : dict, default None
         Optional parameters for MI estimation.
     Returns
@@ -167,7 +167,7 @@ def cmimat(X, method='knn', options=None):
     X : array_like, shape (n_samples, d)
         Variable.
     method: str, default 'knn'
-        Method used for MI estimation.
+        Method for MI estimation.
     options : dict, default None
         Optional parameters for MI estimation.
     Returns
