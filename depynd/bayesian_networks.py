@@ -10,11 +10,6 @@ def markov_blanket(adj, i):
     return list(set(mb) - set([i]))
 
 
-def is_complete(adj):
-    d = len(adj)
-    return all([len(neighbor) == d for neighbor in adj])
-
-
 def cyclic(adj):
     path = set()
 
