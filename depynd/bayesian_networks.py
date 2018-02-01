@@ -1,5 +1,6 @@
+import copy
 import numpy as np
-from .mutual_information import conditional_mutual_information
+from .mutual_information import mutual_information, conditional_mutual_information
 
 
 def markov_blanket(adj, i):
@@ -12,6 +13,20 @@ def markov_blanket(adj, i):
 def is_complete(adj):
     d = len(adj)
     return all([len(neighbor) == d for neighbor in adj])
+
+
+def cyclic(adj):
+    path = set()
+
+    def visit(i):
+        path.add(i)
+        for j in adj[i]:
+            if j in path or visit(j):
+                return True
+        path.remove(i)
+        return False
+
+    return any(visit(i) for i, _ in enumerate(adj))
 
 
 def iamb(X, lamb=0.0, method=None, options=None):
@@ -105,7 +120,66 @@ def mmpc(X, lamb=0.0, method=None, options=None):
     return pc
 
 
-def mmhc(X, lamb=0.0, method=None, options=None):
+def score_graph(adj, X, criterion, method=None, options=None):
+    n, d = X.shape
+    if criterion == 'mi':
+        mis = [mutual_information(X[:, [i]], X[:, adj[i]], method, options) for i in range(d)]
+        return np.sum(mis)
+    elif criterion == 'bdeu':
+        raise NotImplementedError()
+    else:
+        raise NotImplementedError()
+
+
+def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None):
+    n, d = X.shape
     adj = [[] for i in range(d)]
     pc = mmpc(X, lamb, method, options)
-    return adj
+    score_prev = -np.inf
+    while True:
+        adj_max = None
+        score_max = -np.inf
+        for i in range(d):
+            x = X[:, [i]]
+            for j in range(d):
+                if i in adj[j] or j in adj[i]:
+                    # Remove
+                    adj_new = copy.deepcopy(adj)
+                    if i in adj[j]:
+                        adj_new[j].remove(i)
+                    else:
+                        adj_new[i].remove(j)
+                    score = score_graph(adj_new, X, criterion, method, options)
+                    if score > score_max:
+                        score_max = score
+                        adj_max = copy.deepcopy(adj_new)
+                    # Reverse
+                    adj_new = copy.deepcopy(adj)
+                    if i in adj[j]:
+                        adj_new[j].remove(i)
+                        adj_new[i] += [j]
+                    else:
+                        adj_new[i].remove(j)
+                        adj_new[j] += [i]
+                    if cyclic(adj_new):
+                        continue
+                    score = score_graph(adj_new, X, criterion, method, options)
+                    if score > score_max:
+                        score_max = score
+                        adj_max = copy.deepcopy(adj_new)
+                elif j in pc[i]:
+                    # Add
+                    adj_new = copy.deepcopy(adj)
+                    adj_new[i] += [j]
+                    if cyclic(adj_new):
+                        continue
+                    score = score_graph(adj_new, X, criterion, method, options)
+                    if score > score_max:
+                        score_max = score
+                        adj_max = copy.deepcopy(adj_new)
+
+        if score_max - score_prev <= lamb:
+            return adj
+
+        adj = copy.deepcopy(adj_max)
+        score_prev = score_max
