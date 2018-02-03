@@ -8,7 +8,7 @@ def gsmn(X, lamb=0.0, method=None, options=None):
     for i in range(d):
         x = X[:, i]
         non_adj = ~adj[i] & (np.arange(d) != i)
-        for j in np.arange(d)[non_adj]:
+        for j in non_adj.nonzero()[0]:
             y = X[:, j]
             z = X[:, adj[i]]
             cmi = conditional_mutual_information(x, y, z, method=method, options=options)
@@ -16,7 +16,7 @@ def gsmn(X, lamb=0.0, method=None, options=None):
                 adj[i, j] = 1
                 adj[j, i] = 1
 
-        for j in np.arange(d)[adj[i]]:
+        for j in adj[i].nonzero()[0]:
             other_adj = adj[i] & (np.arange(d) != j)
             y = X[:, j]
             z = X[:, other_adj]
