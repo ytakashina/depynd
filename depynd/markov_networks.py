@@ -4,25 +4,25 @@ from .mutual_information import conditional_mutual_information
 
 def gsmn(X, lamb=0.0, method=None, options=None):
     n, d = X.shape
-    adj = [[] for i in range(d)]
+    adj = np.zeros([d, d], dtype=bool)
     for i in range(d):
-        x = X[:, [i]]
-        non_adj = set(range(d)) - set(adj[i]) - set([i])
-        for j in non_adj:
-            y = X[:, [j]]
+        x = X[:, i]
+        non_adj = ~adj[i] & (np.arange(d) != i)
+        for j in np.arange(d)[non_adj]:
+            y = X[:, j]
             z = X[:, adj[i]]
             cmi = conditional_mutual_information(x, y, z, method=method, options=options)
             if cmi > lamb:
-                adj[i] += [j]
-                adj[j] += [i]
+                adj[i, j] = 1
+                adj[j, i] = 1
 
-        for j in adj[i]:
-            other_adj = list(set(adj[i]) - set([j]))
-            y = X[:, [j]]
+        for j in np.arange(d)[adj[i]]:
+            other_adj = adj[i] & (np.arange(d) != j)
+            y = X[:, j]
             z = X[:, other_adj]
             cmi = conditional_mutual_information(x, y, z, method=method, options=options)
-            if cmi < lamb:
-                adj[i].remove(j)
-                adj[j].remove(i)
+            if cmi <= lamb:
+                adj[i, j] = 0
+                adj[j, i] = 0
 
     return adj
