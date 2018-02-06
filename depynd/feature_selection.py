@@ -33,8 +33,8 @@ def mrmr(X, y, lamb=0.0, method='knn', options=None):
         max_obj = -np.inf
         not_selected = set(range(d)) - set(selected)
         for i in not_selected:
-            rel = mutual_information(X[:, [i]], y)
-            red = [mutual_information(X[:, [i]], X[:, [j]]) for j in selected]
+            rel = mutual_information(X[:, i], y)
+            red = [mutual_information(X[:, i], X[:, j]) for j in selected]
             obj = rel - (np.mean(red) if red else 0)
             if max_obj < obj:
                 max_obj = obj
@@ -43,7 +43,7 @@ def mrmr(X, y, lamb=0.0, method='knn', options=None):
         if max_obj <= 0:
             return selected
 
-        selected += [max_idx]
+        selected.append(max_idx)
 
 
 def mifs(X, y, lamb=0.0, method='knn', options=None):
@@ -77,7 +77,7 @@ def mifs(X, y, lamb=0.0, method='knn', options=None):
         not_selected = set(range(d)) - set(selected)
         z = X[:, selected]
         for i in not_selected:
-            x = X[:, [i]]
+            x = X[:, i]
             cmi = conditional_mutual_information(x, y, z, method, options)
             if max_cmi < cmi:
                 max_cmi = cmi
@@ -86,12 +86,12 @@ def mifs(X, y, lamb=0.0, method='knn', options=None):
         if max_cmi <= lamb or len(selected) == d:
             break
 
-        selected += [max_idx]
+        selected.append(max_idx)
 
     while True:
         min_cmi = np.inf
         for i in selected:
-            x = X[:, [i]]
+            x = X[:, i]
             z = X[:, list(set(selected) - set([i]))]
             cmi = conditional_mutual_information(x, y, z, method, options)
             if min_cmi > cmi:
