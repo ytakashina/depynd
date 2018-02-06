@@ -6,6 +6,7 @@ from .mutual_information import mutual_information, conditional_mutual_informati
 
 def cyclic(adj):
     path = set()
+
     def visit(i):
         path.add(i)
         for j in adj[i].nonzero()[0]:
@@ -17,7 +18,8 @@ def cyclic(adj):
 
 
 def iamb(X, lamb=0.0, method=None, options=None):
-    """Search Markov blanket in a Bayesian network.
+    """Search Markov blanket in a Bayesian network using
+       Incremental Association Markov Blanket algorithm [1]_.
     Parameters
     ----------
     X : array, shape (n_samples, d)
@@ -30,11 +32,16 @@ def iamb(X, lamb=0.0, method=None, options=None):
     -------
     mb : list of list
         Estimated Markov blanket.
+    References
+    ----------
+    .. [1] Tsamardinos, Ioannis, et al. "Algorithms for
+           Large Scale Markov Blanket Discovery." FLAIRS
+           conference. Vol. 2. 2003.
     """
     n, d = X.shape
     mb = np.zeros([d, d], dtype=bool)
     while True:
-        max_cmi = -np.inf
+        cmi_max = -np.inf
         for i in range(d):
             x = X[:, i]
             z = X[:, mb[i]]
@@ -42,14 +49,14 @@ def iamb(X, lamb=0.0, method=None, options=None):
             for j in non_mb.nonzero()[0]:
                 y = X[:, j]
                 cmi = conditional_mutual_information(x, y, z, method, options)
-                if max_cmi < cmi:
-                    max_cmi = cmi
-                    max_idx = i, j
+                if cmi_max < cmi:
+                    cmi_max = cmi
+                    idx_max = i, j
 
-        if max_cmi <= lamb:
+        if cmi_max <= lamb:
             break
 
-        mb[max_idx] = 1
+        mb[idx_max] = 1
 
     for i in range(d):
         x = X[:, i]
@@ -102,7 +109,7 @@ def mmpc(X, lamb=0.0, method=None, options=None):
     return pc & pc.T
 
 
-def score_graph(adj, X, criterion, method=None, options=None):
+def _score_graph(adj, X, criterion, method=None, options=None):
     n, d = X.shape
     if criterion == 'mi':
         mis = [mutual_information(X[:, i], X[:, adj[i]], method, options) for i in range(d)]
@@ -114,7 +121,8 @@ def score_graph(adj, X, criterion, method=None, options=None):
 
 
 def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
-    """Greedily search structure of a Bayesian network.
+    """Greedily search structure of a Bayesian network using
+       max-min hill-climbing algorithm [1]_.
     Parameters
     ----------
     X : array, shape (n_samples, d)
@@ -133,6 +141,12 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
     ----------
     pc : array, shape (d, d)
         Estimated parents and children.
+    References
+    ----------
+    .. [1] Tsamardinos, Ioannis, Laura E. Brown, and Constantin
+           F. Aliferis. "The max-min hill-climbing Bayesian
+           network structure learning algorithm." Machine
+           learning 65.1 (2006): 31-78.
     """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
@@ -145,7 +159,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
             if adj[i, j]:
                 # Delete
                 adj[i, j] = 0
-                score = score_graph(adj, X, criterion, method, options)
+                score = _score_graph(adj, X, criterion, method, options)
                 if score > score_max:
                     score_max = score
                     idx_max = i, j
@@ -153,7 +167,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
                 # Reverse
                 adj[j, i] = 1
                 if not cyclic(adj):
-                    score = score_graph(adj, X, criterion, method, options)
+                    score = _score_graph(adj, X, criterion, method, options)
                     if score > score_max:
                         score_max = score
                         idx_max = i, j
@@ -164,7 +178,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
                 # Add
                 adj[i, j] = 1
                 if not cyclic(adj):
-                    score = score_graph(adj, X, criterion, method, options)
+                    score = _score_graph(adj, X, criterion, method, options)
                     if score > score_max:
                         score_max = score
                         idx_max = i, j
