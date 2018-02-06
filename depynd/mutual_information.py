@@ -15,8 +15,7 @@ def _mi_knn(X, Y, k):
     epsilons = np.partition(distances, k, axis=1)[:, k]
     idx_discrete = np.isclose(epsilons, 0)
     ks = np.repeat(k, n)
-    ks[idx_discrete] = np.sum(np.isclose(
-        distances[idx_discrete], 0), axis=1) - 1
+    ks[idx_discrete] = np.sum(np.isclose(distances[idx_discrete], 0), axis=1) - 1
     n_x = np.sum(distances_x <= epsilons, axis=0) - 1
     n_y = np.sum(distances_y <= epsilons, axis=0) - 1
     mi = np.log(n) + np.mean(digamma(ks) - np.log(n_x * n_y))
