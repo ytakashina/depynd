@@ -24,13 +24,15 @@ def iamb(X, lamb=0.0, method=None, options=None):
     ----------
     X : array, shape (n_samples, d)
         Observations of variables.
+    lamb: float
+        Threshold for independence tests.
     method: str, default 'knn'
         Method for MI estimation.
     options : dict, default None
         Optional parameters for MI estimation.
     Returns
     -------
-    mb : list of list
+    mb : array, shape (d, d)
         Estimated Markov blanket.
     References
     ----------
@@ -139,8 +141,8 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
         Enable verbose output.
     Returns
     ----------
-    pc : array, shape (d, d)
-        Estimated parents and children.
+    adj : array, shape (d, d)
+        Estimated structure of a Bayesian network.
     References
     ----------
     .. [1] Tsamardinos, Ioannis, Laura E. Brown, and Constantin
