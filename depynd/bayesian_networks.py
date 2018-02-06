@@ -1,26 +1,18 @@
 import copy
 import numpy as np
+from itertools import product
 from .mutual_information import mutual_information, conditional_mutual_information
-
-
-def markov_blanket(adj, i):
-    mb = list(adj[i])
-    mb += [j for j, children in enumerate(adj) if i in children]
-    mb += [j for j, children in enumerate(adj) for k in adj[i] if k in children]
-    return list(set(mb) - set([i]))
 
 
 def cyclic(adj):
     path = set()
-
     def visit(i):
         path.add(i)
-        for j in adj[i]:
+        for j in adj[i].nonzero()[0]:
             if j in path or visit(j):
                 return True
         path.remove(i)
         return False
-
     return any(visit(i) for i, _ in enumerate(adj))
 
 
@@ -29,7 +21,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
     Parameters
     ----------
     X : array, shape (n_samples, d)
-        Variable.
+        Observations of variables.
     method: str, default 'knn'
         Method for MI estimation.
     options : dict, default None
@@ -40,34 +32,34 @@ def iamb(X, lamb=0.0, method=None, options=None):
         Estimated Markov blanket.
     """
     n, d = X.shape
-    mb = [[] for i in range(d)]
+    mb = np.zeros([d, d], dtype=bool)
     while True:
         max_cmi = -np.inf
         for i in range(d):
-            non_mb = set(range(d)) - set(mb[i]) - set([i])
-            x = X[:, [i]]
+            x = X[:, i]
             z = X[:, mb[i]]
-            for j in non_mb:
-                y = X[:, [j]]
+            non_mb = ~mb[i] & (np.arange(d) != i)
+            for j in non_mb.nonzero()[0]:
+                y = X[:, j]
                 cmi = conditional_mutual_information(x, y, z, method, options)
                 if max_cmi < cmi:
                     max_cmi = cmi
-                    max_pair = i, j
+                    max_idx = i, j
 
         if max_cmi <= lamb:
             break
 
-        mb[max_pair[0]] += [max_pair[1]]
+        mb[max_idx] = 1
 
     for i in range(d):
-        x = X[:, [i]]
-        for j in mb[i]:
-            other_mb = list(set(mb[i]) - set([j]))
-            y = X[:, [j]]
+        x = X[:, i]
+        for j in mb[i].nonzero()[0]:
+            other_mb = mb[i] & (np.arange(d) != j)
+            y = X[:, j]
             z = X[:, other_mb]
             cmi = conditional_mutual_information(x, y, z, method, options)
             if cmi <= lamb:
-                mb[i].remove(j)
+                mb[i, j] = 0
 
     return mb
 
@@ -77,48 +69,43 @@ def mmpc(X, lamb=0.0, method=None, options=None):
     Parameters
     ----------
     X : array, shape (n_samples, d)
-        Variable.
+        Observations of variables.
     method: str, default 'knn'
         Method for MI estimation.
     options : dict, default None
         Optional parameters for MI estimation.
     Returns
-    -------
-    pc : list of list
+    ----------
+    pc : array, shape (d, d)
         Estimated parents and children.
     """
     n, d = X.shape
-    pc = [[] for i in range(d)]
+    pc = np.zeros([d, d], dtype=bool)
     for i in range(d):
-        x = X[:, [i]]
-        non_pc = set(range(d)) - set(pc[i]) - set([i])
-        for j in non_pc:
-            y = X[:, [j]]
+        x = X[:, i]
+        non_pc = ~pc[i] & (np.arange(d) != i)
+        for j in non_pc.nonzero()[0]:
+            y = X[:, j]
             z = X[:, pc[i]]
             cmi = conditional_mutual_information(x, y, z, method=method, options=options)
             if cmi > lamb:
-                pc[i] += [j]
+                pc[i, j] = 1
 
-        for j in pc[i]:
-            other_pc = list(set(pc[i]) - set([j]))
-            y = X[:, [j]]
+        for j in pc[i].nonzero()[0]:
+            other_pc = pc[i] & (np.arange(d) != j)
+            y = X[:, j]
             z = X[:, other_pc]
             cmi = conditional_mutual_information(x, y, z, method=method, options=options)
-            if cmi < lamb:
-                pc[i].remove(j)
+            if cmi <= lamb:
+                pc[i, j] = 0
 
-    for i in range(d):
-        for j in pc[i]:
-            if not i in pc[j]:
-                pc[i].remove(j)
-
-    return pc
+    return pc & pc.T
 
 
 def score_graph(adj, X, criterion, method=None, options=None):
     n, d = X.shape
     if criterion == 'mi':
-        mis = [mutual_information(X[:, [i]], X[:, adj[i]], method, options) for i in range(d)]
+        mis = [mutual_information(X[:, i], X[:, adj[i]], method, options) for i in range(d)]
         return np.sum(mis)
     elif criterion == 'bdeu':
         raise NotImplementedError()
@@ -126,55 +113,74 @@ def score_graph(adj, X, criterion, method=None, options=None):
         raise NotImplementedError()
 
 
-def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None):
+def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
+    """Greedily search structure of a Bayesian network.
+    Parameters
+    ----------
+    X : array, shape (n_samples, d)
+        Observations of variables.
+    lamb: float
+        Threshold for independence tests.
+    criterion: str
+        Criterion for scoreing graph structure.
+    method: str, default 'knn'
+        Method for MI estimation.
+    options : dict, default None
+        Optional parameters for MI estimation.
+    verbose: bool, default False
+        Enable verbose output.
+    Returns
+    ----------
+    pc : array, shape (d, d)
+        Estimated parents and children.
+    """
     n, d = X.shape
-    adj = [[] for i in range(d)]
+    adj = np.zeros([d, d], dtype=bool)
     pc = mmpc(X, lamb, method, options)
     score_prev = -np.inf
     while True:
-        adj_max = None
         score_max = -np.inf
-        for i in range(d):
-            x = X[:, [i]]
-            for j in range(d):
-                if i in adj[j] or j in adj[i]:
-                    # Remove
-                    adj_new = copy.deepcopy(adj)
-                    if i in adj[j]:
-                        adj_new[j].remove(i)
-                    else:
-                        adj_new[i].remove(j)
-                    score = score_graph(adj_new, X, criterion, method, options)
+        # Same as "for i in range(d): for j in range(d):"
+        for i, j in product(range(d), range(d)):
+            if adj[i, j]:
+                # Delete
+                adj[i, j] = 0
+                score = score_graph(adj, X, criterion, method, options)
+                if score > score_max:
+                    score_max = score
+                    idx_max = (i, j)
+                    operation = 'delete'
+                # Reverse
+                adj[j, i] = 1
+                if not cyclic(adj):
+                    score = score_graph(adj, X, criterion, method, options)
                     if score > score_max:
                         score_max = score
-                        adj_max = copy.deepcopy(adj_new)
-                    # Reverse
-                    adj_new = copy.deepcopy(adj)
-                    if i in adj[j]:
-                        adj_new[j].remove(i)
-                        adj_new[i] += [j]
-                    else:
-                        adj_new[i].remove(j)
-                        adj_new[j] += [i]
-                    if cyclic(adj_new):
-                        continue
-                    score = score_graph(adj_new, X, criterion, method, options)
+                        idx_max = (i, j)
+                        operation = 'reverse'
+                adj[i, j] = 1
+                adj[j, i] = 0
+            elif pc[i, j] and not adj[j, i]:
+                # Add
+                adj[i, j] = 1
+                if not cyclic(adj):
+                    score = score_graph(adj, X, criterion, method, options)
                     if score > score_max:
                         score_max = score
-                        adj_max = copy.deepcopy(adj_new)
-                elif j in pc[i]:
-                    # Add
-                    adj_new = copy.deepcopy(adj)
-                    adj_new[i] += [j]
-                    if cyclic(adj_new):
-                        continue
-                    score = score_graph(adj_new, X, criterion, method, options)
-                    if score > score_max:
-                        score_max = score
-                        adj_max = copy.deepcopy(adj_new)
+                        idx_max = (i, j)
+                        operation = 'add'
+                adj[i, j] = 0
 
-        if score_max - score_prev <= lamb:
+        if score_max <= score_prev:
             return adj
 
-        adj = copy.deepcopy(adj_max)
         score_prev = score_max
+        if verbose:
+            print(idx_max, operation, score_max)
+        if operation == 'add':
+            adj[idx_max] = 1
+        elif operation == 'delete':
+            adj[idx_max] = 0
+        elif operation == 'reverse':
+            adj[idx_max] = ~adj[idx_max]
+            adj[idx_max[::-1]] = ~adj[idx_max[::-1]]
