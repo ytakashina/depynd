@@ -148,7 +148,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
                 score = score_graph(adj, X, criterion, method, options)
                 if score > score_max:
                     score_max = score
-                    idx_max = (i, j)
+                    idx_max = i, j
                     operation = 'delete'
                 # Reverse
                 adj[j, i] = 1
@@ -156,7 +156,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
                     score = score_graph(adj, X, criterion, method, options)
                     if score > score_max:
                         score_max = score
-                        idx_max = (i, j)
+                        idx_max = i, j
                         operation = 'reverse'
                 adj[i, j] = 1
                 adj[j, i] = 0
@@ -167,7 +167,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
                     score = score_graph(adj, X, criterion, method, options)
                     if score > score_max:
                         score_max = score
-                        idx_max = (i, j)
+                        idx_max = i, j
                         operation = 'add'
                 adj[i, j] = 0
 
@@ -176,7 +176,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
 
         score_prev = score_max
         if verbose:
-            print(idx_max, operation, score_max)
+            print('%s %s: %f' % (operation, idx_max, score_max))
         if operation == 'add':
             adj[idx_max] = 1
         elif operation == 'delete':
