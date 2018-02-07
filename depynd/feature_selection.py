@@ -2,7 +2,33 @@ import numpy as np
 from .mutual_information import mutual_information, conditional_mutual_information
 
 
-def mrmr(X, y, lamb=0.0, method='knn', options=None):
+def select(X, y, lamb=0.0, method='mifs'):
+    """Select effective features in X on predinting y using
+    Parameters
+    ----------
+    X : array_like, shape (n_samples, d)
+        Features.
+    y : array_like, shape (n_samples)
+        Target. Can be either continuous or discrete.
+    lamb: float, default 0.0
+        Threshold for independence tests.
+    method: str, default 'mifs'
+        Method used for feature selection. Either 'mifs' or
+        'mrmr' can be chosen.
+    Returns
+    -------
+    indices : list
+        Indices for the selected features.
+    """
+    if method == 'mifs':
+        return _mifs(X, y, lamb=0.0, method='knn', options=None)
+    elif method == 'mrmr':
+        return _mrmr(X, y, lamb=0.0, method='knn', options=None)
+    else:
+        raise NotImplementedError()
+
+
+def _mrmr(X, y, lamb=0.0, method='knn', options=None):
     """Select effective features in X on predinting y using
        minimum redundancy maximum relevance feature selection [1]_.
     Parameters
@@ -11,6 +37,8 @@ def mrmr(X, y, lamb=0.0, method='knn', options=None):
         Features.
     y : array_like, shape (n_samples)
         Target. Can be either continuous or discrete.
+    lamb: float
+        Threshold for independence tests.
     method: str, default 'knn'
         Method used for MI estimation.
     options : dict, default None
@@ -46,7 +74,7 @@ def mrmr(X, y, lamb=0.0, method='knn', options=None):
         selected.append(max_idx)
 
 
-def mifs(X, y, lamb=0.0, method='knn', options=None):
+def _mifs(X, y, lamb=0.0, method='knn', options=None):
     """Select effective features in X on predinting y using
        mutual-information-based feature selection [1]_.
     Parameters
@@ -55,6 +83,8 @@ def mifs(X, y, lamb=0.0, method='knn', options=None):
         Features.
     y : array_like, shape (n_samples)
         Target. Can be either continuous or discrete.
+    lamb: float
+        Threshold for independence tests.
     method: str, default 'knn'
         Method used for MI estimation.
     options : dict, default None
