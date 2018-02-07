@@ -1,7 +1,6 @@
-import copy
 import numpy as np
 from itertools import product
-from collections import Counter
+
 from .mutual_information import mutual_information, conditional_mutual_information
 
 
