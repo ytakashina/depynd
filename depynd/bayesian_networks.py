@@ -114,11 +114,35 @@ def mmpc(X, lamb=0.0, method=None, options=None):
 
 def _score_graph(adj, X, method=None, options=None):
     # Should be replaced mutual information test (MIT) criterion,
-    # where such criterion has not been developed yet in 
-    # discrete-continuous mixed settings.
+    # where such criterion has not been developed yet in either
+    # purely continuous or discrete-continuous mixed settings.
     n, d = X.shape
     mis = [mutual_information(X[:, i], X[:, adj[i]], method, options) for i in range(d)]
     return np.sum(mis)
+
+
+def _score_graph_diff(adj, X, idx, operation, method=None, options=None):
+    i, j = idx
+    if operation == 'add':
+        diff = -mutual_information(X[:, i], X[:, adj[i]], method, options)
+        adj[i, j] = 1
+        diff += mutual_information(X[:, i], X[:, adj[i]], method, options)
+        adj[i, j] = 0
+    elif operation == 'delete':
+        diff = -mutual_information(X[:, i], X[:, adj[i]], method, options)
+        adj[i, j] = 0
+        diff += mutual_information(X[:, i], X[:, adj[i]], method, options)
+        adj[i, j] = 1
+    elif operation == 'reverse':
+        diff = -mutual_information(X[:, i], X[:, adj[i]], method, options)
+        diff -= mutual_information(X[:, j], X[:, adj[j]], method, options)
+        adj[i, j] = 0
+        adj[j, i] = 1
+        diff += mutual_information(X[:, i], X[:, adj[i]], method, options)
+        diff += mutual_information(X[:, j], X[:, adj[j]], method, options)
+        adj[i, j] = 1
+        adj[j, i] = 0
+    return diff
 
 
 def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
@@ -139,7 +163,7 @@ def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
     Returns
     ----------
     adj : array, shape (d, d)
-        Estimated structure of a Bayesian network.
+        Estimated structure of the Bayesian network.
     References
     ----------
     .. [1] Tsamardinos, Ioannis, Laura E. Brown, and Constantin
@@ -195,5 +219,5 @@ def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
         elif operation == 'delete':
             adj[idx_max] = 0
         elif operation == 'reverse':
-            adj[idx_max] = ~adj[idx_max]
-            adj[idx_max[::-1]] = ~adj[idx_max[::-1]]
+            adj[idx_max] = 0
+            adj[idx_max[::-1]] = 1
