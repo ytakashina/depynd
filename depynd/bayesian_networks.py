@@ -25,7 +25,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
     X : array, shape (n_samples, d)
         Observations of variables.
     lamb: float
-        Threshold for independence tests.
+        Threshold for independence test.
     method: str, default 'knn'
         Method for MI estimation.
     options : dict, default None
@@ -79,6 +79,8 @@ def mmpc(X, lamb=0.0, method=None, options=None):
     ----------
     X : array, shape (n_samples, d)
         Observations of variables.
+    lamb: float
+        Threshold for independence test.
     method: str, default 'knn'
         Method for MI estimation.
     options : dict, default None
@@ -152,7 +154,7 @@ def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
     X : array, shape (n_samples, d)
         Observations of variables.
     lamb: float
-        Threshold for independence tests.
+        Threshold for independence test.
     method: str, default 'knn'
         Method for MI estimation.
     options : dict, default None
