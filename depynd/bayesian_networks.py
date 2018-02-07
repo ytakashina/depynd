@@ -1,6 +1,7 @@
 import copy
 import numpy as np
 from itertools import product
+from collections import Counter
 from .mutual_information import mutual_information, conditional_mutual_information
 
 
@@ -111,18 +112,16 @@ def mmpc(X, lamb=0.0, method=None, options=None):
     return pc & pc.T
 
 
-def _score_graph(adj, X, criterion, method=None, options=None):
+def _score_graph(adj, X, method=None, options=None):
+    # Should be replaced mutual information test (MIT) criterion,
+    # where such criterion has not been developed yet in 
+    # discrete-continuous mixed settings.
     n, d = X.shape
-    if criterion == 'mi':
-        mis = [mutual_information(X[:, i], X[:, adj[i]], method, options) for i in range(d)]
-        return np.sum(mis)
-    elif criterion == 'bdeu':
-        raise NotImplementedError()
-    else:
-        raise NotImplementedError()
+    mis = [mutual_information(X[:, i], X[:, adj[i]], method, options) for i in range(d)]
+    return np.sum(mis)
 
 
-def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
+def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
     """Greedily search structure of a Bayesian network using
        max-min hill-climbing algorithm [1]_.
     Parameters
@@ -131,8 +130,6 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
         Observations of variables.
     lamb: float
         Threshold for independence tests.
-    criterion: str
-        Criterion for scoreing graph structure.
     method: str, default 'knn'
         Method for MI estimation.
     options : dict, default None
@@ -161,7 +158,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
             if adj[i, j]:
                 # Delete
                 adj[i, j] = 0
-                score = _score_graph(adj, X, criterion, method, options)
+                score = _score_graph(adj, X, method, options)
                 if score > score_max:
                     score_max = score
                     idx_max = i, j
@@ -169,7 +166,7 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
                 # Reverse
                 adj[j, i] = 1
                 if not cyclic(adj):
-                    score = _score_graph(adj, X, criterion, method, options)
+                    score = _score_graph(adj, X, method, options)
                     if score > score_max:
                         score_max = score
                         idx_max = i, j
@@ -180,14 +177,14 @@ def mmhc(X, lamb=0.0, criterion='mi', method=None, options=None, verbose=False):
                 # Add
                 adj[i, j] = 1
                 if not cyclic(adj):
-                    score = _score_graph(adj, X, criterion, method, options)
+                    score = _score_graph(adj, X, method, options)
                     if score > score_max:
                         score_max = score
                         idx_max = i, j
                         operation = 'add'
                 adj[i, j] = 0
 
-        if score_max <= score_prev:
+        if score_max - score_prev <= lamb:
             return adj
 
         score_prev = score_max
