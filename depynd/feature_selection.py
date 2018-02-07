@@ -22,7 +22,7 @@ def mrmr(X, y, lamb=0.0, method='knn', options=None):
     References
     ----------
     .. [1] Peng, Hanchuan, Fuhui Long, and Chris Ding. "Feature
-           selection based on mutual information criteria of 
+           selection based on mutual information criteria of
            max-dependency, max-relevance, and min-redundancy."
            IEEE Transactions on pattern analysis and machine
            intelligence 27.8 (2005): 1226-1238.
@@ -67,7 +67,7 @@ def mifs(X, y, lamb=0.0, method='knn', options=None):
     ----------
     .. [1] Brown, Gavin, et al. "Conditional likelihood maximisation:
            a unifying framework for information theoretic feature
-           selection." Journal of machine learning research 13.Jan 
+           selection." Journal of machine learning research 13.Jan
            (2012): 27-66.
     """
     n, d = X.shape
