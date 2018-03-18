@@ -44,8 +44,11 @@ def stars(X, estimator, beta=0.1, ratio=None, rep_num=20, lambdas=None, verbose=
 def select(X, method='glasso', beta=0.1, ratio=None, rep_num=20, lambdas=None, verbose=False, return_lambda=False):
     if method == 'glasso':
         estimator = _graphical_lasso
-    if method == 'skeptic':
+    elif method == 'skeptic':
         estimator = skeptic
+    else:
+        raise NotImplementedError('Method %s is not implemented. Use glasso or skeptic.' % method)
+
     lamb = stars(X, estimator, beta=beta, ratio=ratio, rep_num=rep_num, lambdas=lambdas, verbose=verbose)
     if return_lambda:
         return estimator(X, lamb), lamb
