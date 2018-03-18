@@ -12,3 +12,5 @@ Evaluating dependencies among random variables.
 $ pip install depynd
 ```
 
+## How to use
+See [notebooks](https://github.com/y-takashina/depynd/tree/master/notebooks).
