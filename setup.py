@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='depynd',
-      version='0.2.4',
+      version='0.3.0',
       description='Evaluating dependencies among random variables.',
       author='Yuya Takashina',
       author_email='takashina2051@gmail.com',
