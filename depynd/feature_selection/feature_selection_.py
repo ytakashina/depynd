@@ -1,5 +1,5 @@
-from .mrmr_ import _mrmr
-from .mifs_ import _mifs
+from .mrmr_ import mrmr
+from .mifs_ import mifs
 
 
 def select(X, y, lamb=0.0, method='mifs'):
@@ -21,8 +21,8 @@ def select(X, y, lamb=0.0, method='mifs'):
         Indices for the selected features.
     """
     if method == 'mifs':
-        return _mifs(X, y, lamb=0.0, method='knn', options=None)
+        return mifs(X, y, lamb=0.0, method='knn', options=None)
     elif method == 'mrmr':
-        return _mrmr(X, y, lamb=0.0, method='knn', options=None)
+        return mrmr(X, y, lamb=0.0, method='knn', options=None)
     else:
-        raise NotImplementedError()
+        raise NotImplementedError('Method %s is not implemented. Use mifs or mrmr.' % method)

@@ -2,7 +2,7 @@ import numpy as np
 from ..mutual_information import mutual_information
 
 
-def _mrmr(X, y, lamb=0.0, method='knn', options=None):
+def mrmr(X, y, lamb=0.0, method='knn', options=None):
     """Select effective features in X on predinting y using
        minimum redundancy maximum relevance feature selection [1]_.
     Parameters

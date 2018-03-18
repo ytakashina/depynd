@@ -2,7 +2,7 @@ import numpy as np
 from ..mutual_information import conditional_mutual_information
 
 
-def _mifs(X, y, lamb=0.0, method='knn', options=None):
+def mifs(X, y, lamb=0.0, method='knn', options=None):
     """Select effective features in X on predinting y using
        mutual-information-based feature selection [1]_.
     Parameters
