@@ -1,4 +1,5 @@
-from depynd.feature_selection import mrmr, mifs
+from depynd.feature_selection.mrmr_ import mrmr
+from depynd.feature_selection.mifs_ import mifs
 
 
 def select(X, y, lamb=0.0, method='mifs'):
