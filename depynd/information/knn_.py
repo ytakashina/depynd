@@ -2,7 +2,7 @@ import numpy as np
 from scipy.special import digamma
 
 
-def _mi_knn(X, Y, k):
+def mi_knn(X, Y, k):
     n, d_x = X.shape
     _, d_y = Y.shape
     distances_x = np.linalg.norm(X - X.reshape([n, -1, d_x]), axis=2)

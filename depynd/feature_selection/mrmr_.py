@@ -1,5 +1,6 @@
 import numpy as np
-from ..mutual_information import mutual_information
+
+from depynd.information import mutual_information
 
 
 def mrmr(X, y, lamb=0.0, method='knn', options=None):

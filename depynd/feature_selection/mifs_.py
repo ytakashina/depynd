@@ -1,5 +1,6 @@
 import numpy as np
-from ..mutual_information import conditional_mutual_information
+
+from depynd.information import conditional_mutual_information
 
 
 def mifs(X, y, lamb=0.0, method='knn', options=None):
