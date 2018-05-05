@@ -26,4 +26,4 @@ def fgplm(X, lamb=0.0, method=None, options=None):
             return mb
 
         mb[imax] = 1
-        mb[reversed(imax)] = 1
+        mb[tuple(reversed(imax))] = 1
