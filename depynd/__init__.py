@@ -1,2 +1,13 @@
-__all__ = ['bayesian_networks', 'feature_selection',
-           'markov_networks', 'information', ]
+from depynd import (
+    bayesian_networks,
+    information,
+    feature_selection,
+    markov_networks,
+)
+
+__all__ = [
+    'bayesian_networks',
+    'information',
+    'feature_selection',
+    'markov_networks',
+]
