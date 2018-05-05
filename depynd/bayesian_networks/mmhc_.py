@@ -2,7 +2,7 @@ import numpy as np
 from itertools import product
 
 from .sparse_candidate_ import mmpc
-from ..mutual_information import mutual_information, conditional_mutual_information
+from ..information import mutual_information, conditional_mutual_information
 
 
 def cyclic(adj):

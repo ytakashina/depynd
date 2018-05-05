@@ -1,6 +1,6 @@
 import numpy as np
 
-from ..mutual_information import conditional_mutual_information
+from ..information import conditional_mutual_information
 
 
 def iamb(X, lamb=0.0, method=None, options=None):
