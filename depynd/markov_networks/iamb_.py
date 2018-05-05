@@ -56,7 +56,6 @@ def iamb(X, lamb=0.0, method=None, options=None):
             z = X[:, other_mb]
             cmi = conditional_mutual_information(x, y, z, method, options)
             if cmi <= lamb:
-                mb[i, j] = 0
-                mb[j, i] = 0
+                mb[i, j] = mb[j, i] = 0
 
     return mb

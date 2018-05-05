@@ -35,8 +35,7 @@ def gsmn(X, lamb=0.0, method=None, options=None):
             z = X[:, adj[i]]
             cmi = conditional_mutual_information(x, y, z, method=method, options=options)
             if cmi > lamb:
-                adj[i, j] = 1
-                adj[j, i] = 1
+                adj[i, j] = adj[j, i] = 1
 
         for j in adj[i].nonzero()[0]:
             other_adj = adj[i] & (np.arange(d) != j)
@@ -44,7 +43,6 @@ def gsmn(X, lamb=0.0, method=None, options=None):
             z = X[:, other_adj]
             cmi = conditional_mutual_information(x, y, z, method=method, options=options)
             if cmi <= lamb:
-                adj[i, j] = 0
-                adj[j, i] = 0
+                adj[i, j] = adj[j, i] = 0
 
     return adj
