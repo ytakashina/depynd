@@ -8,7 +8,6 @@ def fgplm(X, lamb=0.0, method=None, options=None):
     mb = np.zeros([d, d], dtype=bool)
     while True:
         vmax = -np.inf
-        imax = (0, 1)
         for i in range(d):
             x = X[:, [i]]
             z = X[:, mb[i]]
@@ -20,10 +19,12 @@ def fgplm(X, lamb=0.0, method=None, options=None):
                 cmi = conditional_mutual_information(x, y, z, method, options)
                 if vmax < cmi:
                     vmax = cmi
-                    imax = (i, j)
+                    imax, jmax = i, j
 
-        if vmax <= lamb or np.count_nonzero(mb) == d * (d - 1) / 2:
+        if vmax <= lamb:
             return mb
 
-        mb[imax] = 1
-        mb[tuple(reversed(imax))] = 1
+        mb[imax, jmax] = mb[jmax, imax] = 1
+
+        if np.count_nonzero(mb) == d * (d - 1) / 2:
+            return mb

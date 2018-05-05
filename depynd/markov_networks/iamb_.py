@@ -38,13 +38,15 @@ def iamb(X, lamb=0.0, method=None, options=None):
                 cmi = conditional_mutual_information(x, y, z, method, options)
                 if vmax < cmi:
                     vmax = cmi
-                    imax = i, j
+                    imax, jmax = i, j
 
         if vmax <= lamb:
             break
 
-        mb[imax] = 1
-        mb[tuple(reversed(imax))] = 1
+        mb[imax, jmax] = mb[jmax, imax] = 1
+
+        if np.count_nonzero(mb) == d * (d - 1) / 2:
+            return mb
 
     for i in range(d):
         x = X[:, i]
@@ -55,5 +57,6 @@ def iamb(X, lamb=0.0, method=None, options=None):
             cmi = conditional_mutual_information(x, y, z, method, options)
             if cmi <= lamb:
                 mb[i, j] = 0
+                mb[j, i] = 0
 
     return mb
