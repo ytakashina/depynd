@@ -1,8 +1,9 @@
-import numpy as np
 from itertools import product
 
-from .sparse_candidate_ import mmpc
-from ..information import mutual_information, conditional_mutual_information
+import numpy as np
+
+from depynd.bayesian_networks import mmpc
+from depynd.information import mutual_information
 
 
 def cyclic(adj):
@@ -15,6 +16,7 @@ def cyclic(adj):
                 return True
         path.remove(i)
         return False
+
     return any(visit(i) for i, _ in enumerate(adj))
 
 

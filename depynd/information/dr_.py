@@ -10,7 +10,7 @@ def _normal(X, mean, sigma):
     return multivariate_normal.pdf(X, mean=mean, cov=cov)
 
 
-def _mi_dr(X, Y, sigma, n_bases, maxiter):
+def mi_dr(X, Y, sigma, n_bases, maxiter):
     n, d_x = X.shape
     _, d_y = Y.shape
     b = min(n_bases, n)

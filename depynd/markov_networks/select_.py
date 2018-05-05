@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.preprocessing import scale
 from sklearn.covariance import graph_lasso
 
-from . import skeptic
+from depynd.markov_networks import skeptic
 
 
 def _graphical_lasso(X, alpha):

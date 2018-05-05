@@ -1,5 +1,6 @@
 import numpy as np
-from ..information import conditional_mutual_information
+
+from depynd.information import conditional_mutual_information
 
 
 def gsmn(X, lamb=0.0, method=None, options=None):

@@ -1,6 +1,6 @@
 import numpy as np
-from .dr_ import _mi_dr
-from .knn_ import _mi_knn
+
+from depynd.information import mi_dr, mi_knn
 
 
 def mutual_information(X, Y, method='knn', options=None):
@@ -31,10 +31,10 @@ def mutual_information(X, Y, method='knn', options=None):
         sigma = options.get('sigma', 1)
         n_bases = options.get('n_bases', 200)
         maxiter = options.get('maxiter', 1000)
-        return _mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
+        return mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
     else:
         k = options.get('k', 3)
-        return _mi_knn(X, Y, k)
+        return mi_knn(X, Y, k)
 
 
 def conditional_mutual_information(X, Y, Z, method='knn', options=None):
