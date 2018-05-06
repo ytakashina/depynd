@@ -18,7 +18,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
         Optional parameters for MI estimation.
     Returns
     -------
-    mb : array, shape (d, d)
+    adj : array, shape (d, d)
         Estimated Markov blanket.
     References
     ----------
@@ -26,36 +26,33 @@ def iamb(X, lamb=0.0, method=None, options=None):
         Vol. 2. 2003.
     """
     n, d = X.shape
-    mb = np.zeros([d, d], dtype=bool)
-    while True:
-        vmax = -np.inf
-        for i in range(d):
-            x = X[:, i]
-            z = X[:, mb[i]]
-            non_mb = ~mb[i] & (np.arange(d) != i)
-            for j in non_mb.nonzero()[0]:
+    adj = np.zeros([d, d], dtype=bool)
+    for i in range(d):
+        x = X[:, i]
+        updated = True
+        while updated:
+            vmax = -np.inf
+            updated = False
+            z = X[:, adj[i]]
+            non_adj = ~adj[i] & (np.arange(d) != i)
+            for j in non_adj.nonzero()[0]:
                 y = X[:, j]
                 cmi = conditional_mutual_information(x, y, z, method, options)
                 if vmax < cmi:
                     vmax = cmi
                     imax, jmax = i, j
+            if vmax >= lamb:
+                adj[imax, jmax] = adj[jmax, imax] = 1
+                updated = True
 
-        if vmax <= lamb:
-            break
-
-        mb[imax, jmax] = mb[jmax, imax] = 1
-
-        if np.count_nonzero(mb) == d * (d - 1) / 2:
-            return mb
-
-    for i in range(d):
-        x = X[:, i]
-        for j in mb[i].nonzero()[0]:
-            other_mb = mb[i] & (np.arange(d) != j)
+        for j in adj[i].nonzero()[0]:
+            other_adj = adj[i] & (np.arange(d) != j)
             y = X[:, j]
-            z = X[:, other_mb]
+            z = X[:, other_adj]
             cmi = conditional_mutual_information(x, y, z, method, options)
             if cmi <= lamb:
-                mb[i, j] = mb[j, i] = 0
+                adj[i, j] = adj[j, i] = 0
+            if np.count_nonzero(adj[i]) == 0:
+                break
 
-    return mb
+    return adj
