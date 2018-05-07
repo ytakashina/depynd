@@ -13,7 +13,7 @@ def gplm(X, lamb=0.0, method=None, options=None):
             z = X[:, adj[i]]
             non_adj = ~adj[i] & (np.arange(d) != i)
             for j in non_adj.nonzero()[0]:
-                if i == j:
+                if i <= j:
                     continue
                 y = X[:, [j]]
                 cmi = conditional_mutual_information(x, y, z, method, options)
@@ -34,6 +34,8 @@ def gplm(X, lamb=0.0, method=None, options=None):
         for i in range(d):
             x = X[:, [i]]
             for j in adj[i].nonzero()[0]:
+                if i <= j:
+                    continue
                 other_adj = adj[i] & (np.arange(d) != j)
                 y = X[:, [j]]
                 z = X[:, other_adj]
