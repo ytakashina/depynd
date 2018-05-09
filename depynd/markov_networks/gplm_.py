@@ -26,7 +26,7 @@ def gplm(X, lamb=0.0, method=None, options=None):
 
         adj[imax, jmax] = adj[jmax, imax] = 1
 
-        if np.count_nonzero(adj) == d * (d - 1) / 2:
+        if np.count_nonzero(adj) == d ** 2 - d:
             break
 
     while True:
