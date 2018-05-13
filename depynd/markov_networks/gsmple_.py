@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import conditional_mutual_information
 
 
-def gplm(X, lamb=0.0, method=None, options=None):
+def gsmple(X, lamb=0.0, method=None, options=None):
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
     while True:
@@ -16,7 +16,9 @@ def gplm(X, lamb=0.0, method=None, options=None):
                 if i <= j:
                     continue
                 y = X[:, [j]]
+                w = X[:, adj[j]]
                 cmi = conditional_mutual_information(x, y, z, method, options)
+                cmi += conditional_mutual_information(x, y, w, method, options)
                 if vmax < cmi:
                     vmax = cmi
                     imax, jmax = i, j
@@ -36,15 +38,18 @@ def gplm(X, lamb=0.0, method=None, options=None):
             for j in adj[i].nonzero()[0]:
                 if i <= j:
                     continue
-                other_adj = adj[i] & (np.arange(d) != j)
+                other_adj_i = adj[i] & (np.arange(d) != j)
+                other_adj_j = adj[j] & (np.arange(d) != i)
                 y = X[:, [j]]
-                z = X[:, other_adj]
+                z = X[:, other_adj_i]
+                w = X[:, other_adj_j]
                 cmi = conditional_mutual_information(x, y, z, method, options)
+                cmi += conditional_mutual_information(x, y, w, method, options)
                 if vmin > cmi:
                     vmin = cmi
                     imin, jmin = i, j
 
-        if vmin >= lamb:
+        if vmin > lamb:
             return adj
 
         adj[imin, jmin] = adj[jmin, imin] = 0
