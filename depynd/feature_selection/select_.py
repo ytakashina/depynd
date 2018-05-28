@@ -1,4 +1,5 @@
-from depynd.feature_selection import mrmr, mifs
+from depynd.feature_selection.mrmr_ import mrmr
+from depynd.feature_selection.mifs_ import mifs
 
 
 def select(X, y, lamb=0.0, method='mifs'):
@@ -20,8 +21,8 @@ def select(X, y, lamb=0.0, method='mifs'):
         Indices for the selected features.
     """
     if method == 'mifs':
-        return mifs(X, y, lamb=0.0, method='knn', options=None)
+        return mifs(X, y, lamb=lamb, method='knn', options=None)
     elif method == 'mrmr':
-        return mrmr(X, y, lamb=0.0, method='knn', options=None)
+        return mrmr(X, y, lamb=lamb, method='knn', options=None)
     else:
         raise NotImplementedError('Method %s is not implemented. Use mifs or mrmr.' % method)
