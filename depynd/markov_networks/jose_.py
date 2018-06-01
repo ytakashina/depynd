@@ -12,52 +12,6 @@ def non_diag(A):
     return tmp
 
 
-def calc_p(theta, X):
-    Z = np.diag(theta)[None, :] + X @ non_diag(theta)
-    P = 1 / (1 + np.exp(-Z))
-    return P
-
-
-def calc_w(P):
-    W = P * (1 - P)
-    return W
-
-
-def calc_y(theta, X, P, W):
-    Y = np.diag(theta)[None, :] + X @ non_diag(theta) - (P - X) / W
-    return Y
-
-
-def calc_ys(W, Y):
-    Ys = np.sqrt(W) * Y
-    return Ys
-
-
-def calc_yss(Ys):
-    ymean = np.mean(Ys, axis=0)
-    Yss = Ys - ymean[None, :]
-    return Yss
-
-
-def calc_xs(W, X):
-    Xs = np.sqrt(W) * X
-    return Xs
-
-
-def calc_xss(Xs):
-    xmean = np.mean(Xs, axis=0)
-    Xss = Xs - xmean[None, :]
-    return Xss
-
-
-def calc_theta_diag(theta, W, Xs, Ys):
-    ymean = np.mean(Ys, axis=0)
-    xmean = np.mean(Xs, axis=0)
-    wmean = np.mean(np.sqrt(W), axis=0)
-    diag = (ymean - xmean @ non_diag(theta)) / wmean
-    return diag
-
-
 def jose(X, lamb=0.01, tol=1e-6, max_iter=100):
     if set(np.ravel(X)) != {0, 1}:
         raise ValueError('Each element of X must be in {0, 1}.')
@@ -67,22 +21,26 @@ def jose(X, lamb=0.01, tol=1e-6, max_iter=100):
     theta = np.eye(d)
     for _ in range(max_iter):
         theta_prev = np.copy(theta)
-        P = calc_p(theta, X)
-        W = calc_w(P)
-        Y = calc_y(theta, X, P, W)
-        Ys = calc_ys(W, Y)
-        Yss = calc_yss(Ys)
-        Xs = calc_xs(W, X)
-        Xss = calc_xss(Xs)
+        z = np.diag(theta)[None, :] + X @ non_diag(theta)
+        p = 1 / (1 + np.exp(-z))
+        w = p * (1 - p)
+        y = np.diag(theta)[None, :] + X @ non_diag(theta) - (p - X) / w
+        y_star = np.sqrt(w) * y
+        y_mean = np.mean(y_star, axis=0)
+        y_star_star = y_star - y_mean[None, :]
+        x_star = np.sqrt(w) * X
+        x_mean = np.mean(x_star, axis=0)
+        x_star_star = x_star - x_mean[None, :]
         x = np.zeros([n * d, d * (d - 1) // 2])
         for k, (i, j) in enumerate(comb):
-            x[np.arange(n * i, n * (i + 1)), k] = Xss[:, j]
-            x[np.arange(n * j, n * (j + 1)), k] = Xss[:, i]
-        y = np.concatenate(Yss.T)
+            x[np.arange(n * i, n * (i + 1)), k] = x_star_star[:, j]
+            x[np.arange(n * j, n * (j + 1)), k] = x_star_star[:, i]
+        y = np.concatenate(y_star_star.T)
         coef = Lasso(lamb).fit(x, y).coef_
         for k, (i, j) in enumerate(comb):
             theta[i, j] = theta[j, i] = coef[k]
-        theta[np.eye(d, dtype=bool)] = calc_theta_diag(theta, W, Xs, Ys)
+        w_mean = np.mean(np.sqrt(w), axis=0)
+        theta[np.eye(d, dtype=bool)] = (y_mean - x_mean @ non_diag(theta)) / w_mean
         diff = np.linalg.norm(theta - theta_prev)
         if diff < tol:
             break
@@ -115,7 +73,7 @@ if __name__ == '__main__':
         x = np.ones(9, dtype=int)
         for t in range(L):
             for i in range(9):
-                x[i] = sample(adj0, x, i)
+                x[i] = sample(adj, x, i)
             X.append(np.copy(x))
         return np.vstack(X)
 
