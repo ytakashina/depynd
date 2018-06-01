@@ -36,4 +36,6 @@ def skeptic(X, lamb, return_precision=False):
     if return_precision:
         return pre
     else:
-        return ~np.isclose(pre, 0)
+        adj = ~np.isclose(pre, 0)
+        adj[np.eye(len(adj), dtype=bool)] = 0
+        return adj

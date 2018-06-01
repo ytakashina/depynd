@@ -8,7 +8,9 @@ from depynd.markov_networks import skeptic, stars, gsmn, iamb, gsmple
 def _graphical_lasso(X, lamb):
     cov = np.cov(scale(X), rowvar=False)
     pre = graph_lasso(cov, alpha=lamb)[1]
-    return ~np.isclose(pre, 0)
+    adj = ~np.isclose(pre, 0)
+    adj[np.eye(len(adj), dtype=bool)] = 0
+    return adj
 
 
 def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, return_lambda=False, **kwargs):
