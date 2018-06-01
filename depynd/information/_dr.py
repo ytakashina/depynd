@@ -2,12 +2,6 @@ import numpy as np
 from scipy.stats import multivariate_normal
 from scipy.optimize import minimize
 from sklearn.cluster import KMeans
-from sklearn.utils.validation import check_array
-
-
-def _normal(X, mean, sigma):
-    cov = sigma ** 2 * np.eye(len(mean))
-    return multivariate_normal.pdf(X, mean=mean, cov=cov)
 
 
 def mi_dr(X, Y, sigma, n_bases, maxiter):
@@ -31,13 +25,6 @@ def mi_dr(X, Y, sigma, n_bases, maxiter):
     mi : float
         The estimated mutual information between X and Y.
     """
-    if np.size(X) == 0 or np.size(Y) == 0:
-        return 0
-    X = np.atleast_2d(X.T).T
-    Y = np.atleast_2d(Y.T).T
-    X = check_array(X, ensure_min_samples=2)
-    Y = check_array(Y, ensure_min_samples=2)
-
     n, d_x = X.shape
     _, d_y = Y.shape
     b = min(n_bases, n)
@@ -68,3 +55,8 @@ def mi_dr(X, Y, sigma, n_bases, maxiter):
 
     mi = np.mean(np.log(result.x.dot(phi)))
     return mi
+
+
+def _normal(X, mean, sigma):
+    cov = sigma ** 2 * np.eye(len(mean))
+    return multivariate_normal.pdf(X, mean=mean, cov=cov)

@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.utils.validation import check_array
 
 from depynd.information import mi_dr, mi_knn
 
@@ -22,6 +23,13 @@ def mutual_information(X, Y, method='knn', **kwargs):
     mi : float
         The estimated mutual information between X and Y.
     """
+    if np.size(X) == 0 or np.size(Y) == 0:
+        return 0
+    X = np.atleast_2d(X.T).T
+    Y = np.atleast_2d(Y.T).T
+    X = check_array(X, ensure_min_samples=2)
+    Y = check_array(Y, ensure_min_samples=2)
+
     if method == 'dr':
         sigma = kwargs.get('sigma', 1)
         n_bases = kwargs.get('n_bases', 200)
