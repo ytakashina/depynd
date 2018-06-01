@@ -4,7 +4,7 @@ from sklearn.utils.validation import check_array
 from depynd.information import mi_dr, mi_knn
 
 
-def mutual_information(X, Y, force_non_nevative=False, **kwargs):
+def mutual_information(X, Y, force_non_negative=False, **kwargs):
     """Estimate mutual information for discrete-continuous mixutres.
 
     Parameters
@@ -13,7 +13,7 @@ def mutual_information(X, Y, force_non_nevative=False, **kwargs):
         The observations of a variable.
     Y : array-like, shape (n_samples, d_y) or (n_samples)
         The observations of the other variable.
-    force_non_nevative : bool
+    force_non_negative : bool
         If True, the result will be taken max with zero.
     kwargs : dict
         Optional parameters for MI estimation.
@@ -45,7 +45,7 @@ def mutual_information(X, Y, force_non_nevative=False, **kwargs):
     else:
         raise NotImplementedError
 
-    return max(mi, 0) if force_non_nevative else mi
+    return max(mi, 0) if force_non_negative else mi
 
 
 def conditional_mutual_information(X, Y, Z, **kwargs):
