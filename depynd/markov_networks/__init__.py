@@ -1,9 +1,9 @@
-from depynd.markov_networks.jose_ import jose
-from depynd.markov_networks.skeptic_ import skeptic
-from depynd.markov_networks.gsmn_ import gsmn
-from depynd.markov_networks.iamb_ import iamb
-from depynd.markov_networks.gsmple_ import gsmple
-from depynd.markov_networks.stars_ import stars
-from depynd.markov_networks.select_ import select
+from depynd.markov_networks._jose import jose
+from depynd.markov_networks._skeptic import skeptic
+from depynd.markov_networks._gsmn import gsmn
+from depynd.markov_networks._iamb import iamb
+from depynd.markov_networks._gsmple import gsmple
+from depynd.markov_networks._stars import stars
+from depynd.markov_networks._select import select
 
 __all__ = ['jose', 'skeptic', 'gsmn', 'iamb', 'stars', 'select', 'gsmple']
