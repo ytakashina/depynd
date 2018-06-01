@@ -27,6 +27,10 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
     else:
         raise NotImplementedError('Method %s is not implemented.' % method)
 
+    if lambdas is None:
+        lambdas = [1e-5, 1e-4, 1e-3, 5e-3, 0.01, 0.03, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    lambdas = sorted(lambdas, reverse=True)  # sort by descending order
+
     n, d = X.shape
     if criteria == 'stars':
         beta = kwargs.get('beta', 0.1)

@@ -14,13 +14,7 @@ def _instability(X, estimator, alpha, ratio, rep_num):
     return d
 
 
-def stars(X, estimator, beta, ratio, rep_num, lambdas=None, verbose=False):
-    n, p = X.shape
-    if lambdas is None:
-        lambdas = [1e-6, 1e-5, 1e-4, 1e-3, 5e-3, 0.01, 0.03, 0.05, 0.08, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1,
-                   2, 3, 4, 5, 10, 100]
-    lambdas = sorted(lambdas, reverse=True)  # sort by descending order
-
+def stars(X, estimator, lambdas, beta, ratio, rep_num, verbose=False):
     for i, lamb in enumerate(lambdas):
         instability = _instability(X, estimator, lamb, ratio=ratio, rep_num=rep_num)
         if instability > beta:
