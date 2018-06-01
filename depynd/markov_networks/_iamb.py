@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import conditional_mutual_information
 
 
-def iamb(X, lamb=0.0, method=None, options=None):
+def iamb(X, lamb=0.0, **kwargs):
     """Search Markov blanket in a Bayesian network using Incremental Association Markov Blanket algorithm [1]_.
 
     Parameters
@@ -12,9 +12,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
         Observations of variables.
     lamb: float
         Threshold for independence test.
-    method: str, default 'knn'
-        Method for MI estimation.
-    options : dict, default None
+    kwargs : dict, default None
         Optional parameters for MI estimation.
 
     Returns
@@ -39,7 +37,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
             non_adj = ~adj[i] & (np.arange(d) != i)
             for j in non_adj.nonzero()[0]:
                 y = X[:, j]
-                cmi = conditional_mutual_information(x, y, z, method, options)
+                cmi = conditional_mutual_information(x, y, z, **kwargs)
                 if vmax < cmi:
                     vmax = cmi
                     imax, jmax = i, j
@@ -51,7 +49,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
             other_adj = adj[i] & (np.arange(d) != j)
             y = X[:, j]
             z = X[:, other_adj]
-            cmi = conditional_mutual_information(x, y, z, method, options)
+            cmi = conditional_mutual_information(x, y, z, **kwargs)
             if cmi <= lamb:
                 adj[i, j] = adj[j, i] = 0
             if np.count_nonzero(adj[i]) == 0:

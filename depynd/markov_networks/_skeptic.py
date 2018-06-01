@@ -2,14 +2,14 @@ import numpy as np
 from sklearn.covariance import graph_lasso  # In the future, graph_lasso will be renamed to graphical_lasso.
 
 
-def skeptic(X, alpha):
+def skeptic(X, lamb, return_precision=False):
     """Estimate structure of an MRF with nonparanormal SKEPTIC using Spearman’s rho [1]_.
 
     Parameters
     ----------
     X : array, shape (n_samples, d)
         Observations of variables.
-    alpha: float
+    lamb: float
         Regularization parameter for the graphical lasso.
 
     Returns
@@ -32,4 +32,8 @@ def skeptic(X, alpha):
     rho = rho / stds.reshape(1, -1) / stds.reshape(-1, 1)
     cov = 2 * np.sin(np.pi / 6 * rho)
     cov[np.eye(d, dtype=bool)] = 1
-    return graph_lasso(cov, alpha)[1]
+    pre = graph_lasso(cov, lamb)[1]
+    if return_precision:
+        return pre
+    else:
+        return ~np.isclose(pre, 0)

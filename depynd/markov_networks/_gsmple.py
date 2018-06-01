@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import conditional_mutual_information
 
 
-def gsmple(X, lamb=0.0, method=None, options=None):
+def gsmple(X, lamb=0.0, **kwargs):
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
     while True:
@@ -17,8 +17,8 @@ def gsmple(X, lamb=0.0, method=None, options=None):
                     continue
                 y = X[:, [j]]
                 w = X[:, adj[j]]
-                cmi = conditional_mutual_information(x, y, z, method, options)
-                cmi += conditional_mutual_information(x, y, w, method, options)
+                cmi = conditional_mutual_information(x, y, z, **kwargs)
+                cmi += conditional_mutual_information(x, y, w, **kwargs)
                 if vmax < cmi:
                     vmax = cmi
                     imax, jmax = i, j
@@ -43,8 +43,8 @@ def gsmple(X, lamb=0.0, method=None, options=None):
                 y = X[:, [j]]
                 z = X[:, other_adj_i]
                 w = X[:, other_adj_j]
-                cmi = conditional_mutual_information(x, y, z, method, options)
-                cmi += conditional_mutual_information(x, y, w, method, options)
+                cmi = conditional_mutual_information(x, y, z, **kwargs)
+                cmi += conditional_mutual_information(x, y, w, **kwargs)
                 if vmin > cmi:
                     vmin = cmi
                     imin, jmin = i, j
