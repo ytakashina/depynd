@@ -6,7 +6,7 @@ def _instability(X, estimator, alpha, ratio, rep_num):
     n, p = X.shape
     b = int(ratio * n)
     indices = [np.random.choice(np.arange(n), size=b) for _ in range(rep_num)]
-    samples = [scale(sample) for sample in X[indices]]
+    samples = [scale(sample) for sample in X[indices, :]]
     adjs = [estimator(sample, alpha) for sample in samples]
     theta = np.sum(adjs, axis=0) / rep_num
     xi = 2 * theta * (1 - theta)

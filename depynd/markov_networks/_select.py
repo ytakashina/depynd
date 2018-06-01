@@ -22,7 +22,7 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
         estimator = gsmn
     elif method == 'iamb':
         estimator = iamb
-    elif method == 'iamb':
+    elif method == 'gsmple':
         estimator = gsmple
     else:
         raise NotImplementedError('Method %s is not implemented.' % method)
