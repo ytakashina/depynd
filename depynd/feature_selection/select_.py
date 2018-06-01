@@ -6,9 +6,9 @@ def select(X, y, lamb=0.0, method='mifs'):
     """Select effective features in X on predinting y using
     Parameters
     ----------
-    X : array_like, shape (n_samples, d)
+    X : array-like, shape (n_samples, d)
         Features.
-    y : array_like, shape (n_samples)
+    y : array-like, shape (n_samples)
         Target. Can be either continuous or discrete.
     lamb: float, default 0.0
         Threshold for independence tests.

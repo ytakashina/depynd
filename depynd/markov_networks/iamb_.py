@@ -8,7 +8,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
 
     Parameters
     ----------
-    X : array, shape (n_samples, d)
+    X : array-like, shape (n_samples, n_features)
         Observations of variables.
     lamb: float
         Threshold for independence test.
@@ -19,7 +19,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
 
     Returns
     -------
-    adj : array, shape (d, d)
+    adj : array, shape (n_features, n_features)
         Estimated Markov blanket.
 
     References

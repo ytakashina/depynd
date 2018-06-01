@@ -8,26 +8,20 @@ def mutual_information(X, Y, method='knn', **kwargs):
 
     Parameters
     ----------
-    X : array_like, shape (n_samples, d_x) or (n_samples)
-        Variable.
-    Y : array_like, shape (n_samples, d_y) or (n_samples)
-        The other variable.
+    X : array-like, shape (n_samples, d_x) or (n_samples)
+        The observations of a variable.
+    Y : array-like, shape (n_samples, d_y) or (n_samples)
+        The observations of the other variable.
     method: str, default 'knn'
-        Method for MI estimation.
+        The method for MI estimation.
     kwargs : dict
         Optional parameters for MI estimation.
 
     Returns
     -------
     mi : float
-        Estimated mutual information between each X and Y.
+        The estimated mutual information between X and Y.
     """
-    if X.size == 0 or Y.size == 0:
-        return 0
-    if np.ndim(X) == 1:
-        X = np.reshape(X, [-1, 1])
-    if np.ndim(Y) == 1:
-        Y = np.reshape(Y, [-1, 1])
     if method == 'dr':
         sigma = kwargs.get('sigma', 1)
         n_bases = kwargs.get('n_bases', 200)
@@ -45,11 +39,11 @@ def conditional_mutual_information(X, Y, Z, method='knn', **kwargs):
 
     Parameters
     ----------
-    X : array_like, shape (n_samples, d_x)
+    X : array-like, shape (n_samples, d_x)
         Conditioned variable.
-    Y : array_like, shape (n_samples, d_y)
+    Y : array-like, shape (n_samples, d_y)
         The other conditioned variable.
-    Z : array_like, shape (n_samples, d_z)
+    Z : array-like, shape (n_samples, d_z)
         Conditioning variable.
     method: str, default 'knn'
         Method for MI estimation.
@@ -80,7 +74,7 @@ def mimat(X, method='knn', **kwargs):
 
     Parameters
     ----------
-    X : array_like, shape (n_samples, d)
+    X : array-like, shape (n_samples, d)
         Variable.
     method: str, default 'knn'
         Method for MI estimation.
@@ -108,7 +102,7 @@ def cmimat(X, method='knn', **kwargs):
 
     Parameters
     ----------
-    X : array_like, shape (n_samples, d)
+    X : array-like, shape (n_samples, d)
         Variable.
     method: str, default 'knn'
         Method for MI estimation.

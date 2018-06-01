@@ -2,6 +2,7 @@ import numpy as np
 from scipy.stats import multivariate_normal
 from scipy.optimize import minimize
 from sklearn.cluster import KMeans
+from sklearn.utils.validation import check_array
 
 
 def _normal(X, mean, sigma):
@@ -10,15 +11,34 @@ def _normal(X, mean, sigma):
 
 
 def mi_dr(X, Y, sigma, n_bases, maxiter):
-    if np.ndim(X) != 2:
-        raise ValueError('ndim(X) must be 2.')
-    if np.ndim(Y) != 2:
-        raise ValueError('ndim(Y) must be 2.')
+    """Estimate mutual information between X and Y using density ratio estimation.
 
+    Parameters
+    ----------
+    X : array-like, shape (n_samples, d_x) or (n_samples)
+        The observations of a variable.
+    Y : array-like, shape (n_samples, d_y) or (n_samples)
+        The observations of the other variable.
+    sigma : float
+        The kernel width for density ratio estimator.
+    n_bases : int
+        The number of bases used in density ratio estimation.
+    maxiter : int
+        The maximum number of iteration in density ratio estimation.
+
+    Returns
+    -------
+    mi : float
+        The estimated mutual information between X and Y.
+
+    """
+    if np.size(X) == 0 or np.size(Y) == 0:
+        return 0
+    X = check_array(np.atleast_2d(X), ensure_min_samples=2)
+    Y = check_array(np.atleast_2d(Y), ensure_min_samples=2)
     n, d_x = X.shape
     _, d_y = Y.shape
     b = min(n_bases, n)
-
     XY = np.hstack([X, Y])
     UV = KMeans(b).fit(XY).cluster_centers_
     U, V = np.split(UV, [d_x], axis=1)

@@ -8,9 +8,9 @@ def mifs(X, y, lamb=0.0, method='knn', options=None):
        mutual-information-based feature selection [1]_.
     Parameters
     ----------
-    X : array_like, shape (n_samples, d)
+    X : array-like, shape (n_samples, d)
         Features.
-    y : array_like, shape (n_samples)
+    y : array-like, shape (n_samples)
         Target. Can be either continuous or discrete.
     lamb: float
         Threshold for independence tests.

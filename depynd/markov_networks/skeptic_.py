@@ -7,14 +7,14 @@ def skeptic(X, alpha):
 
     Parameters
     ----------
-    X : array, shape (n_samples, d)
+    X : array, shape (n_samples, n_features)
         Observations of variables.
     alpha: float
         Regularization parameter for the graphical lasso.
 
     Returns
     ----------
-    precision : array, shape (d, d)
+    precision : array, shape (n_features, n_features)
         Estimated precision (inverse covariance) matrix.
 
     References
