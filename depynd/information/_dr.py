@@ -33,8 +33,10 @@ def mi_dr(X, Y, sigma, n_bases, maxiter):
     """
     if np.size(X) == 0 or np.size(Y) == 0:
         return 0
-    X = check_array(np.atleast_2d(X), ensure_min_samples=2)
-    Y = check_array(np.atleast_2d(Y), ensure_min_samples=2)
+    X = np.atleast_2d(X.T).T
+    Y = np.atleast_2d(Y.T).T
+    X = check_array(X, ensure_min_samples=2)
+    Y = check_array(Y, ensure_min_samples=2)
 
     n, d_x = X.shape
     _, d_y = Y.shape
