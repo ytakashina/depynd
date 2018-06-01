@@ -23,6 +23,9 @@ def mi_knn(X, Y, k):
     mi : float
         The estimated mutual information between X and Y.
     """
+    if not isinstance(k, (int, np.integer)) or k < 1:
+        raise ValueError('k must be a positive integer.')
+
     n, d_x = X.shape
     _, d_y = Y.shape
     distances_x = np.linalg.norm(X - X.reshape([n, -1, d_x]), axis=2)
