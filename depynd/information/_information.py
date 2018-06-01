@@ -28,13 +28,13 @@ def mutual_information(X, Y, **kwargs):
     X = check_array(X, ensure_min_samples=2)
     Y = check_array(Y, ensure_min_samples=2)
 
-    method = kwargs.get('method', 'knn')
-    if method == 'dr':
+    mi_estimator = kwargs.get('mi_estimator', 'knn')
+    if mi_estimator == 'dr':
         sigma = kwargs.get('sigma', 1)
         n_bases = kwargs.get('n_bases', 200)
         maxiter = kwargs.get('maxiter', 1000)
         return mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
-    elif method == 'knn':
+    elif mi_estimator == 'knn':
         k = kwargs.get('k', 3)
         return mi_knn(X, Y, k)
     else:
