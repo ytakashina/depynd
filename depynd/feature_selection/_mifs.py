@@ -49,7 +49,7 @@ def mifs(X, y, lamb=0.0, method='knn', **kwargs):
         min_cmi = np.inf
         for i in selected:
             x = X[:, i]
-            z = X[:, selected & (np.arange(d) != i)]
+            z = X[:, list(set(selected) - {i})]
             cmi = conditional_mutual_information(x, y, z, method, **kwargs)
             if min_cmi > cmi:
                 min_cmi = cmi
