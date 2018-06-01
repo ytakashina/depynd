@@ -87,7 +87,7 @@ def mimat(X, force_non_negative=False, **kwargs):
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
-        Variable.
+        The observations of a set of variables.
     force_non_negative : bool
         If True, the result will be taken max with zero. Default is False.
     kwargs : dict, default None
@@ -113,7 +113,7 @@ def cmimat(X, force_non_negative=False, **kwargs):
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
-        Variable.
+        The observations of a set of variables.
     force_non_negative : bool
         If True, the result will be taken max with zero. Default is False.
     kwargs : dict, default None
