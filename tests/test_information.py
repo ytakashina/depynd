@@ -11,24 +11,35 @@ y, z = X.T
 
 class TestMiKnn:
 
-    def test_1d_1d(self):
-        mi_knn(y, z, k=3)
-
-    def test_1d_2d(self):
-        mi_knn(y, X, k=3)
-        mi_knn(X, y, k=3)
-
-    def test_2d_2d(self):
-        mi_knn(X, X, k=3)
-
     def test_k(self):
         try:
-            mi_knn(y, z, k=1)
+            mi_knn(X, X, k=1)
         except:
             fail()
         with raises(ValueError):
-            mi_knn(y, z, k=0.1)
+            mi_knn(X, X, k=0.1)
         with raises(ValueError):
-            mi_knn(y, z, k=-1)
+            mi_knn(X, X, k=-1)
         with raises(ValueError):
-            mi_knn(y, z, k=[1])
+            mi_knn(X, X, k=[1])
+
+
+class TestMi:
+    def test_1d_1d(self):
+        try:
+            mutual_information(y, z)
+        except:
+            fail()
+
+    def test_1d_2d(self):
+        try:
+            mutual_information(y, X)
+            mutual_information(X, y)
+        except:
+            fail()
+
+    def test_2d_2d(self):
+        try:
+            mutual_information(X, X)
+        except:
+            fail()
