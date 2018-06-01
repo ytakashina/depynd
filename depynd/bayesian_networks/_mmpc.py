@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import conditional_mutual_information
 
 
-def mmpc(X, lamb=0.0, method=None, options=None):
+def mmpc(X, lamb=0.0, **kwargs):
     """Search parents and children in a Bayesian network.
     Parameters
     ----------
@@ -28,7 +28,7 @@ def mmpc(X, lamb=0.0, method=None, options=None):
         for j in non_pc.nonzero()[0]:
             y = X[:, j]
             z = X[:, pc[i]]
-            cmi = conditional_mutual_information(x, y, z, method=method, options=options)
+            cmi = conditional_mutual_information(x, y, z, **kwargs)
             if cmi > lamb:
                 pc[i, j] = 1
 
@@ -36,7 +36,7 @@ def mmpc(X, lamb=0.0, method=None, options=None):
             other_pc = pc[i] & (np.arange(d) != j)
             y = X[:, j]
             z = X[:, other_pc]
-            cmi = conditional_mutual_information(x, y, z, method=method, options=options)
+            cmi = conditional_mutual_information(x, y, z, **kwargs)
             if cmi <= lamb:
                 pc[i, j] = 0
 

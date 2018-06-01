@@ -20,42 +20,42 @@ def cyclic(adj):
     return any(visit(i) for i, _ in enumerate(adj))
 
 
-def _score_graph(adj, X, method=None, options=None):
+def _score_graph(adj, X, **kwargs):
     # Should be replaced mutual information test (MIT) criterion,
     # where such criterion has not been developed yet in either
     # purely continuous or discrete-continuous mixed settings.
     n, d = X.shape
-    mis = [mutual_information(X[:, i], X[:, adj[i]], method, options) for i in range(d)]
+    mis = [mutual_information(X[:, i], X[:, adj[i]], **kwargs) for i in range(d)]
     return np.sum(mis)
 
 
-def _score_graph_diff(adj, X, idx, operation, method=None, options=None):
+def _score_graph_diff(adj, X, idx, operation, **kwargs):
     i, j = idx
     if operation == 'add':
-        diff = -mutual_information(X[:, i], X[:, adj[i]], method, options)
+        diff = -mutual_information(X[:, i], X[:, adj[i]], **kwargs)
         adj[i, j] = 1
-        diff += mutual_information(X[:, i], X[:, adj[i]], method, options)
+        diff += mutual_information(X[:, i], X[:, adj[i]], **kwargs)
         adj[i, j] = 0
     elif operation == 'delete':
-        diff = -mutual_information(X[:, i], X[:, adj[i]], method, options)
+        diff = -mutual_information(X[:, i], X[:, adj[i]], **kwargs)
         adj[i, j] = 0
-        diff += mutual_information(X[:, i], X[:, adj[i]], method, options)
+        diff += mutual_information(X[:, i], X[:, adj[i]], **kwargs)
         adj[i, j] = 1
     elif operation == 'reverse':
-        diff = -mutual_information(X[:, i], X[:, adj[i]], method, options)
-        diff -= mutual_information(X[:, j], X[:, adj[j]], method, options)
+        diff = -mutual_information(X[:, i], X[:, adj[i]], **kwargs)
+        diff -= mutual_information(X[:, j], X[:, adj[j]], **kwargs)
         adj[i, j] = 0
         adj[j, i] = 1
-        diff += mutual_information(X[:, i], X[:, adj[i]], method, options)
-        diff += mutual_information(X[:, j], X[:, adj[j]], method, options)
+        diff += mutual_information(X[:, i], X[:, adj[i]], **kwargs)
+        diff += mutual_information(X[:, j], X[:, adj[j]], **kwargs)
         adj[i, j] = 1
         adj[j, i] = 0
     return diff
 
 
-def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
-    """Greedily search structure of a Bayesian network using
-       max-min hill-climbing algorithm [1]_.
+def mmhc(X, lamb=0.0, verbose=False, **kwargs):
+    """Greedily search structure of a Bayesian network using max-min hill-climbing algorithm [1]_.
+
     Parameters
     ----------
     X : array, shape (n_samples, d)
@@ -68,20 +68,20 @@ def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
         Optional parameters for MI estimation.
     verbose: bool, default False
         Enable verbose output.
+
     Returns
     ----------
     adj : array, shape (d, d)
         Estimated structure of the Bayesian network.
+
     References
     ----------
-    .. [1] Tsamardinos, Ioannis, Laura E. Brown, and Constantin
-           F. Aliferis. "The max-min hill-climbing Bayesian
-           network structure learning algorithm." Machine
-           learning 65.1 (2006): 31-78.
+    .. [1] Tsamardinos, Ioannis, Laura E. Brown, and Constantin F. Aliferis. "The max-min hill-climbing Bayesian network
+    structure learning algorithm." Machine learning 65.1 (2006): 31-78.
     """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
-    pc = mmpc(X, lamb, method, options)
+    pc = mmpc(X, lamb, **kwargs)
     score_prev = -np.inf
     while True:
         score_max = -np.inf
@@ -90,7 +90,7 @@ def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
             if adj[i, j]:
                 # Delete
                 adj[i, j] = 0
-                score = _score_graph(adj, X, method, options)
+                score = _score_graph(adj, X, **kwargs)
                 if score > score_max:
                     score_max = score
                     idx_max = i, j
@@ -98,18 +98,19 @@ def mmhc(X, lamb=0.0, method=None, options=None, verbose=False):
                 # Reverse
                 adj[j, i] = 1
                 if not cyclic(adj):
-                    score = _score_graph(adj, X, method, options)
+                    score = _score_graph(adj, X, **kwargs)
                     if score > score_max:
                         score_max = score
                         idx_max = i, j
                         operation = 'reverse'
                 adj[i, j] = 1
                 adj[j, i] = 0
+
             elif pc[i, j] and not adj[j, i]:
                 # Add
                 adj[i, j] = 1
                 if not cyclic(adj):
-                    score = _score_graph(adj, X, method, options)
+                    score = _score_graph(adj, X, **kwargs)
                     if score > score_max:
                         score_max = score
                         idx_max = i, j
