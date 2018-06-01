@@ -6,6 +6,13 @@ from depynd.information import conditional_mutual_information
 def gsmple(X, lamb=0.0, **kwargs):
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
+    adj = _grow(adj, X, lamb, **kwargs)
+    adj = _shrink(adj, X, lamb, **kwargs)
+    return adj
+
+
+def _grow(adj, X, lamb, **kwargs):
+    n, d = X.shape
     while True:
         vmax = -np.inf
         for i in range(d):
@@ -24,13 +31,16 @@ def gsmple(X, lamb=0.0, **kwargs):
                     imax, jmax = i, j
 
         if vmax <= lamb:
-            break
+            return adj
 
         adj[imax, jmax] = adj[jmax, imax] = 1
 
         if np.count_nonzero(adj) == d ** 2 - d:
-            break
+            return adj
 
+
+def _shrink(adj, X, lamb, **kwargs):
+    n, d = X.shape
     while True:
         vmin = np.inf
         for i in range(d):

@@ -6,9 +6,8 @@ from sklearn.linear_model import Lasso
 
 
 def non_diag(A):
-    d = len(A)
     tmp = np.copy(A)
-    tmp[np.eye(d, dtype=bool)] = 0
+    tmp[np.eye(len(A), dtype=bool)] = 0
     return tmp
 
 
