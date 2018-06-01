@@ -4,7 +4,7 @@ from sklearn.utils.validation import check_array
 from depynd.information import mi_dr, mi_knn
 
 
-def mutual_information(X, Y, **kwargs):
+def mutual_information(X, Y, force_non_nevative=False, **kwargs):
     """Estimate mutual information for discrete-continuous mixutres.
 
     Parameters
@@ -13,6 +13,8 @@ def mutual_information(X, Y, **kwargs):
         The observations of a variable.
     Y : array-like, shape (n_samples, d_y) or (n_samples)
         The observations of the other variable.
+    force_non_nevative : bool
+        If True, the result will be taken max with zero.
     kwargs : dict
         Optional parameters for MI estimation.
 
@@ -34,14 +36,16 @@ def mutual_information(X, Y, **kwargs):
         sigma = kwargs.get('sigma', 1)
         n_bases = kwargs.get('n_bases', 200)
         maxiter = kwargs.get('maxiter', 1000)
-        return mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
+        mi = mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
     elif mi_estimator == 'knn':
         k = kwargs.get('k', 3)
         assert isinstance(k, (int, np.integer)) and k > 0, 'k must be a positive integer.'
         assert k < len(X), '`k` must be smaller than `n_sample`.'
-        return mi_knn(X, Y, k)
+        mi = mi_knn(X, Y, k)
     else:
         raise NotImplementedError
+
+    return max(mi, 0) if force_non_nevative else mi
 
 
 def conditional_mutual_information(X, Y, Z, **kwargs):
@@ -95,8 +99,6 @@ def mimat(X, **kwargs):
         x = X[:, [i]]
         y = X[:, [j]]
         mis[i, j] = mis[j, i] = mutual_information(x, y, **kwargs)
-    mis[mis < 0] = 0
-    mis[np.eye(d, dtype=bool)] = np.nan
     return mis
 
 
@@ -123,6 +125,4 @@ def cmimat(X, **kwargs):
         idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
         z = X[:, idx_rest]
         cmis[i, j] = cmis[j, i] = conditional_mutual_information(x, y, z, **kwargs)
-    cmis[cmis < 0] = 0
-    cmis[np.eye(d, dtype=bool)] = np.nan
     return cmis
