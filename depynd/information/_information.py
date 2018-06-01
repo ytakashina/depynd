@@ -27,6 +27,7 @@ def mutual_information(X, Y, **kwargs):
     Y = np.atleast_2d(Y.T).T
     X = check_array(X, ensure_min_samples=2)
     Y = check_array(Y, ensure_min_samples=2)
+    assert len(X) == len(Y), 'X and Y must have the same length.'
 
     mi_estimator = kwargs.get('mi_estimator', 'knn')
     if mi_estimator == 'dr':
@@ -36,6 +37,8 @@ def mutual_information(X, Y, **kwargs):
         return mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
     elif mi_estimator == 'knn':
         k = kwargs.get('k', 3)
+        assert isinstance(k, (int, np.integer)) and k > 0, 'k must be a positive integer.'
+        assert k < len(X), '`k` must be smaller than `n_sample`.'
         return mi_knn(X, Y, k)
     else:
         raise NotImplementedError

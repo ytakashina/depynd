@@ -5,41 +5,36 @@ from depynd.information import mi_dr, mi_knn, mutual_information, conditional_mu
 
 mean = np.zeros(2)
 cov = [[1, 0.5], [0.5, 1]]
-X = np.random.multivariate_normal(mean, cov, 1000)
-y, z = X.T
-
-
-class TestMiKnn:
-
-    def test_k(self):
-        try:
-            mi_knn(X, X, k=1)
-        except:
-            fail()
-        with raises(ValueError):
-            mi_knn(X, X, k=0.1)
-        with raises(ValueError):
-            mi_knn(X, X, k=-1)
-        with raises(ValueError):
-            mi_knn(X, X, k=[1])
+X = np.random.multivariate_normal(mean, cov, 10)
+x = np.random.normal(0, 1, 10)
+y = np.random.normal(0, 1, 20)
 
 
 class TestMi:
-    def test_1d_1d(self):
+    def test_k(self):
         try:
-            mutual_information(y, z)
+            mutual_information(X, X, k=1)
+            mutual_information(X, X, k=9)
         except:
             fail()
+        with raises(AssertionError):
+            mutual_information(X, X, k=10)
+        with raises(AssertionError):
+            mutual_information(X, X, k=0.1)
+        with raises(AssertionError):
+            mutual_information(X, X, k=-1)
+        with raises(AssertionError):
+            mutual_information(X, X, k=[1])
 
-    def test_1d_2d(self):
-        try:
-            mutual_information(y, X)
-            mutual_information(X, y)
-        except:
-            fail()
+    def test_length(self):
+        with raises(AssertionError):
+            mutual_information(x, y)
 
-    def test_2d_2d(self):
+    def test_dimension(self):
         try:
+            mutual_information(x, x)
+            mutual_information(x, X)
+            mutual_information(X, x)
             mutual_information(X, X)
         except:
             fail()
