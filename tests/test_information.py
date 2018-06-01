@@ -38,3 +38,25 @@ class TestMi:
             mutual_information(X, X)
         except:
             fail()
+
+
+class TestCmi:
+    def test_length(self):
+        with raises(AssertionError):
+            conditional_mutual_information(x, x, y)
+        with raises(AssertionError):
+            conditional_mutual_information(x, y, x)
+        with raises(AssertionError):
+            conditional_mutual_information(y, x, x)
+
+    def test_dimension(self):
+        try:
+            conditional_mutual_information(X, x, x)
+            conditional_mutual_information(x, X, x)
+            conditional_mutual_information(x, x, X)
+            conditional_mutual_information(X, X, x)
+            conditional_mutual_information(x, X, X)
+            conditional_mutual_information(X, x, X)
+            conditional_mutual_information(X, X, X)
+        except:
+            fail()

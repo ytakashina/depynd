@@ -65,6 +65,7 @@ def conditional_mutual_information(X, Y, Z, **kwargs):
     """
     if np.size(Z) == 0:
         return mutual_information(X, Y, **kwargs)
+    assert len(X) == len(Y) == len(Z), 'X, Y and Z must have the same length.'
     X = np.atleast_2d(X.T).T
     Z = np.atleast_2d(Z.T).T
     XZ = np.hstack([X, Z])
