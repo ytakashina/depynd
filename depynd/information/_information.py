@@ -48,7 +48,7 @@ def mutual_information(X, Y, force_non_negative=False, **kwargs):
     return max(mi, 0) if force_non_negative else mi
 
 
-def conditional_mutual_information(X, Y, Z, **kwargs):
+def conditional_mutual_information(X, Y, Z, force_non_negative=False, **kwargs):
     """Estimate conditional mutual information for discrete-continuous mixutres.
 
     Parameters
@@ -59,6 +59,8 @@ def conditional_mutual_information(X, Y, Z, **kwargs):
         The other conditioned variable.
     Z : array-like, shape (n_samples, d_z)
         Conditioning variable.
+    force_non_negative : bool
+        If True, the result will be taken max with zero.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -68,14 +70,15 @@ def conditional_mutual_information(X, Y, Z, **kwargs):
         Estimated conditional mutual information between each X and Y, given Z.
     """
     if np.size(Z) == 0:
-        return mutual_information(X, Y, **kwargs)
+        return mutual_information(X, Y, force_non_negative, **kwargs)
     assert len(X) == len(Y) == len(Z), 'X, Y and Z must have the same length.'
     X = np.atleast_2d(X.T).T
     Z = np.atleast_2d(Z.T).T
     XZ = np.hstack([X, Z])
-    mi_xz_y = mutual_information(XZ, Y, **kwargs)
-    mi_y_z = mutual_information(Y, Z, **kwargs)
-    return mi_xz_y - mi_y_z
+    mi_xz_y = mutual_information(XZ, Y, force_non_negative, **kwargs)
+    mi_y_z = mutual_information(Y, Z, force_non_negative, **kwargs)
+    cmi = mi_xz_y - mi_y_z
+    return max(cmi, 0) if force_non_negative else cmi
 
 
 def mimat(X, **kwargs):
