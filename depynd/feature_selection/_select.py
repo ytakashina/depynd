@@ -1,9 +1,9 @@
-from depynd.feature_selection._mrmr import mrmr
-from depynd.feature_selection._mifs import mifs
+from depynd.feature_selection import mrmr, mifs
 
 
 def select(X, y, lamb=0.0, method='mifs'):
     """Select effective features in X on predinting y using
+
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
@@ -15,6 +15,7 @@ def select(X, y, lamb=0.0, method='mifs'):
     method: str, default 'mifs'
         Method used for feature selection. Either 'mifs' or
         'mrmr' can be chosen.
+
     Returns
     -------
     indices : list
