@@ -80,4 +80,3 @@ if __name__ == '__main__':
 
     X = gibbs_sampling(adj0)
     adj = jose(X, 4.53999298e-05)
-    print()
