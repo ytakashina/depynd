@@ -14,7 +14,7 @@ def mutual_information(X, Y, force_non_negative=False, **kwargs):
     Y : array-like, shape (n_samples, d_y) or (n_samples)
         The observations of the other variable.
     force_non_negative : bool
-        If True, the result will be taken max with zero.
+        If True, the result will be taken max with zero. Default is False.
     kwargs : dict
         Optional parameters for MI estimation.
 
@@ -60,7 +60,7 @@ def conditional_mutual_information(X, Y, Z, force_non_negative=False, **kwargs):
     Z : array-like, shape (n_samples, d_z)
         Conditioning variable.
     force_non_negative : bool
-        If True, the result will be taken max with zero.
+        If True, the result will be taken max with zero. Default is False.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -81,13 +81,15 @@ def conditional_mutual_information(X, Y, Z, force_non_negative=False, **kwargs):
     return max(cmi, 0) if force_non_negative else cmi
 
 
-def mimat(X, **kwargs):
+def mimat(X, force_non_negative=False, **kwargs):
     """Dimension-wise mutual information.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
         Variable.
+    force_non_negative : bool
+        If True, the result will be taken max with zero. Default is False.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -101,17 +103,19 @@ def mimat(X, **kwargs):
     for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
         x = X[:, [i]]
         y = X[:, [j]]
-        mis[i, j] = mis[j, i] = mutual_information(x, y, **kwargs)
+        mis[i, j] = mis[j, i] = mutual_information(x, y, force_non_negative, **kwargs)
     return mis
 
 
-def cmimat(X, **kwargs):
+def cmimat(X, force_non_negative=False, **kwargs):
     """Dimension-wise conditional mutual information.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
         Variable.
+    force_non_negative : bool
+        If True, the result will be taken max with zero. Default is False.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -127,5 +131,5 @@ def cmimat(X, **kwargs):
         y = X[:, [j]]
         idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
         z = X[:, idx_rest]
-        cmis[i, j] = cmis[j, i] = conditional_mutual_information(x, y, z, **kwargs)
+        cmis[i, j] = cmis[j, i] = conditional_mutual_information(x, y, z, force_non_negative, **kwargs)
     return cmis
