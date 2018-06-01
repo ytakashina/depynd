@@ -30,12 +30,12 @@ def mi_dr(X, Y, sigma, n_bases, maxiter):
     -------
     mi : float
         The estimated mutual information between X and Y.
-
     """
     if np.size(X) == 0 or np.size(Y) == 0:
         return 0
     X = check_array(np.atleast_2d(X), ensure_min_samples=2)
     Y = check_array(np.atleast_2d(Y), ensure_min_samples=2)
+
     n, d_x = X.shape
     _, d_y = Y.shape
     b = min(n_bases, n)

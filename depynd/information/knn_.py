@@ -28,6 +28,7 @@ def mi_knn(X, Y, k):
         return 0
     X = check_array(np.atleast_2d(X), ensure_min_samples=2)
     Y = check_array(np.atleast_2d(Y), ensure_min_samples=2)
+
     n, d_x = X.shape
     _, d_y = Y.shape
     distances_x = np.linalg.norm(X - X.reshape([n, -1, d_x]), axis=2)
