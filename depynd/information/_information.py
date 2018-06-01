@@ -4,7 +4,7 @@ from sklearn.utils.validation import check_array
 from depynd.information import mi_dr, mi_knn
 
 
-def mutual_information(X, Y, method='knn', **kwargs):
+def mutual_information(X, Y, **kwargs):
     """Estimate mutual information for discrete-continuous mixutres.
 
     Parameters
@@ -13,8 +13,6 @@ def mutual_information(X, Y, method='knn', **kwargs):
         The observations of a variable.
     Y : array-like, shape (n_samples, d_y) or (n_samples)
         The observations of the other variable.
-    method: str, default 'knn'
-        The method for MI estimation.
     kwargs : dict
         Optional parameters for MI estimation.
 
@@ -30,6 +28,7 @@ def mutual_information(X, Y, method='knn', **kwargs):
     X = check_array(X, ensure_min_samples=2)
     Y = check_array(Y, ensure_min_samples=2)
 
+    method = kwargs.get('method', 'knn')
     if method == 'dr':
         sigma = kwargs.get('sigma', 1)
         n_bases = kwargs.get('n_bases', 200)
@@ -42,7 +41,7 @@ def mutual_information(X, Y, method='knn', **kwargs):
         raise NotImplementedError
 
 
-def conditional_mutual_information(X, Y, Z, method='knn', **kwargs):
+def conditional_mutual_information(X, Y, Z, **kwargs):
     """Estimate conditional mutual information for discrete-continuous mixutres.
 
     Parameters
@@ -53,8 +52,6 @@ def conditional_mutual_information(X, Y, Z, method='knn', **kwargs):
         The other conditioned variable.
     Z : array-like, shape (n_samples, d_z)
         Conditioning variable.
-    method: str, default 'knn'
-        Method for MI estimation.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -63,29 +60,23 @@ def conditional_mutual_information(X, Y, Z, method='knn', **kwargs):
     cmi : float
         Estimated conditional mutual information between each X and Y, given Z.
     """
-    if Z.size == 0:
-        return mutual_information(X, Y, method, **kwargs)
-    if np.ndim(X) == 1:
-        X = np.reshape(X, [-1, 1])
-    if np.ndim(Y) == 1:
-        Y = np.reshape(Y, [-1, 1])
-    if np.ndim(Z) == 1:
-        Z = np.reshape(Z, [-1, 1])
+    if np.size(Z) == 0:
+        return mutual_information(X, Y, **kwargs)
+    X = np.atleast_2d(X.T).T
+    Z = np.atleast_2d(Z.T).T
     XZ = np.hstack([X, Z])
-    mi_xz_y = mutual_information(XZ, Y, method, **kwargs)
-    mi_y_z = mutual_information(Y, Z, method, **kwargs)
+    mi_xz_y = mutual_information(XZ, Y, **kwargs)
+    mi_y_z = mutual_information(Y, Z, **kwargs)
     return mi_xz_y - mi_y_z
 
 
-def mimat(X, method='knn', **kwargs):
+def mimat(X, **kwargs):
     """Dimension-wise mutual information.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
         Variable.
-    method: str, default 'knn'
-        Method for MI estimation.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -99,22 +90,20 @@ def mimat(X, method='knn', **kwargs):
     for i, j in [(i, j) for i in range(d) for j in range(i + 1, d)]:
         x = X[:, [i]]
         y = X[:, [j]]
-        mis[i, j] = mis[j, i] = mutual_information(x, y, method, **kwargs)
+        mis[i, j] = mis[j, i] = mutual_information(x, y, **kwargs)
     mis[mis < 0] = 0
     mis[np.eye(d, dtype=bool)] = np.nan
     return mis
 
 
-def cmimat(X, method='knn', **kwargs):
+def cmimat(X, **kwargs):
     """Dimension-wise conditional mutual information.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
         Variable.
-    method: str, default 'knn'
-        Method for MI estimation.
-    options : dict, default None
+    kwargs : dict, default None
         Optional parameters for MI estimation.
 
     Returns
@@ -129,7 +118,7 @@ def cmimat(X, method='knn', **kwargs):
         y = X[:, [j]]
         idx_rest = (np.arange(d) != i) & (np.arange(d) != j)
         z = X[:, idx_rest]
-        cmis[i, j] = cmis[j, i] = conditional_mutual_information(x, y, z, method, **kwargs)
+        cmis[i, j] = cmis[j, i] = conditional_mutual_information(x, y, z, **kwargs)
     cmis[cmis < 0] = 0
     cmis[np.eye(d, dtype=bool)] = np.nan
     return cmis
