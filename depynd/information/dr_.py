@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 from scipy.stats import multivariate_normal
 from scipy.optimize import minimize
@@ -11,6 +10,11 @@ def _normal(X, mean, sigma):
 
 
 def mi_dr(X, Y, sigma, n_bases, maxiter):
+    if np.ndim(X) != 2:
+        raise ValueError('ndim(X) must be 2.')
+    if np.ndim(Y) != 2:
+        raise ValueError('ndim(Y) must be 2.')
+
     n, d_x = X.shape
     _, d_y = Y.shape
     b = min(n_bases, n)
@@ -32,16 +36,13 @@ def mi_dr(X, Y, sigma, n_bases, maxiter):
     def jac(alpha):
         return -phi.dot(1 / alpha.dot(phi))
 
+    x0 = np.random.uniform(0, 1, b)
     bounds = [(0, None)] * b
     constraints = [{'type': 'eq', 'fun': lambda alpha: alpha.dot(h) - 1}]
-
-    alpha0 = np.random.uniform(0, 1, b)
-    result = minimize(fun=fun, jac=jac, x0=alpha0, bounds=bounds, constraints=constraints,
-                      options={'maxiter': maxiter})
+    result = minimize(fun=fun, jac=jac, x0=x0, bounds=bounds, constraints=constraints, options={'maxiter': maxiter})
 
     if not result.success:
-        print('Optimization failed: %s' % result.message, file=sys.stderr)
+        raise Warning('Optimization failed: %s' % result.message)
 
-    alpha = result.x
-    mi = np.mean(np.log(alpha.dot(phi)))
+    mi = np.mean(np.log(result.x.dot(phi)))
     return mi
