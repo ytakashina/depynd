@@ -49,9 +49,9 @@ class TestCmi:
             conditional_mutual_information(x, y, x)
         with raises(AssertionError):
             conditional_mutual_information(y, x, x)
-        assert 0 == conditional_mutual_information(x, x, np.empty([10, 0]))
-        assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
         assert 0 == conditional_mutual_information(np.empty([10, 0]), x, x)
+        assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
+        assert mutual_information(x, x) == conditional_mutual_information(x, x, np.empty([10, 0]))
 
     def test_dimension(self):
         try:
