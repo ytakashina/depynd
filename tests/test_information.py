@@ -29,6 +29,7 @@ class TestMi:
     def test_length(self):
         with raises(AssertionError):
             mutual_information(x, y)
+        assert 0 == mutual_information(x, np.empty([10, 0]))
 
     def test_dimension(self):
         try:
@@ -48,6 +49,9 @@ class TestCmi:
             conditional_mutual_information(x, y, x)
         with raises(AssertionError):
             conditional_mutual_information(y, x, x)
+        assert 0 == conditional_mutual_information(x, x, np.empty([10, 0]))
+        assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
+        assert 0 == conditional_mutual_information(np.empty([10, 0]), x, x)
 
     def test_dimension(self):
         try:
