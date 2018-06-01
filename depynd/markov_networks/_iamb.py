@@ -8,7 +8,7 @@ def iamb(X, lamb=0.0, method=None, options=None):
 
     Parameters
     ----------
-    X : array, shape (n_samples, d)
+    X : array-like, shape (n_samples, d)
         Observations of variables.
     lamb: float
         Threshold for independence test.
@@ -16,14 +16,16 @@ def iamb(X, lamb=0.0, method=None, options=None):
         Method for MI estimation.
     options : dict, default None
         Optional parameters for MI estimation.
+
     Returns
     -------
     adj : array, shape (d, d)
         Estimated Markov blanket.
+
     References
     ----------
-    .. [1] Tsamardinos, Ioannis, et al. "Algorithms for Large Scale Markov Blanket Discovery." FLAIRS conference.
-        Vol. 2. 2003.
+    .. [1] Tsamardinos, Ioannis, et al. "Algorithms for Large Scale Markov Blanket Discovery." FLAIRS conference. Vol.
+    2. 2003.
     """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
