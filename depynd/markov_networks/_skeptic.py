@@ -9,8 +9,10 @@ def skeptic(X, lamb, return_precision=False):
     ----------
     X : array, shape (n_samples, d)
         Observations of variables.
-    lamb: float
+    lamb : float
         Regularization parameter for the graphical lasso.
+    return_precision : bool
+        If True, the estimated precision matrix will be returned instead of adjacency matrix. Default is False.
 
     Returns
     ----------
