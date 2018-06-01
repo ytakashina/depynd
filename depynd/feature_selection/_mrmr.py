@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import mutual_information
 
 
-def mrmr(X, y, lamb=0.0, method='knn', **kwargs):
+def mrmr(X, y, lamb=0.0, **kwargs):
     """Select effective features in X on predinting y using minimum redundancy maximum relevance feature selection [1]_.
 
     Parameters
@@ -14,8 +14,6 @@ def mrmr(X, y, lamb=0.0, method='knn', **kwargs):
         Target. Can be either continuous or discrete.
     lamb: float
         Threshold for independence tests.
-    method: str, default 'knn'
-        Method used for MI estimation.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -37,8 +35,8 @@ def mrmr(X, y, lamb=0.0, method='knn', **kwargs):
         not_selected = set(range(d)) - set(selected)
         for i in not_selected:
             x = X[:, i]
-            rel = mutual_information(x, y, method=method, **kwargs)
-            red = [mutual_information(x, X[:, j], method=method, **kwargs) for j in selected]
+            rel = mutual_information(x, y, **kwargs)
+            red = [mutual_information(x, X[:, j], **kwargs) for j in selected]
             obj = rel - (np.mean(red) if red else 0)
             if max_obj < obj:
                 max_obj = obj

@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import conditional_mutual_information
 
 
-def mifs(X, y, lamb=0.0, method='knn', **kwargs):
+def mifs(X, y, lamb=0.0, **kwargs):
     """Select effective features in X on predinting y using mutual-information-based feature selection [1]_.
 
     Parameters
@@ -14,8 +14,6 @@ def mifs(X, y, lamb=0.0, method='knn', **kwargs):
         Target. Can be either continuous or discrete.
     lamb: float
         Threshold for independence tests.
-    method: str, default 'knn'
-        Method used for MI estimation.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
@@ -37,7 +35,7 @@ def mifs(X, y, lamb=0.0, method='knn', **kwargs):
         z = X[:, selected]
         for i in not_selected:
             x = X[:, i]
-            cmi = conditional_mutual_information(x, y, z, method, **kwargs)
+            cmi = conditional_mutual_information(x, y, z, **kwargs)
             if max_cmi < cmi:
                 max_cmi = cmi
                 max_idx = i
@@ -50,7 +48,7 @@ def mifs(X, y, lamb=0.0, method='knn', **kwargs):
         for i in selected:
             x = X[:, i]
             z = X[:, list(set(selected) - {i})]
-            cmi = conditional_mutual_information(x, y, z, method, **kwargs)
+            cmi = conditional_mutual_information(x, y, z, **kwargs)
             if min_cmi > cmi:
                 min_cmi = cmi
                 min_idx = i
