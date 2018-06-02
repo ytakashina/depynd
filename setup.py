@@ -9,7 +9,7 @@ long_description = """`depynd` is a Python library for learning dependencies bet
 
 setup(
     name='depynd',
-    version='0.4.4',
+    version='0.4.5',
     description='Evaluating dependencies among random variables.',
     long_description=long_description,
     author='Yuya Takashina',
