@@ -33,7 +33,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # ones.
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'numpydoc',
+    # 'numpydoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
