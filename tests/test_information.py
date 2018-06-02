@@ -1,11 +1,9 @@
 import numpy as np
 from pytest import raises, fail
 
-from depynd.information import mi_dr, mi_knn, mutual_information, conditional_mutual_information
+from depynd.information import mutual_information, conditional_mutual_information
 
-mean = np.zeros(2)
-cov = [[1, 0.5], [0.5, 1]]
-X = np.random.multivariate_normal(mean, cov, 10)
+X = np.random.multivariate_normal(np.zeros(2), np.eye(2), 10)
 x = np.random.normal(0, 1, 10)
 y = np.random.normal(0, 1, 20)
 
@@ -18,18 +16,17 @@ class TestMi:
         except:
             fail()
         with raises(AssertionError):
+            mutual_information(X, X, k=0)
+        with raises(AssertionError):
             mutual_information(X, X, k=10)
         with raises(AssertionError):
             mutual_information(X, X, k=0.1)
-        with raises(AssertionError):
-            mutual_information(X, X, k=-1)
         with raises(AssertionError):
             mutual_information(X, X, k=[1])
 
     def test_length(self):
         with raises(AssertionError):
             mutual_information(x, y)
-        assert 0 == mutual_information(x, np.empty([10, 0]))
 
     def test_dimension(self):
         try:
@@ -39,6 +36,7 @@ class TestMi:
             mutual_information(X, X)
         except:
             fail()
+        assert 0 == mutual_information(x, np.empty([10, 0]))
 
 
 class TestCmi:
@@ -49,9 +47,6 @@ class TestCmi:
             conditional_mutual_information(x, y, x)
         with raises(AssertionError):
             conditional_mutual_information(y, x, x)
-        assert 0 == conditional_mutual_information(np.empty([10, 0]), x, x)
-        assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
-        assert mutual_information(x, x) == conditional_mutual_information(x, x, np.empty([10, 0]))
 
     def test_dimension(self):
         try:
@@ -64,3 +59,6 @@ class TestCmi:
             conditional_mutual_information(X, X, X)
         except:
             fail()
+        assert 0 == conditional_mutual_information(np.empty([10, 0]), x, x)
+        assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
+        assert mutual_information(x, x) == conditional_mutual_information(x, x, np.empty([10, 0]))
