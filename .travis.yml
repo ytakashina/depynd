@@ -8,7 +8,6 @@ python:
 
 install:
   - pip install -e .
-  - pip install flake8
 
 script:
   - flake8 depynd

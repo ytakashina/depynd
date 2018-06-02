@@ -13,8 +13,7 @@ setup(
     author='Yuya Takashina',
     author_email='takashina2051@gmail.com',
     packages=find_packages(),
-    install_requires=[
-        'numpy', 'scipy', 'scikit-learn',
-    ],
+    install_requires=['numpy', 'scipy', 'scikit-learn'],
+    test_requires=['pytest', 'flake8'],
     url='https://github.com/y-takashina/depynd',
 )
