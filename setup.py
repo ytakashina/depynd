@@ -8,7 +8,7 @@ where each one corresponds to
 - feature selection, and
 - graphical model structure learning,
 
-respectively. depynd supports MI estimation for discrete-continuous mixtures, MI-based feature selection, and
+respectively. Specifically, depynd supports MI estimation for discrete-continuous mixtures, MI-based feature selection, and
 structure learning of undirected graphical models (a.k.a. Markov random fields)."""
 
 setup(
