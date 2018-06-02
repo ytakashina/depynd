@@ -3,7 +3,7 @@
 `depynd` is a Python library for evaluating dependencies among random variables from data. It supports learning
 statistical dependencies for one-to-one, one-to-many, and many-to-many relationships, where each one corresponds to
 
-- mutual information (MI) estimation
+- mutual information (MI) estimation,
 - feature selection, and
 - graphical model structure learning,
 
