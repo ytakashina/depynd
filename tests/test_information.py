@@ -6,23 +6,41 @@ from depynd.information import mutual_information, conditional_mutual_informatio
 X = np.random.multivariate_normal(np.zeros(2), np.eye(2), 10)
 x = np.random.normal(0, 1, 10)
 y = np.random.normal(0, 1, 20)
+z = np.empty([10, 0])
 
 
 class TestMi:
-    def test_k(self):
+    def test_knn(self):
         try:
-            mutual_information(X, X, k=1)
-            mutual_information(X, X, k=9)
-        except:
+            mutual_information(X, X, mi_estimator='knn', k=1)
+            mutual_information(X, X, mi_estimator='knn', k=9)
+        except (KeyError, ValueError):
             fail()
         with raises(AssertionError):
-            mutual_information(X, X, k=0)
+            mutual_information(X, X, mi_estimator='knn', k=0)
         with raises(AssertionError):
-            mutual_information(X, X, k=10)
+            mutual_information(X, X, mi_estimator='knn', k=10)
         with raises(AssertionError):
-            mutual_information(X, X, k=0.1)
+            mutual_information(X, X, mi_estimator='knn', k=0.1)
+
+    def test_dr(self):
+        try:
+            mutual_information(X, X, mi_estimator='dr', sigma=1)
+            mutual_information(X, X, mi_estimator='dr', n_bases=1)
+            mutual_information(X, X, mi_estimator='dr', maxiter=1)
+        except (KeyError, ValueError):
+            fail()
+        assert np.isnan(mutual_information(X, X, mi_estimator='dr', maxiter=1))
         with raises(AssertionError):
-            mutual_information(X, X, k=[1])
+            mutual_information(X, X, mi_estimator='dr', sigma=0)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', n_bases=0)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', n_bases=0.1)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', maxiter=0)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', maxiter=0.1)
 
     def test_length(self):
         with raises(AssertionError):
@@ -34,9 +52,10 @@ class TestMi:
             mutual_information(x, X)
             mutual_information(X, x)
             mutual_information(X, X)
-        except:
+        except ValueError:
             fail()
-        assert 0 == mutual_information(x, np.empty([10, 0]))
+        assert 0 == mutual_information(z, x)
+        assert 0 == mutual_information(x, z)
 
 
 class TestCmi:
@@ -50,6 +69,7 @@ class TestCmi:
 
     def test_dimension(self):
         try:
+            conditional_mutual_information(x, x, x)
             conditional_mutual_information(X, x, x)
             conditional_mutual_information(x, X, x)
             conditional_mutual_information(x, x, X)
@@ -57,8 +77,8 @@ class TestCmi:
             conditional_mutual_information(x, X, X)
             conditional_mutual_information(X, x, X)
             conditional_mutual_information(X, X, X)
-        except:
+        except ValueError:
             fail()
-        assert 0 == conditional_mutual_information(np.empty([10, 0]), x, x)
-        assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
-        assert mutual_information(x, x) == conditional_mutual_information(x, x, np.empty([10, 0]))
+        assert 0 == conditional_mutual_information(z, x, x)
+        assert 0 == conditional_mutual_information(x, z, x)
+        assert mutual_information(x, x) == conditional_mutual_information(x, x, z)

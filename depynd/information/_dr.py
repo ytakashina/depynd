@@ -51,7 +51,7 @@ def mi_dr(X, Y, sigma, n_bases, maxiter):
     result = minimize(fun=fun, jac=jac, x0=x0, bounds=bounds, constraints=constraints, options={'maxiter': maxiter})
 
     if not result.success:
-        raise Warning('Optimization failed: %s' % result.message)
+        return np.nan
 
     mi = np.mean(np.log(result.x.dot(phi)))
     return mi
