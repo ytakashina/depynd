@@ -13,7 +13,7 @@ class TestMi:
         try:
             mutual_information(X, X, mi_estimator='knn', k=1)
             mutual_information(X, X, mi_estimator='knn', k=9)
-        except:
+        except (KeyError, ValueError):
             fail()
         with raises(AssertionError):
             mutual_information(X, X, mi_estimator='knn', k=0)
@@ -27,7 +27,7 @@ class TestMi:
             mutual_information(X, X, mi_estimator='dr', sigma=1)
             mutual_information(X, X, mi_estimator='dr', n_bases=1)
             mutual_information(X, X, mi_estimator='dr', maxiter=1)
-        except:
+        except (KeyError, ValueError):
             fail()
         assert np.isnan(mutual_information(X, X, mi_estimator='dr', maxiter=1))
         with raises(AssertionError):
@@ -51,7 +51,7 @@ class TestMi:
             mutual_information(x, X)
             mutual_information(X, x)
             mutual_information(X, X)
-        except:
+        except ValueError:
             fail()
         assert 0 == mutual_information(x, np.empty([10, 0]))
 
@@ -75,7 +75,7 @@ class TestCmi:
             conditional_mutual_information(x, X, X)
             conditional_mutual_information(X, x, X)
             conditional_mutual_information(X, X, X)
-        except:
+        except ValueError:
             fail()
         assert 0 == conditional_mutual_information(np.empty([10, 0]), x, x)
         assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
