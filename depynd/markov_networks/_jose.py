@@ -1,7 +1,6 @@
 from itertools import combinations
 
 import numpy as np
-from scipy.stats import multinomial
 from sklearn.linear_model import Lasso
 
 
