@@ -1,6 +1,6 @@
 # depynd [![Build Status](https://travis-ci.com/y-takashina/depynd.svg?branch=master)](https://travis-ci.com/y-takashina/depynd)
 
-`depynd` is a Python library for evaluating dependencies among random variables from data. It supports leaning
+`depynd` is a Python library for evaluating dependencies among random variables from data. It supports learning
 statistical dependencies for one-to-one, one-to-many, and many-to-many relationships, where each one corresponds to
 
 - mutual information (MI) estimation
