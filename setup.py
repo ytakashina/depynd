@@ -1,9 +1,15 @@
 from setuptools import setup, find_packages
 
-long_description = """`depynd` is a Python library for learning dependencies between random variables from data.
- It supports mutual information (MI) estimation for discrete-continuous mixtures, feature selection based on
- MI, and Markov random field structure learning.
-"""
+long_description = """`depynd` is a Python library for evaluating dependencies among random variables from data.
+ It supports leaning statistical dependencies for one-to-one, one-to-many, and many-to-many relationships,
+ where each one corresponds to
+
+- mutual information (MI) estimation
+- feature selection, and
+- graphical model structure learning,
+
+respectively. `depynd` supports MI estimation for discrete-continuous mixtures, MI-based feature selection, and
+structure learning of undirected graphical models (a.k.a. Markov random fields)."""
 
 setup(
     name='depynd',
