@@ -9,20 +9,36 @@ y = np.random.normal(0, 1, 20)
 
 
 class TestMi:
-    def test_k(self):
+    def test_knn(self):
         try:
             mutual_information(X, X, k=1)
             mutual_information(X, X, k=9)
         except:
             fail()
         with raises(AssertionError):
-            mutual_information(X, X, k=0)
+            mutual_information(X, X, mi_estimator='knn', k=0)
         with raises(AssertionError):
-            mutual_information(X, X, k=10)
+            mutual_information(X, X, mi_estimator='knn', k=10)
         with raises(AssertionError):
-            mutual_information(X, X, k=0.1)
+            mutual_information(X, X, mi_estimator='knn', k=0.1)
+
+    def test_dr(self):
+        try:
+            mutual_information(X, X, mi_estimator='dr', sigma=1)
+            mutual_information(X, X, mi_estimator='dr', n_bases=1)
+            mutual_information(X, X, mi_estimator='dr', maxiter=1)
+        except:
+            fail()
         with raises(AssertionError):
-            mutual_information(X, X, k=[1])
+            mutual_information(X, X, mi_estimator='dr', sigma=0)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', n_bases=0)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', n_bases=0.1)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', maxiter=0)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', maxiter=0.1)
 
     def test_length(self):
         with raises(AssertionError):
@@ -50,6 +66,7 @@ class TestCmi:
 
     def test_dimension(self):
         try:
+            conditional_mutual_information(x, x, x)
             conditional_mutual_information(X, x, x)
             conditional_mutual_information(x, X, x)
             conditional_mutual_information(x, x, X)
