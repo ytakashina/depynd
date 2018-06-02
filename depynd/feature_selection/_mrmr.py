@@ -25,8 +25,8 @@ def mrmr(X, y, lamb=0.0, **kwargs):
     References
     ----------
     .. [1] Peng, Hanchuan, Fuhui Long, and Chris Ding. "Feature selection based on mutual information criteria of
-    max-dependency, max-relevance, and min-redundancy." IEEE Transactions on pattern analysis and machine intelligence
-    27.8 (2005): 1226-1238.
+        max-dependency, max-relevance, and min-redundancy." IEEE Transactions on pattern analysis and machine
+        intelligence 27.8 (2005): 1226-1238.
     """
     n, d = X.shape
     selected = []

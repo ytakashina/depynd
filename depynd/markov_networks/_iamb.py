@@ -23,7 +23,7 @@ def iamb(X, lamb=0.0, **kwargs):
     References
     ----------
     .. [1] Tsamardinos, Ioannis, et al. "Algorithms for Large Scale Markov Blanket Discovery." FLAIRS conference. Vol.
-    2. 2003.
+        2. 2003.
     """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)

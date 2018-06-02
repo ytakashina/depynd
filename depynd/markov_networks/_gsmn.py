@@ -14,10 +14,12 @@ def gsmn(X, lamb=0.0, **kwargs):
         Threshold for independence tests.
     options : dict, default None
         Optional parameters for MI estimation.
+
     Returns
     ----------
     adj : array, shape (d, d)
         Estimated structure of an MRF.
+
     References
     ----------
     .. [1] Bromberg, Facundo, Dimitris Margaritis, and Vasant Honavar. "Efficient Markov network structure discovery
