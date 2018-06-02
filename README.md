@@ -1,10 +1,12 @@
 # depynd [![Build Status](https://travis-ci.com/y-takashina/depynd.svg?branch=master)](https://travis-ci.com/y-takashina/depynd)
-Evaluating dependencies among random variables.
 
-`depynd` is a Python library for learning dependencies between random variables from data. It supports
-- Mutual information (MI) estimation for discrete-continuous mixtures
-- Feature selection algorithms based on MI
-- Markov random field structure learning algorithms
+`depynd` is a Python library for evaluating dependencies among random variables from data. It supports leaning
+statistical dependencies for one-to-one, one-to-many, and many-to-many relationships, where each one corresponds to
+- mutual information (MI) estimation
+- feature selection, and
+- graphical model structure learning,
+respectively. `depynd` supports MI estimation for discrete-continuous mixtures, MI-based feature selection, and
+structure learning of undirected graphical models (a.k.a. Markov random fields).
 
 ## Dependencies
 - Python (>=3.5)
