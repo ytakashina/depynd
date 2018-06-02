@@ -6,6 +6,7 @@ from depynd.information import mutual_information, conditional_mutual_informatio
 X = np.random.multivariate_normal(np.zeros(2), np.eye(2), 10)
 x = np.random.normal(0, 1, 10)
 y = np.random.normal(0, 1, 20)
+z = np.empty([10, 0])
 
 
 class TestMi:
@@ -53,7 +54,8 @@ class TestMi:
             mutual_information(X, X)
         except ValueError:
             fail()
-        assert 0 == mutual_information(x, np.empty([10, 0]))
+        assert 0 == mutual_information(z, x)
+        assert 0 == mutual_information(x, z)
 
 
 class TestCmi:
@@ -77,6 +79,6 @@ class TestCmi:
             conditional_mutual_information(X, X, X)
         except ValueError:
             fail()
-        assert 0 == conditional_mutual_information(np.empty([10, 0]), x, x)
-        assert 0 == conditional_mutual_information(x, np.empty([10, 0]), x)
-        assert mutual_information(x, x) == conditional_mutual_information(x, x, np.empty([10, 0]))
+        assert 0 == conditional_mutual_information(z, x, x)
+        assert 0 == conditional_mutual_information(x, z, x)
+        assert mutual_information(x, x) == conditional_mutual_information(x, x, z)
