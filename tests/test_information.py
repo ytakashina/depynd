@@ -11,8 +11,8 @@ y = np.random.normal(0, 1, 20)
 class TestMi:
     def test_knn(self):
         try:
-            mutual_information(X, X, k=1)
-            mutual_information(X, X, k=9)
+            mutual_information(X, X, mi_estimator='knn', k=1)
+            mutual_information(X, X, mi_estimator='knn', k=9)
         except:
             fail()
         with raises(AssertionError):
@@ -29,6 +29,7 @@ class TestMi:
             mutual_information(X, X, mi_estimator='dr', maxiter=1)
         except:
             fail()
+        assert np.isnan(mutual_information(X, X, mi_estimator='dr', maxiter=1))
         with raises(AssertionError):
             mutual_information(X, X, mi_estimator='dr', sigma=0)
         with raises(AssertionError):
