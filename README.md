@@ -1,11 +1,11 @@
-# depynd
+# depynd [![Build Status](https://travis-ci.com/y-takashina/depynd.svg?branch=master)](https://travis-ci.com/y-takashina/depynd)
 Evaluating dependencies among random variables.
 
 ## Dependencies
-- Python (>=3.6)
-- NumPy (>= 1.14.0)
-- SciPy (>= 1.0.0)
-- scikit-learn (>= 0.19.1)
+- Python (>=3.5)
+- NumPy
+- SciPy
+- scikit-learn
 
 ## Installation
 ```
