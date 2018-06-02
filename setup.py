@@ -13,7 +13,7 @@ structure learning of undirected graphical models (a.k.a. Markov random fields).
 
 setup(
     name='depynd',
-    version='0.4.5',
+    version='0.4.6',
     description='Evaluating dependencies among random variables.',
     long_description=long_description,
     author='Yuya Takashina',
