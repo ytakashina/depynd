@@ -25,7 +25,7 @@ def mifs(X, y, lamb=0.0, **kwargs):
     References
     ----------
     .. [1] Brown, Gavin, et al. "Conditional likelihood maximisation: a unifying framework for information theoretic
-    feature selection." Journal of machine learning research 13.Jan (2012): 27-66.
+        feature selection." Journal of machine learning research 13.Jan (2012): 27-66.
     """
     n, d = X.shape
     selected = []
