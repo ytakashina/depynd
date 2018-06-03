@@ -2,14 +2,12 @@
 ==================================
 .. currentmodule:: depynd.feature_selection
 
-Summary
----------------
-
 
 Module contents
 ---------------
 .. automodule:: depynd.feature_selection
     :members: select
+
 
 Methods
 ---------------
