@@ -18,19 +18,20 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
 
     Parameters
     ----------
-    X
-    method
-    criteria
-    lambdas
-    verbose
-    return_lambda
-    kwargs
+    X : array-like, shape (n_samples, d)
+        The observations of a set of random variables.
+    method : {'glasso', 'skeptic', 'gsmn', 'iamb'}
+    criteria : {'stars'}
+    lambdas : array-like
+    verbose : bool
+    return_lambda : bool, default False
+    kwargs : dict
+        Optional parameters for MI estimation.
 
     Returns
     -------
     adj : array, shape (d, d)
-        Estimated structure of an MRF.
-
+        Estimated adjacency matrix of an MRF.
     """
     if method == 'glasso':
         estimator = _graphical_lasso

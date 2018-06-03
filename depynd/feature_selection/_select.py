@@ -14,7 +14,7 @@ def select(X, y, lamb=0.0, method='mifs', **kwargs):
         The observations of the target variable.
     lamb: float, default 0.0
         The threshold for independence tests.
-    method: str, default 'mifs'
+    method: {'mifs', 'mrmr'}, default 'mifs'
         The method for feature selection. Either 'mifs' or 'mrmr' can be used.
 
     Returns

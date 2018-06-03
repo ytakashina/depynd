@@ -13,9 +13,9 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
         The observations of a variable.
     Y : array-like, shape (n_samples, d_y) or (n_samples)
         The observations of the other variable.
-    mi_estimator : str
+    mi_estimator : {'knn', 'dr'}, default 'knn'
         The MI estimator. 'knn' and 'dr' is currently available. Default is 'knn'.
-    force_non_negative : bool
+    force_non_negative : bool, default True
         If ``True``, the result will be taken max with zero. Default is ``False``.
     kwargs : dict
         Optional parameters for MI estimation.
