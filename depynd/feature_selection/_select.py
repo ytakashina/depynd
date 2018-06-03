@@ -4,7 +4,7 @@ from depynd.feature_selection import mrmr, mifs
 
 
 def select(X, y, lamb=0.0, method='mifs', **kwargs):
-    """Select effective features in X on predinting y using
+    """Select effective features in X on predinting y.
 
     Parameters
     ----------

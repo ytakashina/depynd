@@ -1,10 +1,18 @@
-depynd
+:py:mod:`depynd`
 ================================
 
-.. toctree::
-    :maxdepth: 1
+:py:mod:`depynd.information`: Mutual information estimation
+-----------------------------------------------------------
 
-    depynd.information
-    depynd.feature_selection
-    depynd.markov_networks
+test
+
+:py:mod:`depynd.feature_selection`: Feature selection
+-----------------------------------------------------
+
+test
+
+:py:mod:`depynd.markov_networks`: MRF structure learning
+--------------------------------------------------------
+
+test
 

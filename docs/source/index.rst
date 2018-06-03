@@ -1,21 +1,17 @@
-.. depynd documentation master file, created by
-   sphinx-quickstart on Sat Jun  2 21:40:27 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+:py:mod:`depynd` - evaluating dependencies among random variables
+=================================================================
+:py:mod:`depynd` is a Python library for evaluating dependencies among random variables from data. It supports learning
+statistical dependencies for one-to-one, one-to-many, and many-to-many relationships, where each one corresponds to
 
-Welcome to depynd's documentation!
-==================================
+- mutual information (MI) estimation,
+- feature selection, and
+- graphical model structure learning,
 
-.. toctree::
+respectively. Specifically, :py:mod:`depynd` supports MI estimation for discrete-continuous mixtures, MI-based feature selection,
+and structure learning of undirected graphical models (a.k.a. Markov random fields).
+
+
+.. toctree:: depynd
     :maxdepth: 2
 
-    depynd
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
