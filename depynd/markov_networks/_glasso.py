@@ -19,8 +19,8 @@ def glasso(X, lamb, return_precision=False):
 
     Returns
     ----------
-    precision : array, shape (d, d)
-        Estimated precision (inverse covariance) matrix.
+    adj : array, shape (d, d)
+        Estimated adjacency matrix (or precision matrix if ``return_precision`` is True) of an MRF.
     """
     cov = np.cov(scale(X), rowvar=False)
     pre = graph_lasso(cov, alpha=lamb)[1]
