@@ -1,16 +1,4 @@
-import numpy as np
-from sklearn.preprocessing import scale
-from sklearn.covariance import graph_lasso
-
-from depynd.markov_networks import skeptic, stars, gsmn, iamb, gsmple
-
-
-def _graphical_lasso(X, lamb):
-    cov = np.cov(scale(X), rowvar=False)
-    pre = graph_lasso(cov, alpha=lamb)[1]
-    adj = ~np.isclose(pre, 0)
-    adj[np.eye(len(adj), dtype=bool)] = 0
-    return adj
+from depynd.markov_networks import skeptic, stars, glasso, gsmn, iamb, gsmple
 
 
 def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, return_lambda=False, **kwargs):
@@ -39,7 +27,7 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
         Estimated adjacency matrix of an MRF.
     """
     if method == 'glasso':
-        estimator = _graphical_lasso
+        estimator = glasso
     elif method == 'skeptic':
         estimator = skeptic
     elif method == 'gsmn':

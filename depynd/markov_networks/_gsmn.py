@@ -12,13 +12,13 @@ def gsmn(X, lamb=0.0, **kwargs):
         Observations of variables.
     lamb: float
         Threshold for independence tests.
-    options : dict, default None
+    kwargs : dict, default None
         Optional parameters for MI estimation.
 
     Returns
     ----------
     adj : array, shape (d, d)
-        Estimated structure of an MRF.
+        Estimated adjacency matrix of an MRF.
 
     References
     ----------
