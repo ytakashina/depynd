@@ -4,7 +4,7 @@ from depynd.information import conditional_mutual_information
 
 
 def gsmn(X, lamb=0.0, **kwargs):
-    """Search structure of an MRF using glow-shrink Markov networks algorithm [1]_.
+    """Search structure of an MRF using glow-shrink Markov networks algorithm [bromberg2009efficient]_.
 
     Parameters
     ----------
@@ -22,8 +22,8 @@ def gsmn(X, lamb=0.0, **kwargs):
 
     References
     ----------
-    .. [1] Bromberg, Facundo, Dimitris Margaritis, and Vasant Honavar. "Efficient Markov network structure discovery
-        using independence tests." Journal of Artificial Intelligence Research 35 (2009): 449-484.
+    .. [bromberg2009efficient] Bromberg, Facundo, Dimitris Margaritis, and Vasant Honavar. "Efficient Markov network
+        structure discovery using independence tests." Journal of Artificial Intelligence Research 35 (2009): 449-484.
     """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)

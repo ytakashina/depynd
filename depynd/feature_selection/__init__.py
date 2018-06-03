@@ -1,5 +1,5 @@
-from depynd.feature_selection._mrmr import mrmr
-from depynd.feature_selection._mifs import mifs
-from depynd.feature_selection._select import select
+from ._mrmr import mrmr
+from ._mifs import mifs
+from ._select import select
 
 __all__ = ['mrmr', 'mifs', 'select']

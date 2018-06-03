@@ -3,7 +3,7 @@ from sklearn.covariance import graph_lasso  # In the future, graph_lasso will be
 
 
 def skeptic(X, lamb, return_precision=False):
-    """Estimate structure of an MRF with nonparanormal SKEPTIC using Spearman’s rho [1]_.
+    """Estimate structure of an MRF with nonparanormal SKEPTIC using Spearman’s rho [liu2012high]_.
 
     Parameters
     ----------
@@ -21,8 +21,8 @@ def skeptic(X, lamb, return_precision=False):
 
     References
     ----------
-    .. [1] Liu, Han, et al. "High-dimensional semiparametric Gaussian copula graphical models." The Annals of Statistics
-     40.4 (2012): 2293-2326.
+    .. [liu2012high] Liu, Han, et al. "High-dimensional semiparametric Gaussian copula graphical models." The Annals of
+        Statistics 40.4 (2012): 2293-2326.
     """
     n, d = X.shape
     indices = np.argsort(X, axis=0)

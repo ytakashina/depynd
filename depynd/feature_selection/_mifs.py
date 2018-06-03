@@ -4,7 +4,8 @@ from depynd.information import conditional_mutual_information
 
 
 def mifs(X, y, lamb=0.0, **kwargs):
-    """Select effective features in X on predinting y using mutual-information-based feature selection [1]_.
+    """Select effective features in X on predinting y using mutual-information-based feature selection
+    [brown2012conditional]_.
 
     Parameters
     ----------
@@ -24,8 +25,8 @@ def mifs(X, y, lamb=0.0, **kwargs):
 
     References
     ----------
-    .. [1] Brown, Gavin, et al. "Conditional likelihood maximisation: a unifying framework for information theoretic
-        feature selection." Journal of machine learning research 13.Jan (2012): 27-66.
+    .. [brown2012conditional] Brown, Gavin, et al. "Conditional likelihood maximisation: a unifying framework for
+        information theoretic feature selection." Journal of machine learning research 13.Jan (2012): 27-66.
     """
     n, d = X.shape
     selected = []

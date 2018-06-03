@@ -4,7 +4,8 @@ from depynd.information import mutual_information
 
 
 def mrmr(X, y, lamb=0.0, **kwargs):
-    """Select effective features in X on predinting y using minimum redundancy maximum relevance feature selection [1]_.
+    """Select effective features in X on predinting y using minimum redundancy maximum relevance feature selection
+    [peng2005feature]_.
 
     Parameters
     ----------
@@ -24,9 +25,9 @@ def mrmr(X, y, lamb=0.0, **kwargs):
 
     References
     ----------
-    .. [1] Peng, Hanchuan, Fuhui Long, and Chris Ding. "Feature selection based on mutual information criteria of
-        max-dependency, max-relevance, and min-redundancy." IEEE Transactions on pattern analysis and machine
-        intelligence 27.8 (2005): 1226-1238.
+    .. [peng2005feature] Peng, Hanchuan, Fuhui Long, and Chris Ding. "Feature selection based on mutual information
+        criteria of max-dependency, max-relevance, and min-redundancy." IEEE Transactions on pattern analysis and
+        machine intelligence 27.8 (2005): 1226-1238.
     """
     n, d = X.shape
     selected = []
