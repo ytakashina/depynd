@@ -6,7 +6,7 @@ statistical dependencies for one-to-one, one-to-many, and many-to-many relations
 
 - :py:mod:`depynd.information`: mutual information (MI) estimation,
 - :py:mod:`depynd.feature_selection`: feature selection, and
-- :py:mod:`depynd.markov_networks`: Markov network structure learning.
+- :py:mod:`depynd.markov_networks`: Markov network structure learning,
 
 respectively. Specifically, :py:mod:`depynd` supports MI estimation for discrete-continuous mixtures, MI-based feature
 selection, and structure learning of undirected graphical models (a.k.a. Markov random fields).

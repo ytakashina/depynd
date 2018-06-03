@@ -14,7 +14,7 @@ Module contents
 
 
 
-Overview
+Methods
 ---------------
 The :py:func:`select` function supports the following methods:
 
