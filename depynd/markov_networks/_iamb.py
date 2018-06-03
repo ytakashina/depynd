@@ -19,7 +19,7 @@ def iamb(X, lamb=0.0, **kwargs):
     Returns
     -------
     adj : array, shape (d, d)
-        Estimated Markov blanket.
+        Estimated adjacency matrix of an MRF.
 
     References
     ----------
