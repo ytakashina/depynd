@@ -12,7 +12,6 @@ and structure learning of undirected graphical models (a.k.a. Markov random fiel
 
 
 .. toctree:: depynd
-    :hidden:
     :maxdepth: 2
 
 

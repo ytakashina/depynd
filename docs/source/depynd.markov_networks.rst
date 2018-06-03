@@ -1,14 +1,24 @@
-depynd\.markov\_networks
+:py:mod:`depynd.markov_networks`
 ================================
+.. currentmodule:: depynd.markov_networks
+
+Summary
+---------------
+
+
+
+Module contents
+---------------
+.. automodule:: depynd.markov_networks
+    :members: select
+
+
 
 Overview
 ---------------
-.. currentmodule:: depynd.markov_networks
+The :py:func:`select` function supports the following methods:
 
-.. autofunction:: select
-
-
-.. autosummary:: depynd.markov_netowrks
+.. autosummary:: depynd.markov_networks
     :template: function.rst
 
     gsmn
@@ -18,7 +28,6 @@ Overview
 
 
 
-The :py:func:`select` function supports the following methods:
 
 
 
