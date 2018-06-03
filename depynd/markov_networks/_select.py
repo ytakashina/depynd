@@ -19,13 +19,13 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
-        The observations of a set of random variables.
+        Observations of a set of random variables.
     method : {'glasso', 'skeptic', 'gsmn', 'iamb'}
-        The method for structure learning.
+        Method for structure learning.
     criteria : {'stars'}
-        The criteria for selecting regularization parameter.
+        Criteria for selecting regularization parameter.
     lambdas : array-like
-        The candidates of regularization parameter.
+        Candidates of regularization parameter.
     verbose : bool
         If True, the objective function is plotted for each regularization parameter.
     return_lambda : bool, default False

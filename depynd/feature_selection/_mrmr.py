@@ -4,24 +4,24 @@ from depynd.information import mutual_information
 
 
 def mrmr(X, y, lamb=0.0, **kwargs):
-    """Select effective features in ``X`` on predinting ``y`` using minimum redundancy maximum relevance feature
+    """Select effective features in ``X`` on predicting ``y`` using minimum redundancy maximum relevance feature
     selection [peng2005feature]_.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
-        The observations of feature variables.
+        Observations of feature variables.
     y : array-like, shape (n_samples)
-        The observations of the target variable.
+        Observations of the target variable.
     lamb: float
-        The threshold for independence tests.
+        Threshold for independence tests.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
     Returns
     -------
     indices : list
-        The indices of the selected features.
+        Indices of the selected features.
 
     References
     ----------
