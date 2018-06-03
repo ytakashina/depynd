@@ -4,7 +4,7 @@ from depynd.information import conditional_mutual_information
 
 
 def gsmn(X, lamb=0.0, **kwargs):
-    """Learn the structure of a Markov random field with glow-shrink Markov network [bromberg2009efficient]_.
+    """Learn the structure of Markov random field with glow-shrink Markov network [bromberg2009efficient]_.
 
     Parameters
     ----------

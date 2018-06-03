@@ -23,7 +23,7 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
     Returns
     -------
     mi : float
-        The estimated mutual information between X and Y.
+        The estimated mutual information between ``X`` and ``Y``.
     """
     if np.size(X) == 0 or np.size(Y) == 0:
         return 0
@@ -73,7 +73,7 @@ def conditional_mutual_information(X, Y, Z, mi_estimator='knn', force_non_negati
     Returns
     -------
     cmi : float
-        Estimated conditional mutual information between each X and Y, given Z.
+        Estimated conditional mutual information between ``X`` and ``Y``, given ``Z``.
     """
     if np.size(Z) == 0:
         return mutual_information(X, Y, mi_estimator, force_non_negative, **kwargs)
