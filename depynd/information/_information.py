@@ -23,7 +23,7 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
     Returns
     -------
     mi : float
-        The estimated mutual information between ``X`` and ``Y``.
+        Estimated mutual information between ``X`` and ``Y``.
     """
     if np.size(X) == 0 or np.size(Y) == 0:
         return 0
