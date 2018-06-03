@@ -10,20 +10,20 @@ def mi_dr(X, Y, sigma, n_bases, maxiter):
     Parameters
     ----------
     X : array-like, shape (n_samples, d_x) or (n_samples)
-        The observations of a variable.
+        Observations of a variable.
     Y : array-like, shape (n_samples, d_y) or (n_samples)
-        The observations of the other variable.
+        Observations of the other variable.
     sigma : float
-        The kernel width for density ratio estimator.
+        Kernel width for density ratio estimator.
     n_bases : int
-        The number of bases used in density ratio estimation.
+        Number of bases used in density ratio estimation.
     maxiter : int
-        The maximum number of iteration in density ratio estimation.
+        Maximum number of iteration in density ratio estimation.
 
     Returns
     -------
     mi : float
-        The estimated mutual information between X and Y.
+        Estimated mutual information between ``X`` and ``Y``.
     """
     n, d_x = X.shape
     _, d_y = Y.shape
