@@ -10,6 +10,8 @@ statistical dependencies for one-to-one, one-to-many, and many-to-many relations
 respectively. Specifically, `depynd` supports MI estimation for discrete-continuous mixtures, MI-based feature selection, and
 structure learning of undirected graphical models (a.k.a. Markov random fields).
 
+Here is the [documentation](https://depynd.readthedocs.io/).
+
 ## Dependencies
 - Python (>=3.5)
 - NumPy
