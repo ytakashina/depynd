@@ -14,7 +14,7 @@ Module contents
 
 
 
-Overview
+Methods
 ---------------
 The :py:func:`select` function supports the following methods:
 
@@ -26,6 +26,15 @@ The :py:func:`select` function supports the following methods:
     jose
     skeptic
 
+
+Criteria
+---------------
+The :py:func:`select` function supports the following criteria:
+
+.. autosummary:: depynd.markov_networks
+    :template: function.rst
+
+    stars
 
 
 
