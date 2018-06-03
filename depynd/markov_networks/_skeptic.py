@@ -3,7 +3,7 @@ from sklearn.covariance import graph_lasso  # In the future, graph_lasso will be
 
 
 def skeptic(X, lamb, return_precision=False):
-    """Estimate structure of an MRF with nonparanormal SKEPTIC using Spearman’s rho [liu2012high]_.
+    """Learn the structure of a Markov random field with nonparanormal SKEPTIC using Spearman’s rho [liu2012high]_.
 
     Parameters
     ----------
