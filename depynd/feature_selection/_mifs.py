@@ -4,24 +4,24 @@ from depynd.information import conditional_mutual_information
 
 
 def mifs(X, y, lamb=0.0, **kwargs):
-    """Select effective features in X on predinting y using mutual-information-based feature selection
+    """Select effective features in ``X`` on predinting ``y`` using mutual-information-based feature selection
     [brown2012conditional]_.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
-        Features.
+        The observations of feature variables.
     y : array-like, shape (n_samples)
-        Target. Can be either continuous or discrete.
+        The observations of the target variable.
     lamb: float
-        Threshold for independence tests.
+        The threshold for independence tests.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
     Returns
     -------
     indices : list
-        Indices for the selected features.
+        The indices of the selected features.
 
     References
     ----------
