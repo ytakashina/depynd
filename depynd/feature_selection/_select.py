@@ -4,23 +4,23 @@ from depynd.feature_selection import mrmr, mifs
 
 
 def select(X, y, lamb=0.0, method='mifs', **kwargs):
-    """Select effective features in X on predinting y.
+    """Select effective features in ``X`` on predinting ``y``.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, d)
-        Features.
+        The observations of feature variables.
     y : array-like, shape (n_samples)
-        Target. Can be either continuous or discrete.
+        The observations of the target variable.
     lamb: float, default 0.0
-        Threshold for independence tests.
+        The threshold for independence tests.
     method: str, default 'mifs'
-        Method used for feature selection. Either 'mifs' or 'mrmr' can be chosen.
+        The method for feature selection. Either 'mifs' or 'mrmr' can be used.
 
     Returns
     -------
     indices : list
-        Indices for the selected features.
+        The indices of the selected features.
     """
     X, y = check_X_y(X, y)
     if method == 'mifs':
