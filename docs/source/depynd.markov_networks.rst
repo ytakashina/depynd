@@ -2,16 +2,11 @@
 ================================
 .. currentmodule:: depynd.markov_networks
 
-Summary
----------------
-
-
 
 Module contents
 ---------------
 .. automodule:: depynd.markov_networks
     :members: select
-
 
 
 Methods
