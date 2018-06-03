@@ -1,4 +1,4 @@
-# depynd [![Build Status](https://travis-ci.com/y-takashina/depynd.svg?branch=master)](https://travis-ci.com/y-takashina/depynd)
+# depynd [![Build Status](https://travis-ci.com/y-takashina/depynd.svg?branch=master)](https://travis-ci.com/y-takashina/depynd) [![Documentation Status](https://readthedocs.org/projects/depynd/badge/?version=latest)](https://depynd.readthedocs.io/en/latest/?badge=latest)
 
 `depynd` is a Python library for evaluating dependencies among random variables from data. It supports learning
 statistical dependencies for one-to-one, one-to-many, and many-to-many relationships, where each one corresponds to
