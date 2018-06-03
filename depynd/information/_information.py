@@ -5,7 +5,7 @@ from depynd.information import mi_dr, mi_knn
 
 
 def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwargs):
-    """Estimate mutual information for discrete-continuous mixtures.
+    """Estimate mutual information between X and Y.
 
     Parameters
     ----------
@@ -53,7 +53,7 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
 
 
 def conditional_mutual_information(X, Y, Z, mi_estimator='knn', force_non_negative=False, **kwargs):
-    """Estimate conditional mutual information for discrete-continuous mixtures.
+    """Estimate conditional mutual information between ``X`` and ``Y`` given ``Z``.
 
     Parameters
     ----------
@@ -64,7 +64,7 @@ def conditional_mutual_information(X, Y, Z, mi_estimator='knn', force_non_negati
     Z : array-like, shape (n_samples, d_z)
         Conditioning variable.
     mi_estimator : str
-        The MI estimator. `knn` and `dr` is currently available. Default is `knn`.
+        The MI estimator. 'knn' and 'dr' is currently available. Default is 'knn'.
     force_non_negative : bool
         If True, the result will be taken max with zero. Default is False.
     kwargs : dict, default None
