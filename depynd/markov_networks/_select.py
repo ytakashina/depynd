@@ -14,7 +14,7 @@ def _graphical_lasso(X, lamb):
 
 
 def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, return_lambda=False, **kwargs):
-    """Select the structure of a Markov random field.
+    """Learn the structure of Markov random field.
 
     Parameters
     ----------
