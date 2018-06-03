@@ -9,5 +9,5 @@ statistical dependencies for one-to-one, one-to-many, and many-to-many relations
 - :py:mod:`depynd.markov_networks`: Markov network structure learning,
 
 respectively. Specifically, :py:mod:`depynd` supports MI estimation for discrete-continuous mixtures, MI-based feature
-selection, and structure learning of undirected graphical models (a.k.a. Markov random fields).
+selection, and structure learning of Markov networks (a.k.a. Markov random fields).
 
