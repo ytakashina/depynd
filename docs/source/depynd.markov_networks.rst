@@ -18,28 +18,14 @@ Methods
 ---------------
 The :py:func:`select` function supports the following methods:
 
-.. autosummary:: depynd.markov_networks
-    :template: function.rst
-
-    gsmn
-    iamb
-    jose
-    skeptic
+- 'gsmn': :py:func:`depynd.markov_networks.gsmn`
+- 'iamb': :py:func:`depynd.markov_networks.iamb`
+- 'skeptic': :py:func:`depynd.markov_networks.skeptic`
 
 
 Criteria
 ---------------
 The :py:func:`select` function supports the following criteria:
 
-.. autosummary:: depynd.markov_networks
-    :template: function.rst
-
-    stars
-
-
-
-
-
-
-
+- 'stars': :py:func:`depynd.markov_networks.stars`
 
