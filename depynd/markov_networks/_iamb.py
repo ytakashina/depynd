@@ -4,7 +4,8 @@ from depynd.information import conditional_mutual_information
 
 
 def iamb(X, lamb=0.0, **kwargs):
-    """Search Markov blanket in a Bayesian network using Incremental Association Markov Blanket algorithm [1]_.
+    """Search Markov blanket in a Bayesian network using Incremental Association Markov Blanket algorithm
+    [tsamardinos2003algorithms]_.
 
     Parameters
     ----------
@@ -22,8 +23,8 @@ def iamb(X, lamb=0.0, **kwargs):
 
     References
     ----------
-    .. [1] Tsamardinos, Ioannis, et al. "Algorithms for Large Scale Markov Blanket Discovery." FLAIRS conference. Vol.
-        2. 2003.
+    .. [tsamardinos2003algorithms] Tsamardinos, Ioannis, et al. "Algorithms for Large Scale Markov Blanket Discovery."
+        FLAIRS conference. Vol. 2. 2003.
     """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
