@@ -53,7 +53,7 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
 
 
 def conditional_mutual_information(X, Y, Z, mi_estimator='knn', force_non_negative=False, **kwargs):
-    """Estimate conditional mutual information between ``X`` and ``Y`` given ``Z``.
+    """Estimate conditional mutual information between :py:obj:`X` and ``Y`` given `Z`.
 
     Parameters
     ----------
