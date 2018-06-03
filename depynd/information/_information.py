@@ -15,7 +15,7 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
         Observations of the other variable.
     mi_estimator : {'knn', 'dr'}, default 'knn'
         MI estimator.
-    force_non_negative : bool, default True
+    force_non_negative : bool, default False
         If ``True``, the result will be taken max with zero.
     kwargs : dict
         Optional parameters for MI estimation.
@@ -57,16 +57,16 @@ def conditional_mutual_information(X, Y, Z, mi_estimator='knn', force_non_negati
 
     Parameters
     ----------
-    X : array-like, shape (n_samples, d_x)
-        The observations of a conditioned variable.
-    Y : array-like, shape (n_samples, d_y)
-        The observations of the other conditioned variable.
-    Z : array-like, shape (n_samples, d_z)
-        The observations of the conditioning variable.
-    mi_estimator : str
-        The MI estimator. 'knn' and 'dr' is currently available. Default is 'knn'.
-    force_non_negative : bool
-        If ``True``, the result will be taken max with zero. Default is ``False``.
+    X : array-like, shape (n_samples, d_x) or (n_samples)
+        Observations of a conditioned variable.
+    Y : array-like, shape (n_samples, d_y) or (n_samples)
+        Observations of the other conditioned variable.
+    Z : array-like, shape (n_samples, d_z) or (n_samples)
+        Observations of the conditioning variable.
+    mi_estimator : {'knn', 'dr'}, default 'knn'
+        MI estimator.
+    force_non_negative : bool, default False
+        If ``True``, the result will be taken max with zero.
     kwargs : dict, default None
         Optional parameters for MI estimation.
 
