@@ -10,7 +10,7 @@ def _glasso(X, lamb, return_precision=False):
 
     Parameters
     ----------
-    X : array, shape (n_samples, d)
+    X : array, shape (n_samples, n_features)
         Observations of variables.
     lamb : float
         Regularization parameter.
@@ -19,7 +19,7 @@ def _glasso(X, lamb, return_precision=False):
 
     Returns
     ----------
-    adj : array, shape (d, d)
+    adj : array, shape (n_features, n_features)
         Estimated adjacency matrix (or precision matrix if ``return_precision`` is True) of an MRF.
     """
     cov = np.cov(scale(X), rowvar=False)

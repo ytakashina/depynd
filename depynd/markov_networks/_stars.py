@@ -20,7 +20,8 @@ def _stars(X, estimator, lambdas, beta, ratio, rep_num, verbose=False):
 
     Parameters
     ----------
-    X
+    X : array, shape (n_samples, n_features)
+        Observations of variables.
     estimator
     lambdas
     beta
@@ -30,6 +31,8 @@ def _stars(X, estimator, lambdas, beta, ratio, rep_num, verbose=False):
 
     Returns
     -------
+    lambda_opt : float
+        Optimal regularization parameter.
 
     References
     -------

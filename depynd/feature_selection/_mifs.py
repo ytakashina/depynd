@@ -9,7 +9,7 @@ def _mifs(X, y, lamb, k, **kwargs):
 
     Parameters
     ----------
-    X : array-like, shape (n_samples, d)
+    X : array-like, shape (n_samples, n_features)
         Observations of feature variables.
     y : array-like, shape (n_samples)
         Observations of the target variable.
