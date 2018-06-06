@@ -1,4 +1,4 @@
-:py:func:`depynd.markov_networks.glasso`
+:py:func:`depynd.markov_networks._glasso`
 =========================================
 
 .. autofunction:: depynd.markov_networks._glasso

@@ -1,4 +1,4 @@
-:py:func:`depynd.markov_networks.gsmn`
+:py:func:`depynd.markov_networks._gsmn`
 ======================================
 
 .. autofunction:: depynd.markov_networks._gsmn
