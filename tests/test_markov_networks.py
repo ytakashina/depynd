@@ -5,7 +5,7 @@ from depynd.markov_networks import select
 
 X = np.random.multivariate_normal(np.zeros(2), np.eye(2), 10)
 x = np.random.normal(0, 1, 10)
-methods = ['mifs', 'mrmr']
+methods = ['glasso', 'skeptic', 'gsmn', 'iamb', 'gsmple']
 
 
 class TestSelect:
