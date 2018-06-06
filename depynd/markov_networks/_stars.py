@@ -14,7 +14,7 @@ def _instability(X, estimator, alpha, ratio, rep_num):
     return d
 
 
-def stars(X, estimator, lambdas, beta, ratio, rep_num, verbose=False):
+def _stars(X, estimator, lambdas, beta, ratio, rep_num, verbose=False):
     """Obtain the best regularization parameter using Stability Approach to Regularization Selection
     [liu2010stability]_.
 

@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import mutual_information
 
 
-def mrmr(X, y, lamb=0.0, **kwargs):
+def _mrmr(X, y, lamb=0.0, **kwargs):
     """Select effective features in ``X`` on predicting ``y`` using minimum redundancy maximum relevance feature
     selection [peng2005feature]_.
 

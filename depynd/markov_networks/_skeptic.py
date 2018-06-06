@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.covariance import graph_lasso  # In the future, graph_lasso will be renamed to graphical_lasso.
 
 
-def skeptic(X, lamb, return_precision=False):
+def _skeptic(X, lamb, return_precision=False):
     """Learn the structure of Markov random field with nonparanormal SKEPTIC using Spearman’s rho [liu2012high]_.
 
     Parameters

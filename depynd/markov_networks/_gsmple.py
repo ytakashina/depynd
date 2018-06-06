@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import conditional_mutual_information
 
 
-def gsmple(X, lamb=0.0, **kwargs):
+def _gsmple(X, lamb=0.0, **kwargs):
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
     adj = _grow(adj, X, lamb, **kwargs)

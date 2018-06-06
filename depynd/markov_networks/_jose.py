@@ -10,7 +10,7 @@ def non_diag(A):
     return tmp
 
 
-def jose(X, lamb=0.01, tol=1e-6, max_iter=100):
+def _jose(X, lamb=0.01, tol=1e-6, max_iter=100):
     if set(np.ravel(X)) != {0, 1}:
         raise ValueError('Each element of X must be in {0, 1}.')
 

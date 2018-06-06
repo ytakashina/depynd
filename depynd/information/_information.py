@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.utils.validation import check_array
 
-from depynd.information import mi_dr, mi_knn
+from depynd.information import _mi_dr, _mi_knn
 
 
 def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwargs):
@@ -40,12 +40,12 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
         assert sigma > 0, '`sigma` must be positive.'
         assert isinstance(n_bases, (int, np.integer)) and n_bases > 0, '`n_bases` must be a positive integer.'
         assert isinstance(maxiter, (int, np.integer)) and maxiter > 0, '`maxiter` must be a positive integer.'
-        mi = mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
+        mi = _mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
     elif mi_estimator == 'knn':
         k = kwargs.get('k', 3)
         assert isinstance(k, (int, np.integer)) and k > 0, '`k` must be a positive integer.'
         assert k < len(X), '`k` must be smaller than `n_sample`.'
-        mi = mi_knn(X, Y, k)
+        mi = _mi_knn(X, Y, k)
     else:
         raise ValueError('`%s` is not implemented.' % mi_estimator)
 

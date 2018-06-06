@@ -2,7 +2,7 @@ import numpy as np
 from scipy.special import digamma
 
 
-def mi_knn(X, Y, k):
+def _mi_knn(X, Y, k):
     """Estimate mutual information between X and Y using kNN-based MI estimator.
 
     Parameters
