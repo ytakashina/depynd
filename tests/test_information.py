@@ -7,6 +7,7 @@ X = np.random.multivariate_normal(np.zeros(2), np.eye(2), 10)
 x = np.random.normal(0, 1, 10)
 y = np.random.normal(0, 1, 20)
 z = np.empty([10, 0])
+estimators = ['dr', 'knn']
 
 
 class TestMi:
@@ -57,6 +58,15 @@ class TestMi:
         assert 0 == mutual_information(z, x)
         assert 0 == mutual_information(x, z)
 
+    def test_mi_estimator(self):
+        try:
+            for estimator in estimators:
+                mutual_information(x, x, mi_estimator=estimator)
+        except ValueError:
+            fail()
+        with raises(ValueError):
+            mutual_information(x, x, mi_estimator='')
+
 
 class TestCmi:
     def test_length(self):
@@ -82,3 +92,12 @@ class TestCmi:
         assert 0 == conditional_mutual_information(z, x, x)
         assert 0 == conditional_mutual_information(x, z, x)
         assert mutual_information(x, x) == conditional_mutual_information(x, x, z)
+
+    def test_mi_estimator(self):
+        try:
+            for estimator in estimators:
+                conditional_mutual_information(x, x, x, mi_estimator=estimator)
+        except ValueError:
+            fail()
+        with raises(ValueError):
+            conditional_mutual_information(x, x, x, mi_estimator='')

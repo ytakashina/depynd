@@ -30,4 +30,4 @@ def select(X, y, lamb=0.0, method='mifs', **kwargs):
     elif method == 'mrmr':
         return mrmr(X, y, lamb=lamb, **kwargs)
     else:
-        raise NotImplementedError('Method %s is not implemented. Use mifs or mrmr.' % method)
+        raise ValueError('`%s` is not implemented.' % method)
