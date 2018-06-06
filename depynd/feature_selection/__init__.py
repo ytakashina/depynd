@@ -1,5 +1,5 @@
-from ._mrmr import mrmr
-from ._mifs import mifs
+from ._mrmr import _mrmr
+from ._mifs import _mifs
 from ._select import select
 
-__all__ = ['mrmr', 'mifs', 'select']
+__all__ = ['_mrmr', '_mifs', 'select']

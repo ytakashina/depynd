@@ -4,7 +4,7 @@ from scipy.optimize import minimize
 from sklearn.cluster import KMeans
 
 
-def mi_dr(X, Y, sigma, n_bases, maxiter):
+def _mi_dr(X, Y, sigma, n_bases, maxiter):
     """Estimate mutual information between X and Y using density ratio estimation.
 
     Parameters

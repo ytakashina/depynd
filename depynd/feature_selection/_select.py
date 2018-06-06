@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.utils.validation import check_X_y
 
-from depynd.feature_selection import mrmr, mifs
+from depynd.feature_selection import _mrmr, _mifs
 
 
 def select(X, y, lamb=0.0, method='mifs', **kwargs):
@@ -26,8 +26,8 @@ def select(X, y, lamb=0.0, method='mifs', **kwargs):
     y = np.ravel(y)
     X, y = check_X_y(X, y, ensure_min_samples=2, ensure_min_features=2)
     if method == 'mifs':
-        return mifs(X, y, lamb=lamb, **kwargs)
+        return _mifs(X, y, lamb=lamb, **kwargs)
     elif method == 'mrmr':
-        return mrmr(X, y, lamb=lamb, **kwargs)
+        return _mrmr(X, y, lamb=lamb, **kwargs)
     else:
         raise ValueError('`%s` is not implemented.' % method)

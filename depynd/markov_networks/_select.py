@@ -1,6 +1,6 @@
 from sklearn.utils import check_array
 
-from depynd.markov_networks import skeptic, stars, glasso, gsmn, iamb, gsmple
+from depynd.markov_networks import _skeptic, _stars, _glasso, _gsmn, _iamb, _gsmple
 
 
 def select(X, method='glasso', criterion='stars', lambdas=None, verbose=False, return_lambda=False, **kwargs):
@@ -30,15 +30,15 @@ def select(X, method='glasso', criterion='stars', lambdas=None, verbose=False, r
     """
     X = check_array(X, ensure_min_samples=2, ensure_min_features=2)
     if method == 'glasso':
-        estimator = glasso
+        estimator = _glasso
     elif method == 'skeptic':
-        estimator = skeptic
+        estimator = _skeptic
     elif method == 'gsmn':
-        estimator = gsmn
+        estimator = _gsmn
     elif method == 'iamb':
-        estimator = iamb
+        estimator = _iamb
     elif method == 'gsmple':
-        estimator = gsmple
+        estimator = _gsmple
     else:
         raise ValueError('`%s` is not implemented.' % method)
 
@@ -51,7 +51,7 @@ def select(X, method='glasso', criterion='stars', lambdas=None, verbose=False, r
         beta = kwargs.get('beta', 0.1)
         ratio = kwargs.get('ratio', 10 * (n ** -0.5) if n > 144 else 0.8)
         rep_num = kwargs.get('rep_num', 20)
-        lamb = stars(X, estimator, beta=beta, ratio=ratio, rep_num=rep_num, lambdas=lambdas, verbose=verbose)
+        lamb = _stars(X, estimator, beta=beta, ratio=ratio, rep_num=rep_num, lambdas=lambdas, verbose=verbose)
     else:
         raise ValueError('Criteria %s is not implemented.' % criterion)
 

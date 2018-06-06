@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import conditional_mutual_information
 
 
-def mifs(X, y, lamb=0.0, **kwargs):
+def _mifs(X, y, lamb=0.0, **kwargs):
     """Select effective features in ``X`` on predicting ``y`` using mutual-information-based feature selection
     [brown2012conditional]_.
 

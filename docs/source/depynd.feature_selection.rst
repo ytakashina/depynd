@@ -13,8 +13,8 @@ Methods
 ---------------
 The :py:func:`select` function supports the following methods:
 
-- 'mifs': :py:func:`depynd.feature_selection.mifs`
-- 'mrmr': :py:func:`depynd.feature_selection.mrmr`
+- 'mifs': :py:func:`depynd.feature_selection._mifs`
+- 'mrmr': :py:func:`depynd.feature_selection._mrmr`
 
 
 
