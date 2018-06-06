@@ -47,7 +47,7 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
         assert k < len(X), '`k` must be smaller than `n_sample`.'
         mi = mi_knn(X, Y, k)
     else:
-        raise NotImplementedError
+        raise ValueError('`%s` is not implemented.' % mi_estimator)
 
     return max(mi, 0) if force_non_negative else mi
 
