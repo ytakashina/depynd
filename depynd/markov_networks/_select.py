@@ -3,7 +3,7 @@ from sklearn.utils import check_array
 from depynd.markov_networks import skeptic, stars, glasso, gsmn, iamb, gsmple
 
 
-def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, return_lambda=False, **kwargs):
+def select(X, method='glasso', criterion='stars', lambdas=None, verbose=False, return_lambda=False, **kwargs):
     """Learn the structure of Markov random field.
 
     Parameters
@@ -12,7 +12,7 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
         Observations of a set of random variables.
     method : {'glasso', 'skeptic', 'gsmn', 'iamb'}
         Method for structure learning.
-    criteria : {'stars'}
+    criterion : {'stars'}
         Criteria for selecting regularization parameter.
     lambdas : array-like
         Candidates of regularization parameter.
@@ -47,13 +47,13 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
     lambdas = sorted(lambdas, reverse=True)  # sort by descending order
 
     n, d = X.shape
-    if criteria == 'stars':
+    if criterion == 'stars':
         beta = kwargs.get('beta', 0.1)
         ratio = kwargs.get('ratio', 10 * (n ** -0.5) if n > 144 else 0.8)
         rep_num = kwargs.get('rep_num', 20)
         lamb = stars(X, estimator, beta=beta, ratio=ratio, rep_num=rep_num, lambdas=lambdas, verbose=verbose)
     else:
-        raise NotImplementedError('Criteria %s is not implemented.' % criteria)
+        raise ValueError('Criteria %s is not implemented.' % criterion)
 
     if return_lambda:
         return estimator(X, lamb), lamb
