@@ -9,9 +9,9 @@ def _mi_dr(X, Y, sigma, n_bases, maxiter):
 
     Parameters
     ----------
-    X : array-like, shape (n_samples, d_x) or (n_samples)
+    X : array-like, shape (n_samples, n_features_x) or (n_samples)
         Observations of a variable.
-    Y : array-like, shape (n_samples, d_y) or (n_samples)
+    Y : array-like, shape (n_samples, n_features_y) or (n_samples)
         Observations of the other variable.
     sigma : float
         Kernel width for density ratio estimator.

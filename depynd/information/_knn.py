@@ -7,9 +7,9 @@ def _mi_knn(X, Y, n_neighbors):
 
     Parameters
     ----------
-    X : array-like, shape (n_samples, d_x) or (n_samples)
+    X : array-like, shape (n_samples, n_features_x) or (n_samples)
         Observations of a variable.
-    Y : array-like, shape (n_samples, d_y) or (n_samples)
+    Y : array-like, shape (n_samples, n_features_y) or (n_samples)
         Observations of the other variable.
     n_neighbors : int
         Number of neighbors.

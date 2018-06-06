@@ -9,7 +9,7 @@ def _iamb(X, lamb=0.0, **kwargs):
 
     Parameters
     ----------
-    X : array-like, shape (n_samples, d)
+    X : array, shape (n_samples, n_features)
         Observations of variables.
     lamb: float
         Threshold for independence test.
@@ -18,7 +18,7 @@ def _iamb(X, lamb=0.0, **kwargs):
 
     Returns
     -------
-    adj : array, shape (d, d)
+    adj : array, shape (n_features, n_features)
         Estimated adjacency matrix of an MRF.
 
     References

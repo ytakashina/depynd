@@ -8,7 +8,7 @@ def select(X, method='glasso', criterion='stars', lambdas=None, verbose=False, r
 
     Parameters
     ----------
-    X : array-like, shape (n_samples, d)
+    X : array-like, shape (n_samples, n_features)
         Observations of a set of random variables.
     method : {'glasso', 'skeptic', 'gsmn', 'iamb'}
         Method for structure learning.
@@ -25,7 +25,7 @@ def select(X, method='glasso', criterion='stars', lambdas=None, verbose=False, r
 
     Returns
     -------
-    adj : array, shape (d, d)
+    adj : array, shape (n_features, n_features)
         Estimated adjacency matrix of an MRF.
     """
     X = check_array(X, ensure_min_samples=2, ensure_min_features=2)

@@ -9,7 +9,7 @@ def select(X, y, lamb=0.0, k=None, method='mifs', **kwargs):
 
     Parameters
     ----------
-    X : array-like, shape (n_samples, d)
+    X : array-like, shape (n_samples, n_features)
         Observations of feature variables.
     y : array-like, shape (n_samples)
         Observations of the target variable.
