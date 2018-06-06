@@ -3,7 +3,7 @@ import numpy as np
 from depynd.information import mutual_information
 
 
-def _mrmr(X, y, lamb=0.0, **kwargs):
+def _mrmr(X, y, lamb, k, **kwargs):
     """Select effective features in ``X`` on predicting ``y`` using minimum redundancy maximum relevance feature
     selection [peng2005feature]_.
 
@@ -13,9 +13,11 @@ def _mrmr(X, y, lamb=0.0, **kwargs):
         Observations of feature variables.
     y : array-like, shape (n_samples)
         Observations of the target variable.
-    lamb: float
-        Threshold for independence tests.
-    kwargs : dict, default None
+    lamb: float or None
+        Threshold for independence tests. Ignored if `k` is specified.
+    k : int or None
+        Number of selected features.
+    kwargs : dict
         Optional parameters for MI estimation.
 
     Returns
@@ -30,7 +32,14 @@ def _mrmr(X, y, lamb=0.0, **kwargs):
         machine intelligence 27.8 (2005): 1226-1238.
     """
     n, d = X.shape
-    selected = []
+    if k is not None:
+        return _grow([], X, y, -np.inf, k, **kwargs)
+    else:
+        return _grow([], X, y, lamb, d, **kwargs)
+
+
+def _grow(selected, X, y, lamb, k, **kwargs):
+    n, d = X.shape
     while True:
         max_obj = -np.inf
         not_selected = set(range(d)) - set(selected)
@@ -42,8 +51,6 @@ def _mrmr(X, y, lamb=0.0, **kwargs):
             if max_obj < obj:
                 max_obj = obj
                 max_idx = i
-
-        if max_obj <= lamb:
+        if max_obj <= lamb or len(selected) == k:
             return selected
-
         selected.append(max_idx)

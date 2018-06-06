@@ -13,16 +13,16 @@ estimators = ['dr', 'knn']
 class TestMi:
     def test_knn(self):
         try:
-            mutual_information(X, X, mi_estimator='knn', k=1)
-            mutual_information(X, X, mi_estimator='knn', k=9)
+            mutual_information(X, X, mi_estimator='knn', n_neighbors=1)
+            mutual_information(X, X, mi_estimator='knn', n_neighbors=9)
         except (KeyError, ValueError):
             fail()
         with raises(AssertionError):
-            mutual_information(X, X, mi_estimator='knn', k=0)
+            mutual_information(X, X, mi_estimator='knn', n_neighbors=0)
         with raises(AssertionError):
-            mutual_information(X, X, mi_estimator='knn', k=10)
+            mutual_information(X, X, mi_estimator='knn', n_neighbors=10)
         with raises(AssertionError):
-            mutual_information(X, X, mi_estimator='knn', k=0.1)
+            mutual_information(X, X, mi_estimator='knn', n_neighbors=0.1)
 
     def test_dr(self):
         try:
