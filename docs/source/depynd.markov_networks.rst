@@ -13,10 +13,10 @@ Methods
 ---------------
 The :py:func:`select` function supports the following methods:
 
-- 'gsmn': :py:func:`depynd.markov_networks._gsmn`
-- 'iamb': :py:func:`depynd.markov_networks._iamb`
 - 'glasso': :py:func:`depynd.markov_networks._glasso`
 - 'skeptic': :py:func:`depynd.markov_networks._skeptic`
+- 'gsmn': :py:func:`depynd.markov_networks._gsmn`
+- 'iamb': :py:func:`depynd.markov_networks._iamb`
 
 
 Criteria
