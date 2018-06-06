@@ -11,6 +11,27 @@ methods = ['mifs', 'mrmr']
 
 
 class TestSelect:
+    def test_lamb(self):
+        try:
+            select(X, x, lamb=1.0)
+            select(X, x, lamb=1)
+            select(X, x, lamb=0)
+            select(X, x, lamb=-1.0)
+            select(X, x, lamb=np.inf)
+            select(X, x, lamb=-np.inf)
+        except ValueError:
+            fail()
+        with raises(ValueError):
+            select(X, x, lamb=None, k=None)
+        with raises(AssertionError):
+            select(X, x, lamb=[0])
+
+    def test_k(self):
+        with raises(AssertionError):
+            select(X, x, lamb=None, k=3)
+        with raises(AssertionError):
+            select(X, x, lamb=None, k=0)
+
     def test_dimension(self):
         try:
             select(X, x)

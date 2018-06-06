@@ -42,10 +42,11 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
         assert isinstance(maxiter, (int, np.integer)) and maxiter > 0, '`maxiter` must be a positive integer.'
         mi = _mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
     elif mi_estimator == 'knn':
-        k = kwargs.get('k', 3)
-        assert isinstance(k, (int, np.integer)) and k > 0, '`k` must be a positive integer.'
-        assert k < len(X), '`k` must be smaller than `n_sample`.'
-        mi = _mi_knn(X, Y, k)
+        n_neighbors = kwargs.get('n_neighbors', 3)
+        assert isinstance(n_neighbors, (int, np.integer)) and n_neighbors > 0, \
+            '`n_neighbors` must be a positive integer.'
+        assert n_neighbors < len(X), '`n_neighbors` must be smaller than `n_sample`.'
+        mi = _mi_knn(X, Y, n_neighbors)
     else:
         raise ValueError('`%s` is not implemented.' % mi_estimator)
 
