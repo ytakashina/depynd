@@ -1,3 +1,5 @@
+from sklearn.utils import check_array
+
 from depynd.markov_networks import skeptic, stars, glasso, gsmn, iamb, gsmple
 
 
@@ -26,6 +28,7 @@ def select(X, method='glasso', criteria='stars', lambdas=None, verbose=False, re
     adj : array, shape (d, d)
         Estimated adjacency matrix of an MRF.
     """
+    X = check_array(X, ensure_min_samples=2, ensure_min_features=2)
     if method == 'glasso':
         estimator = glasso
     elif method == 'skeptic':

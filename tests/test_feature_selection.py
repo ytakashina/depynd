@@ -29,4 +29,4 @@ class TestSelect:
         with raises(ValueError):
             select(X, y)
         with raises(ValueError):
-            select(X[:1], y[:1])
+            select(X[:1], x[:1])
