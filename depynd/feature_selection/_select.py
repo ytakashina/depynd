@@ -33,7 +33,7 @@ def select(X, y, lamb=0.0, k=None, method='mifs', **kwargs):
         assert isinstance(k, (int, np.integer)) and k > 0, '`k` must be a positive integer.'
         assert k <= X.shape[1], '`k` cannot be larger than number of features.'
     else:
-        assert isinstance(lamb, (float, np.float)), '`lamb` must be a real value.'
+        assert np.isscalar(lamb), '`lamb` must be a real value.'
     if method == 'mifs':
         return _mifs(X, y, lamb=lamb, k=k, **kwargs)
     elif method == 'mrmr':
