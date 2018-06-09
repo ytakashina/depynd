@@ -3,7 +3,7 @@ from sklearn.preprocessing import scale
 from sklearn.covariance import graph_lasso
 
 
-def _glasso(X, lamb, return_precision=False):
+def _glasso(X, lamb, return_precision=False, **kwargs):
     """Learn the structure of Markov random field with the graphical lasso.
 
     This function internally calls the implementation in scikit-learn.
