@@ -61,7 +61,7 @@ def select(X, method='glasso', criterion='none', lamb=0.05, verbose=False, retur
         if 'rep_num' not in kwargs:
             kwargs['rep_num'] = 20
         lamb = _stars(X, estimator, lamb=lamb, verbose=verbose, **kwargs)
-    elif criterion is 'none' or len(lamb) == 1:
+    elif criterion == 'none' or len(lamb) == 1:
         lamb = next(iter(lamb))
     else:
         raise ValueError('Criteria %s is not implemented.' % criterion)
