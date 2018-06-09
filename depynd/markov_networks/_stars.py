@@ -39,8 +39,8 @@ def _stars(X, estimator, lamb, beta, ratio, rep_num, verbose=False, **kwargs):
     .. [liu2010stability] Liu, Han, Kathryn Roeder, and Larry Wasserman. "Stability approach to regularization selection
         (stars) for high dimensional graphical models." Advances in neural information processing systems. 2010.
     """
-    for i, lamb in enumerate(lamb):
-        instability = _instability(X, estimator, lamb, ratio=ratio, rep_num=rep_num, **kwargs)
+    for i, l in enumerate(lamb):
+        instability = _instability(X, estimator, l, ratio=ratio, rep_num=rep_num, **kwargs)
         if instability > beta:
             return lamb[i - 1]
         if verbose:
