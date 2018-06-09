@@ -4,19 +4,6 @@ from sklearn.utils import check_array
 from depynd.markov_networks import _skeptic, _stars, _glasso, _gsmn, _iamb, _gsmple
 
 
-def _check_lamb(lamb, check_non_negative, method):
-    if np.iterable(lamb):
-        if not all(np.isscalar(l) for l in lamb):
-            raise ValueError('`lamb` must be None, a scalar, or an iterable of scalars.')
-        if check_non_negative and any(l < 0 for l in lamb):
-            raise ValueError('Every element in `lamb` must be positive when using %s.' % method)
-    else:
-        if not np.isscalar(lamb):
-            raise ValueError('`lamb` must be None, a scalar, or an iterable of scalars.')
-        if check_non_negative and lamb < 0:
-            raise ValueError('`lamb` must be positive when using %s.' % method)
-
-
 def select(X, method='skeptic', criterion='stars', lamb=None, verbose=False, return_lambda=False, **kwargs):
     """Learn the structure of Markov random field.
 
@@ -97,3 +84,16 @@ def select(X, method='skeptic', criterion='stars', lamb=None, verbose=False, ret
         return estimator(X, lamb_opt), lamb_opt
     else:
         return estimator(X, lamb_opt)
+
+
+def _check_lamb(lamb, check_non_negative, method):
+    if np.iterable(lamb):
+        if not all(np.isscalar(l) for l in lamb):
+            raise ValueError('`lamb` must be None, a scalar, or an iterable of scalars.')
+        if check_non_negative and any(l < 0 for l in lamb):
+            raise ValueError('Every element in `lamb` must be positive when using %s.' % method)
+    else:
+        if not np.isscalar(lamb):
+            raise ValueError('`lamb` must be None, a scalar, or an iterable of scalars.')
+        if check_non_negative and lamb < 0:
+            raise ValueError('`lamb` must be positive when using %s.' % method)
