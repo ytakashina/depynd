@@ -8,8 +8,6 @@ def _mi_plugin(X, Y):
 
 def _h_plugin(X):
     n, d = X.shape
-    row_dtype = np.dtype((np.void, X.dtype.itemsize * d))
-    b = np.ascontiguousarray(X).view(row_dtype)
-    _, cnt = np.unique(b, return_counts=True)
+    _, cnt = np.unique(X, axis=0, return_counts=True)
     p = cnt / n
     return -np.sum(p * np.log(p))
