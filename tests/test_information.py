@@ -11,6 +11,20 @@ estimators = ['dr', 'knn']
 
 
 class TestMi:
+    def test_auto(self):
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='dr', discrete_features=True)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='plugin', discrete_features=False)
+        with raises(AssertionError):
+            mutual_information(X, X, mi_estimator='plugin', discrete_features='auto')
+        try:
+            mutual_information(X, X, mi_estimator='dr', discrete_features=False)
+            mutual_information(X, X, mi_estimator='dr', discrete_features='auto')
+            mutual_information(X, X, mi_estimator='plugin', discrete_features=True)
+        except AssertionError:
+            fail()
+
     def test_knn(self):
         try:
             mutual_information(X, X, mi_estimator='knn', n_neighbors=1)
