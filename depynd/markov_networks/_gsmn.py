@@ -28,8 +28,10 @@ def _gsmn(X, lamb=0.0, **kwargs):
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
     for i in range(d):
-        adj = _grow(adj, i, X, lamb, **kwargs)
-        adj = _shrink(adj, i, X, lamb, **kwargs)
+        adj_tmp = np.zeros([d, d], dtype=bool)
+        adj_tmp = _grow(adj_tmp, i, X, lamb, **kwargs)
+        adj_tmp = _shrink(adj_tmp, i, X, lamb, **kwargs)
+        adj |= adj_tmp
     return adj
 
 

@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.utils.validation import check_array
 
-from depynd.information import _mi_dr, _mi_knn
+from depynd.information import _mi_dr, _mi_knn, _mi_plugin
 
 
 def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwargs):
@@ -47,6 +47,8 @@ def mutual_information(X, Y, mi_estimator='knn', force_non_negative=False, **kwa
             '`n_neighbors` must be a positive integer.'
         assert n_neighbors < len(X), '`n_neighbors` must be smaller than `n_sample`.'
         mi = _mi_knn(X, Y, n_neighbors)
+    elif mi_estimator == 'plugin':
+        mi = _mi_plugin(X, Y)
     else:
         raise ValueError('`%s` is not implemented.' % mi_estimator)
 

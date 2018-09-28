@@ -12,6 +12,7 @@ def _gsmple(X, lamb=0.0, **kwargs):
 
 
 def _grow(adj, X, lamb, **kwargs):
+    # TODO: CMI caching
     n, d = X.shape
     while True:
         vmax = -np.inf
@@ -40,6 +41,7 @@ def _grow(adj, X, lamb, **kwargs):
 
 
 def _shrink(adj, X, lamb, **kwargs):
+    # TODO: CMI caching
     n, d = X.shape
     while True:
         vmin = np.inf
