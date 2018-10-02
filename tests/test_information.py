@@ -1,29 +1,36 @@
 import numpy as np
-from pytest import raises, fail
+from pytest import raises, fail, approx
 
 from depynd.information import mutual_information, conditional_mutual_information
 
 X = np.random.multivariate_normal(np.zeros(2), np.eye(2), 10)
+w = np.random.randint(0, 2, 10)
 x = np.random.normal(0, 1, 10)
 y = np.random.normal(0, 1, 20)
 z = np.empty([10, 0])
-estimators = ['dr', 'knn']
 
 
 class TestMi:
     def test_auto(self):
         with raises(AssertionError):
-            mutual_information(X, X, mi_estimator='dr', discrete_features=True)
+            mutual_information(x, x, mi_estimator='dr', is_discrete=True)
         with raises(AssertionError):
-            mutual_information(X, X, mi_estimator='plugin', discrete_features=False)
+            mutual_information(x, x, mi_estimator='plugin', is_discrete=False)
         with raises(AssertionError):
-            mutual_information(X, X, mi_estimator='plugin', discrete_features='auto')
+            mutual_information(x, x, mi_estimator='plugin', is_discrete='auto')
+        with raises(AssertionError):
+            mutual_information(w, w, mi_estimator='dr', is_discrete='auto')
         try:
-            mutual_information(X, X, mi_estimator='dr', discrete_features=False)
-            mutual_information(X, X, mi_estimator='dr', discrete_features='auto')
-            mutual_information(X, X, mi_estimator='plugin', discrete_features=True)
+            mutual_information(x, x, mi_estimator='auto', is_discrete='auto')
+            mutual_information(x, w, mi_estimator='auto', is_discrete='auto')
+            mutual_information(w, w, mi_estimator='auto', is_discrete='auto')
+            mutual_information(x, x, mi_estimator='auto', is_discrete=True)
+            mutual_information(x, x, mi_estimator='auto', is_discrete=False)
+            mutual_information(x, w, mi_estimator='auto', is_discrete=False)
         except AssertionError:
             fail()
+        with raises(TypeError):
+            mutual_information(X, X, mi_estimator='auto', is_discrete=1)
 
     def test_knn(self):
         try:
@@ -74,8 +81,12 @@ class TestMi:
 
     def test_mi_estimator(self):
         try:
-            for estimator in estimators:
-                mutual_information(x, x, mi_estimator=estimator)
+            mutual_information(x, x, mi_estimator='dr', is_discrete='auto')
+            mutual_information(x, w, mi_estimator='knn', is_discrete='auto')
+            mutual_information(w, w, mi_estimator='plugin', is_discrete='auto')
+            mutual_information(x, x, mi_estimator='dr', is_discrete=False)
+            mutual_information(x, w, mi_estimator='knn', is_discrete=False)
+            mutual_information(w, w, mi_estimator='plugin', is_discrete=True)
         except ValueError:
             fail()
         with raises(ValueError):
@@ -103,14 +114,28 @@ class TestCmi:
             conditional_mutual_information(X, X, X)
         except ValueError:
             fail()
-        assert 0 == conditional_mutual_information(z, x, x)
-        assert 0 == conditional_mutual_information(x, z, x)
-        assert mutual_information(x, x) == conditional_mutual_information(x, x, z)
+        assert 0 == approx(conditional_mutual_information(z, w, w), abs=1e-6)
+        assert 0 == approx(conditional_mutual_information(w, z, w), abs=1e-6)
+        assert mutual_information(w, w) == approx(conditional_mutual_information(w, w, z), abs=1e-6)
 
     def test_mi_estimator(self):
         try:
-            for estimator in estimators:
-                conditional_mutual_information(x, x, x, mi_estimator=estimator)
+            conditional_mutual_information(x, x, x, mi_estimator='dr', is_discrete='auto')
+            conditional_mutual_information(x, x, w, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(x, w, x, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(x, w, w, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, x, x, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, x, w, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, w, x, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, w, w, mi_estimator='plugin', is_discrete='auto')
+            conditional_mutual_information(x, x, x, mi_estimator='dr', is_discrete=False)
+            conditional_mutual_information(x, x, w, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(x, w, x, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(x, w, w, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, x, x, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, x, w, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, w, x, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, w, w, mi_estimator='plugin', is_discrete=True)
         except ValueError:
             fail()
         with raises(ValueError):
