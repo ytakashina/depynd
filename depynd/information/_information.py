@@ -37,13 +37,12 @@ def mutual_information(X, Y, mi_estimator='auto', is_discrete='auto', force_non_
     assert len(X) == len(Y), 'X and Y must have the same length.'
 
     n = len(X)
-    if is_discrete:
-        is_continuous = False
-    elif not is_discrete:
-        is_continuous = all(n == len(set(col)) for col in X.T) and all(n == len(set(col)) for col in Y.T)
-    elif is_discrete == 'auto':
+    if is_discrete == 'auto':
         is_discrete = all(n != len(set(col)) for col in X.T) and all(n != len(set(col)) for col in Y.T)
         is_continuous = all(n == len(set(col)) for col in X.T) and all(n == len(set(col)) for col in Y.T)
+    elif isinstance(is_discrete, bool):
+        is_continuous = not is_discrete and \
+                        all(n == len(set(col)) for col in X.T) and all(n == len(set(col)) for col in Y.T)
     else:
         raise TypeError("`is_discrete` must be 'auto' or bool.")
 
@@ -79,7 +78,7 @@ def mutual_information(X, Y, mi_estimator='auto', is_discrete='auto', force_non_
     return max(mi, 0) if force_non_negative else mi
 
 
-def conditional_mutual_information(X, Y, Z, mi_estimator='auto', discrete_features='auto', force_non_negative=False,
+def conditional_mutual_information(X, Y, Z, mi_estimator='auto', is_discrete='auto', force_non_negative=False,
                                    **kwargs):
     """Estimate conditional mutual information between ``X`` and ``Y`` given ``Z``.
 
@@ -91,10 +90,11 @@ def conditional_mutual_information(X, Y, Z, mi_estimator='auto', discrete_featur
         Observations of the other conditioned variable.
     Z : array-like, shape (n_samples, n_features_z) or (n_samples)
         Observations of the conditioning variable.
-    mi_estimator : {'knn', 'dr'}, default 'knn'
+    mi_estimator : {'knn', 'dr', 'plugin', 'auto'}, default 'auto'
         MI estimator.
-    discrete_features : {'auto', bool}, default 'auto'
-        If ``bool``, then it determines whether to consider all features discrete or continuous.
+    is_discrete : {'auto', bool}, default 'auto'
+        If ``bool``, then it determines whether to consider all features purely discrete or purely continuous. If
+        ``'auto'``, a column which contains duplicate elements will be considered as discrete.
     force_non_negative : bool, default False
         If ``True``, the result will be taken max with zero.
     kwargs : dict, default None
@@ -106,12 +106,12 @@ def conditional_mutual_information(X, Y, Z, mi_estimator='auto', discrete_featur
         Estimated conditional mutual information between ``X`` and ``Y``, given ``Z``.
     """
     if np.size(Z) == 0:
-        return mutual_information(X, Y, mi_estimator, discrete_features, force_non_negative, **kwargs)
+        return mutual_information(X, Y, mi_estimator, is_discrete, force_non_negative, **kwargs)
     assert len(X) == len(Y) == len(Z), 'X, Y and Z must have the same length.'
     X = np.atleast_2d(X.T).T
     Z = np.atleast_2d(Z.T).T
     XZ = np.hstack([X, Z])
-    mi_xz_y = mutual_information(XZ, Y, mi_estimator, discrete_features, **kwargs)
-    mi_y_z = mutual_information(Y, Z, mi_estimator, discrete_features, **kwargs)
+    mi_xz_y = mutual_information(XZ, Y, mi_estimator, is_discrete, **kwargs)
+    mi_y_z = mutual_information(Y, Z, mi_estimator, is_discrete, **kwargs)
     cmi = mi_xz_y - mi_y_z
     return max(cmi, 0) if force_non_negative else cmi
