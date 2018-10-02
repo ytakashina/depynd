@@ -15,8 +15,8 @@ def mutual_information(X, Y, mi_estimator='auto', is_discrete='auto', force_non_
         Observations of the other variable.
     mi_estimator : {'knn', 'dr', 'plugin', 'auto'}, default 'auto'
         MI estimator. If 'auto', MI estimator will be selected depending on whether all features are purely discrete,
-        purely continuous, or discrete-continuous mixed. If purely discrete, 'plugin' estimator will be used. If purely
-        continuous, 'dr' estimator will be chosen. Otherwise, 'knn' estimator will be selected.
+        purely continuous, or discrete-continuous mixed. If purely discrete, 'plugin' estimator will be used. Otherwise,
+        'knn' estimator will be selected.
     is_discrete : {'auto', bool}, default 'auto'
         If ``bool``, then it determines whether to consider all features purely discrete or purely continuous. If
         'auto', a column which contains duplicate elements will be considered discrete.
@@ -51,8 +51,8 @@ def mutual_information(X, Y, mi_estimator='auto', is_discrete='auto', force_non_
     if mi_estimator == 'auto':
         if is_discrete:
             mi_estimator = 'plugin'
-        elif is_continuous:
-            mi_estimator = 'dr'
+        # elif is_continuous:  # unstable
+        #     mi_estimator = 'dr'
         else:
             mi_estimator = 'knn'
 
@@ -94,8 +94,8 @@ def conditional_mutual_information(X, Y, Z, mi_estimator='auto', is_discrete='au
         Observations of the conditioning variable.
     mi_estimator : {'knn', 'dr', 'plugin', 'auto'}, default 'auto'
         MI estimator. If 'auto', MI estimator will be selected depending on whether all features are purely discrete,
-        purely continuous, or discrete-continuous mixed. If purely discrete, 'plugin' estimator will be used. If purely
-        continuous, 'dr' estimator will be chosen. Otherwise, 'knn' estimator will be selected.
+        purely continuous, or discrete-continuous mixed. If purely discrete, 'plugin' estimator will be used. Otherwise,
+        'knn' estimator will be selected.
     is_discrete : {'auto', bool}, default 'auto'
         If ``bool``, then it determines whether to consider all features purely discrete or purely continuous. If
         'auto', a column which contains duplicate elements will be considered discrete.
