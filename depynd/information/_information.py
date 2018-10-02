@@ -4,7 +4,7 @@ from sklearn.utils.validation import check_array
 from depynd.information import _mi_dr, _mi_knn, _mi_plugin
 
 
-def mutual_information(X, Y, mi_estimator='auto', discrete_features='auto', force_non_negative=False, **kwargs):
+def mutual_information(X, Y, mi_estimator='auto', is_discrete='auto', force_non_negative=False, **kwargs):
     """Estimate mutual information between ``X`` and ``Y``.
 
     Parameters
@@ -15,8 +15,9 @@ def mutual_information(X, Y, mi_estimator='auto', discrete_features='auto', forc
         Observations of the other variable.
     mi_estimator : {'knn', 'dr', 'plugin', 'auto'}, default 'auto'
         MI estimator.
-    discrete_features : {'auto', bool}, default 'auto'
-        If ``bool``, then it determines whether to consider all features discrete or continuous.
+    is_discrete : {'auto', bool}, default 'auto'
+        If ``bool``, then it determines whether to consider all features purely discrete or purely continuous. If
+        ``'auto'``, a column which contains duplicate elements will be considered as discrete.
     force_non_negative : bool, default False
         If ``True``, the result will be taken max with zero.
     kwargs : dict
@@ -36,18 +37,21 @@ def mutual_information(X, Y, mi_estimator='auto', discrete_features='auto', forc
     assert len(X) == len(Y), 'X and Y must have the same length.'
 
     n = len(X)
-    if discrete_features == 'auto':
-        all_discrete = all(n != len(set(col)) for col in X.T) and all(n != len(set(col)) for col in Y.T)
-        all_continuous = all(n == len(set(col)) for col in X.T) and all(n == len(set(col)) for col in Y.T)
-    elif isinstance(discrete_features, bool):
-        all_discrete = discrete_features
-        all_continuous = not discrete_features
+    if is_discrete:
+        is_continuous = False
+    elif not is_discrete:
+        is_continuous = all(n == len(set(col)) for col in X.T) and all(n == len(set(col)) for col in Y.T)
+    elif is_discrete == 'auto':
+        is_discrete = all(n != len(set(col)) for col in X.T) and all(n != len(set(col)) for col in Y.T)
+        is_continuous = all(n == len(set(col)) for col in X.T) and all(n == len(set(col)) for col in Y.T)
     else:
-        raise TypeError("`discrete_features` must be 'auto' or bool.")
+        raise TypeError("`is_discrete` must be 'auto' or bool.")
 
     if mi_estimator == 'auto':
-        if all_discrete:
+        if is_discrete:
             mi_estimator = 'plugin'
+        elif is_continuous:
+            mi_estimator = 'dr'
         else:
             mi_estimator = 'knn'
 
@@ -58,16 +62,16 @@ def mutual_information(X, Y, mi_estimator='auto', discrete_features='auto', forc
         assert sigma > 0, '`sigma` must be positive.'
         assert isinstance(n_bases, (int, np.integer)) and n_bases > 0, '`n_bases` must be a positive integer.'
         assert isinstance(maxiter, (int, np.integer)) and maxiter > 0, '`maxiter` must be a positive integer.'
-        assert all_continuous, 'When using density ratio estimator, all features must be continuous.'
+        assert is_continuous, 'When using density ratio estimator, all features must be continuous.'
         mi = _mi_dr(X, Y, sigma=sigma, n_bases=n_bases, maxiter=maxiter)
     elif mi_estimator == 'knn':
         n_neighbors = kwargs.get('n_neighbors', 3)
-        assert isinstance(n_neighbors, (int, np.integer)) and n_neighbors > 0, \
-            '`n_neighbors` must be a positive integer.'
+        assert isinstance(n_neighbors, (int, np.integer)), '`n_neighbors` must be an integer.'
+        assert n_neighbors > 0, '`n_neighbors` must be positive.'
         assert n_neighbors < len(X), '`n_neighbors` must be smaller than `n_sample`.'
         mi = _mi_knn(X, Y, n_neighbors)
     elif mi_estimator == 'plugin':
-        assert all_discrete, 'When using plug-in estimator, all features must be discrete.'
+        assert is_discrete, 'When using plug-in estimator, all features must be discrete.'
         mi = _mi_plugin(X, Y)
     else:
         raise ValueError('`%s` is not implemented.' % mi_estimator)
