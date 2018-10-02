@@ -13,13 +13,13 @@ selection, and structure learning of undirected graphical models (a.k.a. Markov 
 
 setup(
     name='depynd',
-    version='0.6.1',
+    version='0.6.2',
     description='Evaluating dependencies among random variables.',
     long_description=long_description,
     author='Yuya Takashina',
     author_email='takashina2051@gmail.com',
     packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'scikit-learn'],
+    install_requires=['numpy>=1.13.0', 'scipy', 'scikit-learn'],
     test_requires=['pytest', 'flake8'],
     url='https://github.com/y-takashina/depynd',
 )
