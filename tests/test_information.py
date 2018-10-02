@@ -120,7 +120,22 @@ class TestCmi:
 
     def test_mi_estimator(self):
         try:
-            conditional_mutual_information(x, x, x, mi_estimator='dr')
+            conditional_mutual_information(x, x, x, mi_estimator='dr', is_discrete='auto')
+            conditional_mutual_information(x, x, w, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(x, w, x, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(x, w, w, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, x, x, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, x, w, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, w, x, mi_estimator='knn', is_discrete='auto')
+            conditional_mutual_information(w, w, w, mi_estimator='plugin', is_discrete='auto')
+            conditional_mutual_information(x, x, x, mi_estimator='dr', is_discrete=False)
+            conditional_mutual_information(x, x, w, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(x, w, x, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(x, w, w, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, x, x, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, x, w, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, w, x, mi_estimator='knn', is_discrete=False)
+            conditional_mutual_information(w, w, w, mi_estimator='plugin', is_discrete=True)
         except ValueError:
             fail()
         with raises(ValueError):
