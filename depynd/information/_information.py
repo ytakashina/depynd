@@ -14,9 +14,8 @@ def mutual_information(X, Y, mi_estimator='auto', is_discrete='auto', force_non_
     Y : array-like, shape (n_samples, n_features_y) or (n_samples)
         Observations of the other variable.
     mi_estimator : {'knn', 'dr', 'plugin', 'auto'}, default 'auto'
-        MI estimator. If 'auto', MI estimator will be selected depending on whether all features are purely discrete,
-        purely continuous, or discrete-continuous mixed. If purely discrete, 'plugin' estimator will be used. Otherwise,
-        'knn' estimator will be selected.
+        MI estimator. If 'auto', MI estimator will be selected depending on whether all features are purely discrete or
+        not. If purely discrete, 'plugin' estimator will be used. Otherwise, 'knn' estimator will be selected.
     is_discrete : {'auto', bool}, default 'auto'
         If ``bool``, then it determines whether to consider all features purely discrete or purely continuous. If
         'auto', a column which contains duplicate elements will be considered discrete.
@@ -93,9 +92,8 @@ def conditional_mutual_information(X, Y, Z, mi_estimator='auto', is_discrete='au
     Z : array-like, shape (n_samples, n_features_z) or (n_samples)
         Observations of the conditioning variable.
     mi_estimator : {'knn', 'dr', 'plugin', 'auto'}, default 'auto'
-        MI estimator. If 'auto', MI estimator will be selected depending on whether all features are purely discrete,
-        purely continuous, or discrete-continuous mixed. If purely discrete, 'plugin' estimator will be used. Otherwise,
-        'knn' estimator will be selected.
+        MI estimator. If 'auto', MI estimator will be selected depending on whether all features are purely discrete or
+        not. If purely discrete, 'plugin' estimator will be used. Otherwise, 'knn' estimator will be selected.
     is_discrete : {'auto', bool}, default 'auto'
         If ``bool``, then it determines whether to consider all features purely discrete or purely continuous. If
         'auto', a column which contains duplicate elements will be considered discrete.
