@@ -13,7 +13,7 @@ selection, and structure learning of undirected graphical models (a.k.a. Markov 
 
 setup(
     name='depynd',
-    version='0.6.3',
+    version='0.6.4',
     description='Evaluating dependencies among random variables.',
     long_description=long_description,
     author='Yuya Takashina',
