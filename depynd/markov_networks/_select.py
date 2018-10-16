@@ -4,16 +4,16 @@ from sklearn.utils import check_array
 from depynd.markov_networks import _skeptic, _stars, _glasso, _gsmn, _iamb, _gsmple
 
 
-def select(X, method='skeptic', criterion='stars', lamb=None, verbose=False, return_lambda=False, **kwargs):
+def select(X, method='skeptic', criterion=None, lamb=None, verbose=False, return_lambda=False, **kwargs):
     """Learn the structure of Markov random field.
 
     Parameters
     ----------
     X : array-like, shape (n_samples, n_features)
         Observations of a set of random variables.
-    method : {'glasso', 'skeptic', 'gsmn', 'iamb'}
+    method : {'glasso', 'skeptic', 'gsmn', 'iamb', 'gsmple'}
         Method for structure learning.
-    criterion : {'stars', 'none'}
+    criterion : {'stars', 'none', None}
         Criteria for selecting regularization parameter.
     lamb : float or array-like or None
         Candidates of regularization parameter.
@@ -52,7 +52,7 @@ def select(X, method='skeptic', criterion='stars', lamb=None, verbose=False, ret
     else:
         raise ValueError('`%s` is not implemented.' % method)
 
-    if criterion == 'none':
+    if criterion is None or criterion == 'none':
         if np.iterable(lamb):
             lamb_opt = next(iter(lamb))
         elif np.isscalar(lamb):
