@@ -84,9 +84,9 @@ def select(X, method='skeptic', criterion='stars', lamb=None, verbose=False, ret
         raise ValueError('Criteria %s is not implemented.' % criterion)
 
     if return_lambda:
-        return estimator(X, lamb_opt), lamb_opt
+        return estimator(X, lamb_opt, **kwargs), lamb_opt
     else:
-        return estimator(X, lamb_opt)
+        return estimator(X, lamb_opt, **kwargs)
 
 
 def _check_lamb(lamb, check_non_negative, method):
