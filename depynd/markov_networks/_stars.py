@@ -44,5 +44,5 @@ def _stars(X, estimator, lamb, beta, ratio, rep_num, verbose=False, **kwargs):
         if instability > beta:
             return lamb[i - 1]
         if verbose:
-            print('[stars] lambda: %f, instability: %f' % (lamb, instability))
+            print('[stars] lambda: %f, instability: %f' % (l, instability))
     return 0
