@@ -24,7 +24,7 @@ def _gsmple(X, lamb=0.0, **kwargs):
     References
     ----------
     .. [takashina2018structure] Takashina, Yuya, et al. "Structure Learning of Markov Random Fields through Grow-Shrink
-    Maximum Pseudolikelihood Estimation." Eighth International Workshop on Statistical Relational AI (2018).
+        Maximum Pseudolikelihood Estimation." Eighth International Workshop on Statistical Relational AI (2018).
     """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
