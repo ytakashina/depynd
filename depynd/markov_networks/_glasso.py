@@ -23,6 +23,7 @@ def _glasso(X, lamb, return_precision=False, **kwargs):
         Estimated adjacency matrix (or precision matrix if ``return_precision`` is True) of an MRF.
     """
     cov = np.cov(scale(X), rowvar=False)
+    kwargs = {k: v for k, v in kwargs.items() if k in graph_lasso.__code__.co_varnames}
     pre = graph_lasso(cov, alpha=lamb, **kwargs)[1]
     if return_precision:
         return pre
