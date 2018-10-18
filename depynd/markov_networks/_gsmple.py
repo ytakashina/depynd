@@ -4,6 +4,28 @@ from depynd.information import mutual_information, conditional_mutual_informatio
 
 
 def _gsmple(X, lamb=0.0, **kwargs):
+    """Learn the structure of Markov random field with glow-shrink maximum pseudolikelihood estimation (GS-MPLE)
+    [takashina2018structure]_.
+
+    Parameters
+    ----------
+    X : array, shape (n_samples, n_features)
+        Observations of variables.
+    lamb: float
+        Threshold for independence tests.
+    kwargs : dict, default None
+        Optional parameters for MI estimation.
+
+    Returns
+    ----------
+    adj : array, shape (n_features, n_features)
+        Estimated adjacency matrix of an MRF.
+
+    References
+    ----------
+    .. [takashina2018structure] Takashina, Yuya, et al. "Structure Learning of Markov Random Fields through Grow-Shrink
+    Maximum Pseudolikelihood Estimation." Eighth International Workshop on Statistical Relational AI (2018).
+    """
     n, d = X.shape
     adj = np.zeros([d, d], dtype=bool)
     adj = _grow(adj, X, lamb, **kwargs)
