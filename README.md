@@ -14,7 +14,7 @@ Here is the [documentation](https://depynd.readthedocs.io/).
 
 ## Dependencies
 - Python (>=3.5)
-- NumPy
+- NumPy (>=1.13.0)
 - SciPy
 - scikit-learn
 
