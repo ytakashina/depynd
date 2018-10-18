@@ -17,6 +17,7 @@ The :py:func:`select` function supports the following methods:
 - 'skeptic': :py:func:`depynd.markov_networks._skeptic`
 - 'gsmn': :py:func:`depynd.markov_networks._gsmn`
 - 'iamb': :py:func:`depynd.markov_networks._iamb`
+- 'gsmple': :py:func:`depynd.markov_networks._gsmple`
 
 
 Criteria
