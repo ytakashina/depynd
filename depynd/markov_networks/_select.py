@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.utils import check_array
 
-from depynd.markov_networks import _skeptic, _stars, _glasso, _gsmn, _iamb, _gsmple
+from depynd.markov_networks import _skeptic, _stars, _glasso, _jose, _gsmn, _iamb, _gsmple
 
 
 def select(X, method='skeptic', criterion='stars', lamb=None, verbose=False, return_lambda=False, **kwargs):
@@ -39,6 +39,9 @@ def select(X, method='skeptic', criterion='stars', lamb=None, verbose=False, ret
         _check_lamb(lamb, check_non_negative=True, method=method)
     elif method == 'skeptic':
         estimator = _skeptic
+        _check_lamb(lamb, check_non_negative=True, method=method)
+    elif method == 'jose':
+        estimator = _jose
         _check_lamb(lamb, check_non_negative=True, method=method)
     elif method == 'gsmn':
         estimator = _gsmn
