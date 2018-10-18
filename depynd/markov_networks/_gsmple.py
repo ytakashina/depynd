@@ -12,9 +12,8 @@ def _gsmple(X, lamb=0.0, **kwargs):
 
 
 def _grow(adj, X, lamb, **kwargs):
-    n, d = X.shape
-
     # Initialize CMI cache matrix
+    n, d = X.shape
     cmis = np.zeros([d, d])
     cmis[np.eye(d, dtype=bool)] = -np.inf
     for i in range(d):
@@ -44,30 +43,33 @@ def _grow(adj, X, lamb, **kwargs):
 
 
 def _shrink(adj, X, lamb, **kwargs):
-    # TODO: CMI caching
+    # Initialize CMI cache matrix
     n, d = X.shape
-    while True:
-        vmin = np.inf
-        for i in range(d):
-            x = X[:, [i]]
-            for j in adj[i].nonzero()[0]:
-                if i <= j:
-                    continue
-                other_adj_i = adj[i] & (np.arange(d) != j)
-                other_adj_j = adj[j] & (np.arange(d) != i)
-                y = X[:, [j]]
-                z = X[:, other_adj_i]
-                w = X[:, other_adj_j]
-                cmi = conditional_mutual_information(x, y, z, **kwargs)
-                cmi += conditional_mutual_information(x, y, w, **kwargs)
-                if vmin > cmi:
-                    vmin = cmi
-                    imin, jmin = i, j
+    cmis = np.zeros([d, d])
+    cmis[np.eye(d, dtype=bool)] = np.inf
+    for i in range(d):
+        x = X[:, i]
+        for j in adj[i].nonzero()[0]:
+            other_adj_i = adj[i] & (np.arange(d) != j)
+            y = X[:, j]
+            z = X[:, other_adj_i]
+            cmis[i, j] = conditional_mutual_information(x, y, z, **kwargs)
 
-        if vmin > lamb:
+    while np.count_nonzero(adj) > 0:
+        scores = cmis + cmis.T
+        imin, jmin = np.unravel_index(np.argmin(scores), scores.shape)
+        if scores[imin, jmin] > lamb:
             return adj
-
         adj[imin, jmin] = adj[jmin, imin] = 0
+        cmis[imin, jmin] = cmis[jmin, imin] = np.inf
 
-        if np.count_nonzero(adj) == 0:
-            return adj
+        # Re-compute CMIs
+        for i in range(d):
+            x = X[:, i]
+            for j in adj[i].nonzero()[0]:
+                other_adj_i = adj[i] & (np.arange(d) != j)
+                y = X[:, j]
+                z = X[:, other_adj_i]
+                cmis[i, j] = conditional_mutual_information(x, y, z, **kwargs)
+
+    return adj
